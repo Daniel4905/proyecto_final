@@ -122,8 +122,6 @@ $(document).ready(function () {
             this.submit();
         } else {
             $('#error').fadeIn();
-            $('#error').html(mensajes.map(msg => `${msg}<br>`).join(''));
-            $('#error').removeClass('d-none');
         }
     });
     
