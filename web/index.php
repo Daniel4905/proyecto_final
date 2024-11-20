@@ -5,7 +5,6 @@
     if (!isset($_SESSION['auth'])) {
       header("Location: login.php");
     }
-    //hola
     echo "<body>";
             echo"<div class='wrapper'>";
                 include_once "../view/partials/sidebar.php";
