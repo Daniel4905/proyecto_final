@@ -91,7 +91,7 @@
             <div class="col-md-2 mt-3">
                 <label for="numeroPrincipal">Número principal*</label>
                 <input type="number" id="numeroPrincipal" name="numeroPrincipal" class="form-control" placeholder="26"
-                    min="1" max="300" required>
+                    min="1" max="300">
                 <small class="form-text text-muted">Ejemplo: 23</small>
             </div>
 
@@ -104,19 +104,19 @@
             <div class="col-md-1 mt-3">
                 <label for="numeroSecundario">Numero 1</label>
                 <input type="number" id="numeroSecundario" name="numeroSecundario" class="form-control" placeholder=""
-                    min="1" max="300" required>
+                    min="1" max="300">
                 <small class="form-text text-muted">Ejemplo: 10</small>
             </div>
 
             <div class="col-md-1 mt-3">
                 <label for="complemento">Complemento</label>
-                <input type="text" id="complemento" name="complemento2" class="form-control" placeholder="Bis/A/Sur">
+                <input type="text" id="complemento2" name="complemento2" class="form-control" placeholder="Bis/A/Sur">
                 <small class="form-text text-muted">Opcional. Ejemplo: Bis</small>
             </div>
             <div class="col-md-1 mt-3">
-                <label for="numeroSecundario">Numero 2</label>
+                <label for="numeroTerciario">Numero 2</label>
                 <input type="number" id="numeroTerciario" name="numeroTerciario" class="form-control" placeholder=""
-                    min="1" max="300" required>
+                    min="1" max="300">
                 <small class="form-text text-muted">Ejemplo: 10</small>
             </div>
 

@@ -46,7 +46,8 @@ class UsuariosController
         $barrio = $_POST['barrio'];
         $referencias = $_POST['referencias'];
 
-        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $referencias";
+        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc Ref. $referencias";
+
 
         $hash = password_hash($usu_clave, PASSWORD_DEFAULT);
 

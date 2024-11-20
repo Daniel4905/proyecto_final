@@ -58,6 +58,14 @@ $(document).ready(function () {
             $('#documento').addClass('input-error').after("<p class='text-danger'>Por favor, ingrese su numero de documento</p>");
             valido = false;
         }
+
+        const sexo = $('#sexo').val().trim();
+        if(sexo==''){
+            $('#sexo').addClass('input-error').after("<p class='text-danger'>Por favor, seleccione su sexo biologico</p>");
+            valido = false;
+        }
+
+        
         let patronNum = /^[0-9]+$/;
         if (numDoc !== '' && !patronNum.test(numDoc)) {
             $('#documento').addClass('input-error').after("<p class='text-danger'>El campo documento solo admite numeros</p>");
@@ -73,6 +81,38 @@ $(document).ready(function () {
             $('#documento').after("<p class='text-danger'>El campo telefono solo admite numeros</p>");
             valido = false;
         }
+
+        const tipoVia = $('#tipoVia').val().trim();
+        if(tipoVia == ''){
+            $('#tipoVia').addClass('input-error').after("<p class='text-danger'>Por favor, seleccione un tipo de via</p>");
+            valido = false;
+        }
+
+        const numeroPrincipal = $('#numeroPrincipal').val().trim();
+        if(numeroPrincipal == '' ){
+            $('#numeroPrincipal').addClass('input-error').after("<p class='text-danger'>Por favor, digite el numero principal</p>");
+            valido = false;
+        }
+
+        const numeroSecundario = $('#numeroSecundario').val().trim();
+        if(numeroSecundario == '' ){
+            $('#numeroSecundario').addClass('input-error').after("<p class='text-danger'>Por favor, digite el numero 1</p>");
+            valido = false;
+        }
+
+        const numeroTerciario= $('#numeroTerciario').val().trim();
+        if(numeroTerciario == '' ){
+            $('#numeroTerciario').addClass('input-error').after("<p class='text-danger'>Por favor, digite el numero 2</p>");
+            valido = false;
+        }
+        const complemento = $('#complemento').val().trim();
+        if (complemento  !== '' && !patron.test(complemento )) {
+            $('#complemento').addClass('input-error').after("<p class='text-danger'>El campo complemento solo admite letras</p>");
+            valido = false;
+        }
+        
+
+
         let patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const correo = $('#correo').val().trim();
         if (correo == '') {
