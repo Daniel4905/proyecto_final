@@ -385,12 +385,12 @@ $(document).ready(function () {
 
         const clavenew = $('#clavenew').val().trim();
        
-        
-
-        if(clave != clavenew){
-            $('#clavenew').after("<p class='text-danger'>Las contraseñas no coinciden</p>");
+        if (clavenew !== '' && !patronClave.test(clavenew)) {
+            $('#clavenew').after("<p class='text-danger'>La contraseña debe contener al menos un caractér especial, una mayuscula y una minuscula</p>");
             valido = false;
         }
+
+    
 
         // Si no hay errores, enviar el formulario
         if (valido) {
