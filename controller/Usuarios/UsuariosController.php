@@ -247,4 +247,25 @@ class UsuariosController
             echo "No se puede actualizar el estado";
         }
     }
+    public function getUpdateUsu(){
+        $obj = new UsuariosModel();
+
+        $usu_id = $_GET['usu_id'];
+
+        $sql = "SELECT * FROM usuarios WHERE usu_id = $usu_id";
+
+        $sqldoc = "SELECT * FROM tipo_documento ORDER BY doc_id ASC";
+
+        $sqlRol = "SELECT * FROM rol";
+        
+        $roles = $obj->consult($sqlRol);
+        $usuarios = $obj->consult($sql);
+        $docs = $obj->consult($sqldoc);
+
+
+        include_once '../view/usuarios/actualizarDatosUsu.php';
+    }
+    public function postUpdateUsu(){
+
+    }
 }

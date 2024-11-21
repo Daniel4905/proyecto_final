@@ -20,6 +20,17 @@ $(document).ready(function () {
     }
   });
 
+  $(document).on('change', "#cambiarDir", function () {
+
+    var direccion = $("#direccionDiv");
+
+    if ($(this).is(":checked")) {
+      direccion.removeClass("d-none");
+    } else {
+      direccion.addClass("d-none");
+    }
+});
+
   
 
 });

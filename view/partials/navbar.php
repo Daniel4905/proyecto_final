@@ -51,7 +51,7 @@
                     perfil</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item"
-                    href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUpdate', array("usu_id" => $_SESSION['id'])); ?>">Configuracion
+                    href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUpdateUsu', array("usu_id" => $_SESSION['id'])); ?>">Configuracion
                     de la cuenta</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item text-danger" href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
