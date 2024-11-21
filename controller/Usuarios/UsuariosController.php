@@ -43,7 +43,6 @@ class UsuariosController
         $comp2 = $_POST['complemento2'];
         $numeroSc = $_POST['numeroSecundario'];
         $numeroTerc = $_POST['numeroTerciario'];
-        $barrio = $_POST['barrio'];
         $referencias = $_POST['referencias'];
 
         $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc Ref. $referencias";
