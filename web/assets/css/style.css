@@ -62,6 +62,106 @@ h1 {
     overflow-x: hidden;   
 }
 
+/* Pantallas pequeñas, móviles */
+@media (max-width: 360px) { /* Ejemplo: Galaxy S8, Pixel 2 */
+    .container-scroll {
+        max-height: 530px; /* Puedes ajustar este valor si es necesario */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Pantallas medianas, móviles grandes */
+@media (min-width: 361px) and (max-width: 413px) { /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 400px; /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+@media (min-width: 411px) and (max-width: 413px) { /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 550px; /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+@media (min-width: 389px) and (max-width: 390px) { /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 550px; /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+@media (min-width: 413px) and (max-width: 414px) { /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 600px; /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Tablets pequeñas */
+@media (min-width: 415px) and (max-width: 768px) { /* Ejemplo: iPad Mini, iPad en modo vertical */
+    .container-scroll {
+        max-height: 650px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+@media (min-width: 539px) and (max-width: 542px) { /* Ejemplo: iPad Mini, iPad en modo vertical */
+    .container-scroll {
+        max-height: 5%;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+@media (min-width: 1023px) and (max-width: 1025px) { /* Ejemplo: iPad en modo horizontal */
+    .container-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+/* Tablets grandes, dispositivos en modo horizontal */
+@media (min-width: 769px) and (max-width: 1024px) { /* Ejemplo: iPad en modo horizontal */
+    .container-scroll {
+        max-height: 600px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+@media (min-width: 819px) and (max-width: 821px) { /* Ejemplo: iPad en modo horizontal */
+    .container-scroll {
+        max-height: 700px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+/* Pantallas medianas (laptops pequeñas) */
+@media (min-width: 1025px) and (max-width: 1366px) { /* Ejemplo: laptops con resolución estándar */
+    .container-scroll {
+        max-height: 600px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Pantallas grandes (desktops comunes) */
+@media (min-width: 1367px) and (max-width: 1919px) {
+    .container-scroll {
+        max-height: 650px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
 
 .input-error {
     border: 2px solid red;
