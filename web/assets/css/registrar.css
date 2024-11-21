@@ -1,0 +1,369 @@
+::after,
+::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.gradient-text {
+    background: #bbb8b8;
+    font-weight: bold;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.text-danger {
+    font-weight: bold;
+}
+
+
+h4.text-section {
+    color: #bbb8b8;
+    font: 12px "Public Sans", sans-serif;
+    font-weight: bold;
+    margin: 20px 0px 12px;
+    padding: 2px 30px;
+}
+
+body {
+    max-height: max-content;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+h1 {
+
+    font-size: 1.5rem;
+}
+
+
+
+.wrapper {
+    display: flex;
+    height: max-content;
+
+}
+
+.main {
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+
+}
+
+.sideScroll {
+    max-height: 1200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.container-scroll {
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-height: 530px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: #FFF;
+}
+
+.form-control {
+    background-color: transparent !important;
+    border: 1px solid #141414 !important; 
+    color: #333; 
+    box-shadow: none; 
+}
+.input-error {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+}
+
+
+/* Pantallas pequeñas, móviles */
+@media (max-width: 360px) {
+
+    /* Ejemplo: Galaxy S8, Pixel 2 */
+    .container-scroll {
+        max-height: 530px;
+        /* Puedes ajustar este valor si es necesario */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Pantallas medianas, móviles grandes */
+@media (min-width: 361px) and (max-width: 413px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 400px;
+        /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+@media (min-width: 411px) and (max-width: 413px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 550px;
+        /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+@media (min-width: 389px) and (max-width: 390px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 550px;
+        /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+@media (min-width: 413px) and (max-width: 414px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
+    .container-scroll {
+        max-height: 600px;
+        /* Ajustamos a un tamaño más cómodo */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Tablets pequeñas */
+@media (min-width: 415px) and (max-width: 768px) {
+
+    /* Ejemplo: iPad Mini, iPad en modo vertical */
+    .container-scroll {
+        max-height: 650px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+@media (min-width: 539px) and (max-width: 542px) {
+
+    /* Ejemplo: iPad Mini, iPad en modo vertical */
+    .container-scroll {
+        max-height: 5%;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+@media (min-width: 1023px) and (max-width: 1025px) {
+
+    /* Ejemplo: iPad en modo horizontal */
+    .container-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+/* Tablets grandes, dispositivos en modo horizontal */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    /* Ejemplo: iPad en modo horizontal */
+    .container-scroll {
+        max-height: 600px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+@media (min-width: 819px) and (max-width: 821px) {
+
+    /* Ejemplo: iPad en modo horizontal */
+    .container-scroll {
+        max-height: 700px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+/* Pantallas medianas (laptops pequeñas) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+
+    /* Ejemplo: laptops con resolución estándar */
+    .container-scroll {
+        max-height: 600px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Pantallas grandes (desktops comunes) */
+@media (min-width: 1367px) and (max-width: 1919px) {
+    .container-scroll {
+        max-height: 650px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+
+.input-error {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+}
+
+.text-danger {
+    font-size: 75%;
+}
+
+.cerrarS {
+    color: rgb(240, 61, 61);
+    font-weight: bold;
+
+}
+
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    background-color: rgb(32, 36, 52);
+    display: flex;
+    flex-direction: column;
+    font-family: "oxygen", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem 1.5rem;
+}
+
+
+.toggle-btn i {
+    font-size: 1.5rem;
+    color: #FFF;
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar-logo a {
+    color: #c2bfbf;
+    font-size: 1.15rem;
+
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+
+}
+
+.dropdown-divider {
+    height: 1px;
+    margin: 0.5rem 0;
+    background: #404361;
+}
+
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+
+a.sidebar-link {
+    margin-top: 10px;
+    padding: .625rem 1.625rem;
+    color: 424242;
+    display: flex;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.sidebar-link span {
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+
+.sidebar-link i {
+    font-size: 1.1rem;
+    margin-right: .75rem;
+}
+
+a.sidebar-link:hover {
+    border-left: 3px solid #743bdd;
+    color: 424242;
+}
+
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown:hover {
+    background-color: #202434;
+    border: none;
+    color: #747474;
+}
+
+.sidebar-item {
+    position: relative;
+}
+
+
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
+    position: absolute;
+    top: 0;
+    left: 70px;
+    background-color: #202434;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+    color: 424242;
+}
+
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+    color: #424242;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}

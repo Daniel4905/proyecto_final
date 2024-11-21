@@ -44,8 +44,13 @@ class UsuariosController
         $numeroSc = $_POST['numeroSecundario'];
         $numeroTerc = $_POST['numeroTerciario'];
         $referencias = $_POST['referencias'];
+        if(!empty($referencias)){
+            $ref = "Ref.";
+        }else{
+            $ref="";
+        }
 
-        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc Ref. $referencias";
+        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
 
 
         $hash = password_hash($usu_clave, PASSWORD_DEFAULT);

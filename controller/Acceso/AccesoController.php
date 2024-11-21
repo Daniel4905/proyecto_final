@@ -51,6 +51,10 @@ class AccesoController
     {
         $obj = new AccesoModel();
         $sqldoc = "SELECT * FROM tipo_documento";
+        $sqlsex = "SELECT * FROM sexo";
+
+        $docs = $obj->consult($sqldoc);
+        $sexo = $obj->consult($sqlsex);
 
         $docs = $obj->consult($sqldoc);
 
@@ -59,59 +63,61 @@ class AccesoController
     public function postCreate()
     {
         $obj = new AccesoModel();
+       
+        $usu_doc = $_POST['usu_documento'];
+        $usu_nombre1 = $_POST['usu_nombre1'];
+        $usu_nombre2 = $_POST['usu_nombre2'];
+        $usu_apellido1 = $_POST['usu_apellido1'];
+        $usu_apellido2 = $_POST['usu_apellido2'];
 
-        $usu_nombre = $_POST['usu_nombre'];
-        $usu_apellido = $_POST['usu_apellido'];
         $usu_correo = $_POST['usu_correo'];
         $usu_clave = $_POST['usu_clave'];
+        $usu_tel = $_POST['usu_tel'];
+        $usu_rol = $_POST['rol_id'];
+        $doc_id = $_POST['doc_id'];
+        $sex_id = $_POST['sex_id'];
+
+        $tipoV = $_POST['tipoVia'];
+        $numeroPr = $_POST['numeroPrincipal'];
+        $comp1 = $_POST['complemento1'];
+        $comp2 = $_POST['complemento2'];
+        $numeroSc = $_POST['numeroSecundario'];
+        $numeroTerc = $_POST['numeroTerciario'];
+        $referencias = $_POST['referencias'];
+        if(!empty($referencias)){
+            $ref = "Ref.";
+        }else{
+            $ref="";
+        }
+
+        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
 
 
         $hash = password_hash($usu_clave, PASSWORD_DEFAULT);
 
-        $validacion = true;
-        if (empty($usu_nombre)) {
-            $_SESSION['errores'][] = "El campo nombre es requerido";
-            $validacion = false;
 
-        }
-        if (empty($usu_apellido)) {
-            $_SESSION['errores'][] = "El campo apellido es requerido";
-            $validacion = false;
-        }
-        if (empty($usu_correo)) {
-            $_SESSION['errores'][] = "El campo correo es requerido";
-            $validacion = false;
+        $id = $obj->autoIncrement("usuarios", "usu_id");
+        $sql = "";
+        if (empty($usu_apellido2)) {
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
+        } else if (empty($usu_nombre2)) {
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
+        } else if (empty($usu_nombre2) && empty($usu_apellido2)) {
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel','$direccion', $usu_rol, 1, $doc_id)";
+        } else {
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
         }
 
-        if (empty($usu_clave)) {
-            $_SESSION['errores'][] = "El campo clave es requerido";
-            $validacion = false;
-        }
-
-
-        if (!validarCampos($usu_nombre, $usu_apellido, $usu_correo, $usu_clave)) {
-            $validacion = false;
-        }
-
-        $id = $obj->autoIncrement("usuario", "usu_id");
-
-        $sql = "INSERT INTO usuario VALUES($id, '$usu_nombre', '$usu_apellido', '$usu_correo', '$hash', 3, 1)";
-
-        if ($validacion) {
+      
             $ejecutar = $obj->insert($sql);
 
             if ($ejecutar) {
-                echo "<script> alert('Registro exitoso'); </script>";
                 redirect("login.php");
-
             } else {
-                echo "Se ha producido un error al insertar";
+                $_SESSION['erroresLog'][]='No se pudo realizar el registro';
+                redirect(getUrl("Acceso", "Acceso", "getCreate", false, "ajax"));
             }
-        } else {
-            redirect(getUrl("Acceso", "Acceso", "getCreate", false, "ajax"));
-
-        }
-
+        
     }
 
 }

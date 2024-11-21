@@ -3,9 +3,9 @@
 include_once '../lib/helpers.php';
 
 $error_message = '';
-if (isset($_SESSION['error'])) {
-    $error_message = $_SESSION['error'];
-    unset($_SESSION['error']);
+if (isset($_SESSION['erroreslog'])) {
+    $error_message = $_SESSION['erroresLog'];
+    unset($_SESSION['errorlog']);
 }
 ?>
 <!DOCTYPE html>
@@ -73,7 +73,7 @@ if (isset($_SESSION['error'])) {
                 
             </div>
             <div class=" my-3">
-                <span>No tienes cuenta? <a
+                <span>¿ No tienes cuenta? <a
                         href="<?php echo getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"); ?>">Registrarse</a></span>
             </div>
         </form>

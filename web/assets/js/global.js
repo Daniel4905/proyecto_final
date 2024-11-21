@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    
+
     const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     const patronNumero = /^[0-9]+$/;
     const patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -122,131 +122,6 @@ $(document).ready(function () {
         }
     });
 
-
-
-    $('#formRegistrolog').submit(function (event) {
-        // Pausa el envío
-        event.preventDefault();
-
-        $('.text-danger').remove();
-
-
-        // Verifica si hay errores
-        let valido = true;
-
-        // Validar campo nombre
-        const nombre = $('#nombre1').val().trim();
-        if (nombre == '') {
-            $('#nombre1').after("<p class='text-danger'>Por favor, ingrese el primer nombre</p>");
-            valido = false;
-        }
-        const nombre2 = $('#nombre2').val().trim();
-
-
-        const apellido = $('#apellido1').val().trim();
-        if (apellido == '') {
-            $('#apellido1').after("<p class='text-danger'>Por favor, ingrese el primer apellido</p>");
-            valido = false;
-        }
-        const apellido2 = $('#apellido2').val().trim();
-        let patron = /^[a-zA-Z\s]+$/;
-        if (nombre !== '' && !patron.test(nombre)) {
-            $('#nombre1').after("<p class='text-danger'>El campo primer nombre solo admite letras</p>");
-            valido = false;
-        }
-        if (nombre2 !== '' && !patron.test(nombre2)) {
-            $('#nombre2').after("<p class='text-danger'>El campo segundo nombre solo admite letras</p>");
-            valido = false;
-        }
-        if (apellido !== '' && !patron.test(apellido)) {
-            $('#apellido1').after("<p class='text-danger'>El campo primer apellido solo admite letras</p>");
-            valido = false;
-        }
-        if (apellido2 !== '' && !patron.test(apellido2)) {
-            $('#apellido2').after("<p class='text-danger'>El campo segundo apellido solo admite letras</p>");
-            valido = false;
-        }
-
-
-        const documento = $('#doc').val().trim();
-        if (documento == '') {
-            $('#doc').after("<p class='text-danger'>Por favor, seleccione un tipo de documento</p>");
-            valido = false;
-        }
-
-        const numDoc = $('#documento').val().trim();
-        if (numDoc == '') {
-            $('#documento').after("<p class='text-danger'>Por favor, ingrese su numero de documento</p>");
-            valido = false;
-        }
-        let patronNum = /^[0-9]+$/;
-        if (numDoc !== '' && !patronNum.test(numDoc)) {
-            $('#documento').after("<p class='text-danger'>El campo documento solo admite numeros</p>");
-            valido = false;
-        }
-
-        const telefono = $('#telefono').val().trim();
-        if (telefono == '') {
-            $('#telefono').after("<p class='text-danger'>Por favor, ingrese su numero de telefono</p>");
-            valido = false;
-        }
-        if (telefono !== '' && !patronNum.test(telefono)) {
-            $('#documento').after("<p class='text-danger'>El campo telefono solo admite numeros</p>");
-            valido = false;
-        }
-        let patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        const correo = $('#correo').val().trim();
-        if (correo == '') {
-            $('#correo').after("<p class='text-danger'>Por favor, ingrese su correo</p>");
-            valido = false;
-        }
-
-        if (correo !== '' && !patronCorreo.test(correo)) {
-            $('#correo').after("<p class='text-danger'>El campo correo debe contener la estructura usuario@dominio.com</p>");
-            valido = false;
-        }
-
-        const rol = $('#rol').val().trim();
-        if (rol == '') {
-            $('#rol').after("<p class='text-danger'>Por favor, seleccione un rol</p>");
-            valido = false;
-        }
-        let patronClave = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
-        const clave = $('#clave').val().trim();
-        if (clave == '') {
-            $('#clave').after("<p class='text-danger'>Por favor, ingrese su clave</p>");
-            valido = false;
-        }
-        if (clave !== '' && !patronClave.test(clave)) {
-            $('#clave').after("<p class='text-danger'>La contraseña debe contener al menos un caractér especial, una mayuscula y una minuscula</p>");
-            valido = false;
-        }
-
-        const clavenew = $('#clavenew').val().trim();
-        if (clavenew == '') {
-            $('#clavenew').after("<p class='text-danger'>Por favor, confirme su clave</p>");
-            valido = false;
-        }
-        if (clavenew !== '' && !patronClave.test(clave)) {
-            $('#clavenew').after("<p class='text-danger'>La contraseña debe contener al menos un caractér especial, una mayuscula y una minuscula</p>");
-            valido = false;
-        }
-
-        if (clave != clavenew) {
-            $('#clavenew').after("<p class='text-danger'>Las contraseñas no coinciden</p>");
-            valido = false;
-        }
-
-        // Si no hay errores, enviar el formulario
-        if (valido) {
-            $('#error').fadeOut(500);
-            this.submit();
-        } else {
-            $('#error').fadeIn();
-            $('#error').html(mensajes.map(msg => `${msg}<br>`).join(''));
-            $('#error').removeClass('d-none');
-        }
-    });
     $('#formUpdate').submit(function (event) {
         // Pausa el envío
         event.preventDefault();
