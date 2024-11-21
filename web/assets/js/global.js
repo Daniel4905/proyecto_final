@@ -1,7 +1,6 @@
 
 $(document).ready(function () {
-
-
+    
     const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     const patronNumero = /^[0-9]+$/;
     const patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
