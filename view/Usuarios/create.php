@@ -126,11 +126,11 @@
                     placeholder="Frente al parque o cerca del supermercado"></textarea>
                 <small class="form-text text-muted">Opcional. Máximo 100 caracteres.</small>
             </div>
-            <div class="col-md-3 mt-3">
+            <div class="col-md-3 mt-2">
                 <label for="usu_correo">Correo*</label>
                 <input type="text" name="usu_correo" id="correo" class="form-control" placeholder="usuario@dominio.com">
             </div>
-            <div class="col-md-3 mt-3">
+            <div class="col-md-3 mt-2">
                 <label for="rol_id">Rol*</label>
                 <select name="rol_id" id="rol" class="form-control">
                     <option value="">Seleccione...</option>
