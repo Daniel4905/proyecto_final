@@ -62,11 +62,7 @@ h1 {
     overflow-x: hidden;   
 }
 
-.container-scroll {
-    max-height: 450px; 
-    overflow-y: auto; 
-    overflow-x: hidden; 
-}
+
 .input-error {
     border: 2px solid red;
     background-color: #ffe6e6;
