@@ -82,15 +82,15 @@ include_once "../lib/helpers.php";
             </div>
             <div class="container container-scroll">
 
-                <form action="<?php echo getUrl("Acceso", "Acceso", "postCreate"); ?>" method="POST"
+                <form action="<?php echo getUrl("Acceso", "Acceso", "postCreate", false, "ajax"); ?>" method="POST"
                     id="formRegistrolog">
                     <div class="row mt-5">
                         <div class='alert alert-danger d-none' role='alert' id="error"></div>
 
                         <?php
-                        if (isset($_SESSION['errores'])) {
+                        if (isset($_SESSION['ErrorReg'])) {
                             echo "<div class='alert alert-danger' role='alert'>";
-                            foreach ($_SESSION['errores'] as $error) {
+                            foreach ($_SESSION['ErrorReg'] as $error) {
                                 echo $error . "<br>";
                             }
                             echo "</div>";

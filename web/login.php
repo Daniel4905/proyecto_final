@@ -3,9 +3,9 @@
 include_once '../lib/helpers.php';
 
 $error_message = '';
-if (isset($_SESSION['erroreslog'])) {
-    $error_message = $_SESSION['erroresLog'];
-    unset($_SESSION['errorlog']);
+if (isset($_SESSION['error'])) {
+    $error_message = $_SESSION['error'];
+    unset($_SESSION['error']);
 }
 ?>
 <!DOCTYPE html>
@@ -44,6 +44,16 @@ if (isset($_SESSION['erroreslog'])) {
 
 <body>
     <div class="container">
+        <?php
+        if (isset($_SESSION['RegExitoso'])) {
+            echo "<div class='alert alert-success' role='alert'>";
+            foreach ($_SESSION['RegExitoso'] as $reg) {
+                echo $reg . "<br>";
+            }
+            echo "</div>";
+            unset($_SESSION['RegExitoso']);
+        }
+        ?>
         <div class="logo">
             <img src="img/logo.png" alt="Logo geovisor"> <!-- Logo de la clínica -->
         </div>
@@ -70,11 +80,10 @@ if (isset($_SESSION['erroreslog'])) {
 
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-                
+
             </div>
             <div class=" my-3">
-                <span>¿ No tienes cuenta? <a
-                        href="<?php echo getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"); ?>">Registrarse</a></span>
+                <span>¿No tienes cuenta? <a href="<?php echo getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"); ?>">Registrarse</a></span>
             </div>
         </form>
     </div>

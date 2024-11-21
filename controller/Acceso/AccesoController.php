@@ -63,7 +63,6 @@ class AccesoController
     public function postCreate()
     {
         $obj = new AccesoModel();
-       
         $usu_doc = $_POST['usu_documento'];
         $usu_nombre1 = $_POST['usu_nombre1'];
         $usu_nombre2 = $_POST['usu_nombre2'];
@@ -108,16 +107,15 @@ class AccesoController
             $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
         }
 
-      
-            $ejecutar = $obj->insert($sql);
+        $ejecutar = $obj->insert($sql);
 
-            if ($ejecutar) {
-                redirect("login.php");
-            } else {
-                $_SESSION['erroresLog'][]='No se pudo realizar el registro';
-                redirect(getUrl("Acceso", "Acceso", "getCreate", false, "ajax"));
-            }
-        
+        if ($ejecutar) {
+            $_SESSION['RegExitoso'][]="Registro exitoso";
+            redirect("index.php");
+        } else {
+            $_SESSION['ErrorReg'][]="No se pudo realizar el registro";
+            redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
+        }
     }
 
 }
