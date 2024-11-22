@@ -127,12 +127,10 @@ $(document).ready(function () {
 
     // Validación del correo
     if (!validarCampo($('#correo'), patronCorreo, 'un correo válido')) {
-      console.log('Correo inválido');
       valido = false;
   }
   
   if (!validarCampo($('#clave'), patronClave, 'una contraseña válida')) {
-      console.log('Clave inválida');
       valido = false;
   }
     const clavenew = $('#clavenew').val().trim();

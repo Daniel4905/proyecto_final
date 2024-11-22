@@ -94,7 +94,7 @@ include_once "../lib/helpers.php";
                                 echo $error . "<br>";
                             }
                             echo "</div>";
-                            unset($_SESSION['errores']);
+                            unset($_SESSION['ErrorReg']);
                         }
                         ?>
 
