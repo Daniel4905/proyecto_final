@@ -12,7 +12,8 @@
     -webkit-text-fill-color: transparent;
     display: inline-block;
 }
-.text-danger{
+
+.text-danger {
     font-weight: bold;
 }
 
@@ -24,7 +25,7 @@ h4.text-section {
     padding: 2px 30px;
 }
 
-body{
+body {
     max-height: max-content;
 }
 
@@ -41,77 +42,110 @@ h1 {
     font-size: 1.5rem;
 }
 
+body,
+html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    /* Evita desbordamientos horizontales */
+}
+
 
 
 .wrapper {
     display: flex;
-    height: max-content;
-    
+    height: 100vh;
+    overflow: hidden;
 }
+
 
 .main {
     min-height: 100vh;
     width: 100%;
     overflow: hidden;
     transition: all 0.35s ease-in-out;
+    flex-grow: 1;
+    overflow-y: auto;
 
 }
-.sideScroll{
+
+.sideScroll {
     max-height: 1200px;
     overflow-y: auto;
-    overflow-x: hidden;   
+    overflow-x: hidden;
 }
 
 /* Pantallas pequeñas, móviles */
-@media (max-width: 360px) { /* Ejemplo: Galaxy S8, Pixel 2 */
+@media (max-width: 360px) {
+
+    /* Ejemplo: Galaxy S8, Pixel 2 */
     .container-scroll {
-        max-height: 530px; /* Puedes ajustar este valor si es necesario */
+        max-height: 530px;
+        /* Puedes ajustar este valor si es necesario */
         overflow-y: auto;
         overflow-x: hidden;
     }
 }
 
 /* Pantallas medianas, móviles grandes */
-@media (min-width: 361px) and (max-width: 413px) { /* Ejemplo: iPhone 11, iPhone XR */
+@media (min-width: 361px) and (max-width: 413px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
     .container-scroll {
-        max-height: 400px; /* Ajustamos a un tamaño más cómodo */
+        max-height: 400px;
+        /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
     }
 }
 
-@media (min-width: 411px) and (max-width: 413px) { /* Ejemplo: iPhone 11, iPhone XR */
+@media (min-width: 411px) and (max-width: 413px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
     .container-scroll {
-        max-height: 550px; /* Ajustamos a un tamaño más cómodo */
+        max-height: 550px;
+        /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
     }
 }
 
-@media (min-width: 389px) and (max-width: 390px) { /* Ejemplo: iPhone 11, iPhone XR */
+@media (min-width: 389px) and (max-width: 390px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
     .container-scroll {
-        max-height: 550px; /* Ajustamos a un tamaño más cómodo */
+        max-height: 550px;
+        /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
     }
 }
-@media (min-width: 413px) and (max-width: 414px) { /* Ejemplo: iPhone 11, iPhone XR */
+
+@media (min-width: 413px) and (max-width: 414px) {
+
+    /* Ejemplo: iPhone 11, iPhone XR */
     .container-scroll {
-        max-height: 600px; /* Ajustamos a un tamaño más cómodo */
+        max-height: 600px;
+        /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
     }
 }
 
 /* Tablets pequeñas */
-@media (min-width: 415px) and (max-width: 768px) { /* Ejemplo: iPad Mini, iPad en modo vertical */
+@media (min-width: 415px) and (max-width: 768px) {
+
+    /* Ejemplo: iPad Mini, iPad en modo vertical */
     .container-scroll {
         max-height: 650px;
         overflow-y: auto;
         overflow-x: auto;
     }
 }
-@media (min-width: 539px) and (max-width: 542px) { /* Ejemplo: iPad Mini, iPad en modo vertical */
+
+@media (min-width: 539px) and (max-width: 542px) {
+
+    /* Ejemplo: iPad Mini, iPad en modo vertical */
     .container-scroll {
         max-height: 5%;
         overflow-y: auto;
@@ -119,7 +153,9 @@ h1 {
     }
 }
 
-@media (min-width: 1023px) and (max-width: 1025px) { /* Ejemplo: iPad en modo horizontal */
+@media (min-width: 1023px) and (max-width: 1025px) {
+
+    /* Ejemplo: iPad en modo horizontal */
     .container-scroll {
         max-height: 300px;
         overflow-y: auto;
@@ -128,7 +164,9 @@ h1 {
 }
 
 /* Tablets grandes, dispositivos en modo horizontal */
-@media (min-width: 769px) and (max-width: 1024px) { /* Ejemplo: iPad en modo horizontal */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    /* Ejemplo: iPad en modo horizontal */
     .container-scroll {
         max-height: 600px;
         overflow-y: auto;
@@ -136,7 +174,9 @@ h1 {
     }
 }
 
-@media (min-width: 819px) and (max-width: 821px) { /* Ejemplo: iPad en modo horizontal */
+@media (min-width: 819px) and (max-width: 821px) {
+
+    /* Ejemplo: iPad en modo horizontal */
     .container-scroll {
         max-height: 700px;
         overflow-y: auto;
@@ -145,7 +185,9 @@ h1 {
 }
 
 /* Pantallas medianas (laptops pequeñas) */
-@media (min-width: 1025px) and (max-width: 1366px) { /* Ejemplo: laptops con resolución estándar */
+@media (min-width: 1025px) and (max-width: 1366px) {
+
+    /* Ejemplo: laptops con resolución estándar */
     .container-scroll {
         max-height: 600px;
         overflow-y: auto;
@@ -168,31 +210,38 @@ h1 {
     background-color: #ffe6e6;
 }
 
-.text-danger{
+.text-danger {
     font-size: 75%;
 }
-.cerrarS{
+
+.cerrarS {
     color: rgb(240, 61, 61);
     font-weight: bold;
 
 }
+
 #sidebar {
     width: 70px;
     min-width: 70px;
     z-index: 1000;
     transition: all .25s ease-in-out;
-    background-color: rgb(32,36,52);
+    background-color: rgb(32, 36, 52);
     display: flex;
     flex-direction: column;
     font-family: "oxygen", sans-serif;
     font-weight: 400;
     font-style: normal;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 
 }
 
 #sidebar.expand {
     width: 260px;
     min-width: 260px;
+    margin: 0;
+    padding: 0;
 }
 
 .toggle-btn {
@@ -221,7 +270,7 @@ h1 {
 #sidebar:not(.expand) .sidebar-logo,
 #sidebar:not(.expand) a.sidebar-link span {
     display: none;
-    
+
 }
 
 .dropdown-divider {
@@ -255,14 +304,15 @@ a.sidebar-link {
     margin-right: .75rem;
 }
 
-a.sidebar-link:hover {  
+a.sidebar-link:hover {
     border-left: 3px solid #743bdd;
-    color:424242;
+    color: 424242;
 }
+
 #sidebar:not(.expand) .sidebar-item .sidebar-dropdown:hover {
     background-color: #202434;
-    border: none; 
-    color: #747474; 
+    border: none;
+    color: #747474;
 }
 
 .sidebar-item {
@@ -275,12 +325,12 @@ a.sidebar-link:hover {
     top: 0;
     left: 70px;
     background-color: #202434;
-    border-top-right-radius: 5px ;
+    border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 0;
     min-width: 15rem;
     display: none;
-    color:  424242;
+    color: 424242;
 }
 
 #sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {

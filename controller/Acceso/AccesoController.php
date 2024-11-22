@@ -19,7 +19,7 @@ class AccesoController
             foreach ($usuario as $usu) {
                 if (password_verify($password, $usu['usu_clave'])) {
                     $_SESSION['id'] = $usu["usu_id"];
-                    $_SESSION['nombre'] = $usu["usu_nombre1"]." ".$usu["nombre2"];
+                    $_SESSION['nombre'] = $usu["usu_nombre1"]." ".$usu["usu_nombre2"];
                     $_SESSION['apellido'] = $usu["usu_apellido1"];
                     $_SESSION['correo'] = $usu["usu_correo"];
                     $_SESSION['estado'] = $usu["est_id"];

@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.php" id="navbar-logo"><img src="img/logo.png"   id="logonav"  alt=""
+    <a class="navbar-brand" href="index.php" id="navbar-logo"><img src="img/logo_normal.png"   id="logonav"  alt=""
         style="width: 120px; ">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

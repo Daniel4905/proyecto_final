@@ -55,7 +55,7 @@ if (isset($_SESSION['error'])) {
         }
         ?>
         <div class="logo">
-            <img src="img/logo.png" alt="Logo geovisor"> <!-- Logo de la clínica -->
+            <img src="img/logo_normal.png" alt="Logo geovisor"> <!-- Logo de la clínica -->
         </div>
         <form action="<?php echo getUrl('Acceso', 'Acceso', 'login', false, "ajax"); ?>" method="POST">
             <div class="mb-4">
