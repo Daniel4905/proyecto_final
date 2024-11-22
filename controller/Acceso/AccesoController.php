@@ -14,7 +14,7 @@ class AccesoController
 
         $sql = "SELECT * FROM usuarios WHERE usu_documento = '$user' AND est_id=1";
         $usuario = $obj->consult($sql);
-
+        //bxdshbcxjs
         if ($usuario && count($usuario) > 0) {
             foreach ($usuario as $usu) {
                 if (password_verify($password, $usu['usu_clave'])) {
