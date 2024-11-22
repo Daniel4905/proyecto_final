@@ -14,6 +14,7 @@ if (isset($_SESSION['error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>AccidentEye</title>
     <link rel="icon" href="img/file.png" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -55,17 +56,32 @@ if (isset($_SESSION['error'])) {
         }
         ?>
         <div class="logo">
-            <img src="img/logo_normal.png" alt="Logo geovisor"> <!-- Logo de la clínica -->
+            <img src="img/logo_claro.png" alt="Logo geovisor"> <!-- Logo de la clínica -->
         </div>
-        <form action="<?php echo getUrl('Acceso', 'Acceso', 'login', false, "ajax"); ?>" method="POST">
-            <div class="mb-4">
+        <div class="division">
+            <div class="row">
+                <div class="col-3">
+                    <div class="line l"></div>
+                </div>
+                <div class="col-3">
+                    <div class="line r"></div>
+                </div>
+            </div>
+        </div>
+        <form action="<?php echo getUrl('Acceso', 'Acceso', 'login', false, "ajax"); ?>" method="POST" class="myform">
+            <div class="form-group">
                 <label for="numeroId" class="form-label">Número de Identificación:</label>
                 <input type="text" id="numeroId" name="numeroId" class="form-control">
             </div>
-            <div class="mb-6">
+            <div class="form-group">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" id="password" name="password" class="form-control">
-                <span><a href="">Recuperar contraseña</a></span>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" class="form-control">
+                    <button type="button" class="toggle-password">
+                        <i class="far fa-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+                <span><a href="#">Recuperar contraseña</a></span>
             </div>
             <div class="form-group">
                 <?php if ($error_message): ?>
@@ -73,17 +89,13 @@ if (isset($_SESSION['error'])) {
 
                 <?php endif; ?>
             </div>
-            <div class="mb-4">
-                <input type="checkbox" class="form-check-input" name="mostrar" id="mostrar">
-                <label for="show" class="form-check-label">Mostrar contraseña</label>
-            </div>
-
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
 
             </div>
             <div class=" my-3">
-                <span>¿No tienes cuenta? <a href="<?php echo getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"); ?>">Registrarse</a></span>
+                <span>¿No tienes cuenta? <a
+                        href="<?php echo getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"); ?>">Registrarse</a></span>
             </div>
         </form>
     </div>
@@ -118,16 +130,20 @@ if (isset($_SESSION['error'])) {
                     event.preventDefault();
                 }
             });
-            $(document).on('change', "#mostrar", function () {
-
+ 
+            $(document).on('click', ".toggle-password", function () {
                 var password = $("#password");
+                var boton = $("#toggleIcon");
 
-                if ($(this).is(":checked")) {
+                if (password.attr("type") === "password") {
                     password.attr("type", "text");
+                    boton.removeClass("fa-eye").addClass("fa-eye-slash");
                 } else {
                     password.attr("type", "password");
+                    boton.removeClass("fa-eye-slash").addClass("fa-eye");
                 }
             });
+
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
