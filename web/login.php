@@ -56,7 +56,7 @@ if (isset($_SESSION['error'])) {
         }
         ?>
         <div class="logo">
-            <img src="img/logo_claro.png" alt="Logo geovisor"> <!-- Logo de la clínica -->
+            <img src="img/logo_claro.png" alt="Logo geovisor" class="img-fluid"> <!-- Logo de la clínica -->
         </div>
         <div class="division">
             <div class="row">

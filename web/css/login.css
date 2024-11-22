@@ -50,7 +50,7 @@ p {
 .division {
 	float: none;
 	position: relative;
-	margin: 30px auto 20px;
+	margin: 15px auto 20px;
 	text-align: center;
 	width: 100%;
 	box-sizing: border-box;
@@ -58,7 +58,6 @@ p {
 
 .division .line {
 	border-top: 1.5px solid #57557A;
-	;
 	position: absolute;
 	top: 13px;
 	width: 85%;
@@ -113,7 +112,7 @@ p {
 }
 
 .btn-primary {
-	background: linear-gradient(135deg, rgba(176, 106, 252, 1) 39%, rgba(116, 17, 255, 1) 101%);
+	background: linear-gradient(135deg, rgb(115, 187, 255) 39%, rgb(149, 95, 224) 101%) !important;
 	border: none;
 	border-radius: 50px;
 }
@@ -134,6 +133,11 @@ small {
 @media(min-width: 767px) {
 	.bn {
 		text-align: right;
+	}
+}
+@media(min-width: 374px) and (max-width: 431px){
+	.logo img{
+		margin-right: 5px;
 	}
 }
 
@@ -160,11 +164,7 @@ small {
 }
 
 
-.logo img {
-	
-	width: 287px;
 
-}
 .password-container {
     position: relative;
     display: flex;
