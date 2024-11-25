@@ -241,7 +241,7 @@ class UsuariosController
         }
         $sql = "UPDATE usuarios SET est_id= $statusToModify WHERE usu_id= $usu_id";
         $ejecutar = $obj->update($sql);
-
+ 
         if ($ejecutar) {
             $sql = "SELECT u.*, r.rol_nombre FROM usuarios u
                      JOIN rol r ON u.rol_id = r.rol_id ORDER BY u.usu_id ASC";

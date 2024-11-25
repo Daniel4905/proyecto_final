@@ -5,7 +5,6 @@ include_once "../lib/helpers.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,30 +37,8 @@ include_once "../lib/helpers.php";
 </head>
 
 <body class="">
-
-
-    <div class='wrapper'>
-        <div id="sidebar">
-            <div class="d-flex">
-                <button class="toggle-btn" style="margin-top: 7px;" type="button">
-                    <img src="img/grid.png" style="width: 30px; margin-top: 30px;" alt="">
-                </button>
-                <div class="sidebar-logo" style="margin-top: 30px;">
-                    <a href="index.php"><img src="img/logo_claro.png" alt="" style="width: 120px;">
-                    </a>
-                </div>
-            </div>
-            <ul class="sidebar-nav">
-                <div class="dropdown-divider"></div>
-                <li class="sidebar-item ml-4">
-                    <a href="index.php" class="sidebar-link">
-                        <img src="img/hogar.png" style="width: 30px;" alt="">
-                        <span class="ml-3 gradient-text">Inicio</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class='container-fluid'>
+    <div class='wrapper' id ="cajita1">
+        <div class='container-fluid' >
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid p-4">
                     <a class="navbar-brand" href="index.php" id="navbar-logo"><img src="img/logo_normal.png"
@@ -73,14 +50,19 @@ include_once "../lib/helpers.php";
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
+                    <ul class="navbar-nav md-3">
+                        <div >
+                            <span id="pregunta">¿Ya tienes cuenta? <a href="index.php" id="link">Ingresar</a></span>
+                        </div>
+                    </ul>
             </nav>
 
             <div class="container">
-                <div class="mt-3">
+                <div class="mt-3" id="tituloM">
                     <h3 class="display-4">Registrar Usuarios</h3>
                 </div>
             </div>
-            <div class="container container-scroll">
+            <div class="container container-scroll"  id="cajita2">
 
                 <form action="<?php echo getUrl("Acceso", "Acceso", "postCreate", false, "ajax"); ?>" method="POST"
                     id="formRegistrolog">
@@ -99,29 +81,29 @@ include_once "../lib/helpers.php";
                         ?>
 
                         <div class="col-md-3">
-                            <label for="usu_nombre1">Primer nombre*</label>
+                            <label class="titulos" for="usu_nombre1">Primer nombre*</label>
                             <input type="text" name="usu_nombre1" id="nombre1" class="form-control validar-nombre"
                                 placeholder="Primer nombre">
                         </div>
                         <div class="col-md-3">
-                            <label for="usu_nombre2">Segundo nombre</label>
+                            <label class="titulos" for="usu_nombre2">Segundo nombre</label>
                             <input type="text" name="usu_nombre2" id="nombre2" class="form-control validar-nombre"
                                 placeholder="Segundo nombre">
                             <small class="form-text text-muted">Opcional.</small>
                         </div>
                         <div class="col-md-3">
-                            <label for="usu_apellido1">Primer Apellido*</label>
+                            <label class="titulos" for="usu_apellido1">Primer Apellido*</label>
                             <input type="text" name="usu_apellido1" id="apellido1" class="form-control validar-nombre"
                                 placeholder="Primer apellido">
                         </div>
                         <div class="col-md-3">
-                            <label for="usu_apellido2" class="white-color">Segundo Apellido</label>
+                            <label class="titulos" for="usu_apellido2" class="white-color">Segundo Apellido</label>
                             <input type="text" name="usu_apellido2" id="apellido2" class="form-control validar-nombre"
                                 placeholder="Segundo apellido">
                             <small class="form-text text-muted">Opcional.</small>
                         </div>
                         <div class="col-md-3 mt-3">
-                            <label for="doc_id">Tipo de documento*</label>
+                            <label class="titulos" for="doc_id">Tipo de documento*</label>
                             <select name="doc_id" id="doc" class="form-control">
                                 <option value="">Seleccione...</option>
                                 <?php
@@ -132,17 +114,17 @@ include_once "../lib/helpers.php";
                             </select>
                         </div>
                         <div class="col-md-3 mt-3">
-                            <label for="usu_documento">Nro Documento*</label>
+                            <label class="titulos" for="usu_documento">Nro Documento*</label>
                             <input type="text" name="usu_documento" id="documento" class="form-control validar-num"
                                 placeholder="Documento">
                         </div>
                         <div class="col-md-3 mt-3">
-                            <label for="usu_tel">Teléfono*</label>
+                            <label class="titulos" for="usu_tel">Teléfono*</label>
                             <input type="text" name="usu_tel" id="telefono" class="form-control validar-num"
                                 placeholder="Teléfono">
                         </div>
                         <div class="col-md-3 mt-3">
-                            <label for="sex_id">Sexo biologico*</label>
+                            <label class="titulos" for="sex_id">Sexo biologico*</label>
                             <select id="sexo" name="sex_id" class="form-control">
                                 <option value="">Seleccione...</option>
                                 <?php
@@ -156,7 +138,7 @@ include_once "../lib/helpers.php";
 
 
                         <div class="col-md-3 mt-3">
-                            <label for="tipoVia">Tipo de vía*</label>
+                            <label class="titulos" for="tipoVia">Tipo de vía*</label>
                             <select id="tipoVia" name="tipoVia" class="form-control">
                                 <option value="">Seleccione...</option>
                                 <option value="Calle">Calle</option>
@@ -168,64 +150,59 @@ include_once "../lib/helpers.php";
                             <small class="form-text text-muted">Ejemplo: Calle</small>
                         </div>
                         <div class="col-md-2 mt-3">
-                            <label for="numeroPrincipal">Número principal*</label>
+                            <label class="titulos" for="numeroPrincipal">Número principal*</label>
                             <input type="number" id="numeroPrincipal" name="numeroPrincipal" class="form-control"
                                 placeholder="123" min="1" max="300">
                         </div>
                         <div class="col-md-1 mt-3">
-                            <label for="complemento1">Complemento</label>
+                            <label class="titulos" for="complemento1">Complemento</label>
                             <input type="text" id="complemento1" name="complemento1" class="form-control"
                                 placeholder="J" maxlength="3">
                             <small class="form-text text-muted">Opcional.</small>
                         </div>
                         <div class="col-md-1 mt-3">
-                            <label for="numeroSecundario">Número 1</label>
+                            <label class="titulos" for="numeroSecundario">Número 1</label>
                             <input type="number" id="numeroSecundario" name="numeroSecundario" class="form-control"
                                 placeholder="" min="1" max="300" maxlength="3">
                         </div>
                         <div class="col-md-1 mt-3">
-                            <label for="complemento2">Complemento</label>
+                            <label class="titulos" for="complemento2">Complemento</label>
                             <input type="text" id="complemento2" name="complemento2" class="form-control"
                                 placeholder="Bis/A/Sur">
                             <small class="form-text text-muted">Opcional.</small>
                         </div>
                         <div class="col-md-1 mt-3">
-                            <label for="numeroTerciario">Número 2</label>
+                            <label class="titulos" for="numeroTerciario">Número 2</label>
                             <input type="number" id="numeroTerciario" name="numeroTerciario" class="form-control"
                                 placeholder="" min="1" max="300" maxlength="3">
                         </div>
                         <div class="col-md-3 mt-3">
-                            <label for="referencias">Referencias adicionales</label>
+                            <label class="titulos" for="referencias">Referencias adicionales</label>
                             <textarea id="referencias" name="referencias" class="form-control" rows="2" maxlength="100"
                                 placeholder="Frente al parque o cerca del supermercado"></textarea>
                             <small class="form-text text-muted">Opcional. Máximo 100 caracteres.</small>
                         </div>
                         <div class="col-md-3 mt-3">
-                            <label for="usu_correo">Correo*</label>
+                            <label class="titulos" for="usu_correo">Correo*</label>
                             <input type="text" name="usu_correo" id="correo" class="form-control"
                                 placeholder="usuario@dominio.com">
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label for="usu_clave">Clave*</label>
+                            <label class="titulos" for="usu_clave">Clave*</label>
                             <input type="password" name="usu_clave" id="clave" class="form-control claves"
                                 placeholder="Clave">
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label for="usu_clavenew">Confirmar clave*</label>
+                            <label class="titulos" for="usu_clavenew">Confirmar clave*</label>
                             <input type="password" name="usu_clavenew" id="clavenew" class="form-control claves"
                                 placeholder="Confirmar clave">
                         </div>
-                        <div class="mt-3">
-                            <input type="submit" value="Enviar" class="btn btn-success">
+                        <div class="mt-3_s">
+                            <input type="submit" value="Enviar"  class="btn">
                         </div>
                     </div>
 
 
-            </div>
-            <div class="container">
-                <div class=" my-3">
-                    <span>¿Ya tienes cuenta? <a href="index.php">Iniciar sesión</a></span>
-                </div>
             </div>
             </form>
         </div>

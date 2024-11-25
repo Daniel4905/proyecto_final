@@ -4,6 +4,9 @@
     margin: 0;
     padding: 0;
 }
+body {
+    background: #0f0f0f !important;
+}
 
 .gradient-text {
     background: #bbb8b8;
@@ -13,21 +16,42 @@
     display: inline-block;
 }
 
+
+#tituloM{
+    text-align: center;
+}
+#cajita2 {
+    margin-top: 20px;
+    margin-bottom: 20px !important;
+    background: linear-gradient(136deg, #1d0fb947, #a332e045);
+    border: 3px solid rgb(126, 6, 224); 
+    border-radius: 30px;
+    padding: 20px; /* Espaciado interno */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* sombra para darle un efecto flotante */
+    backdrop-filter: blur(50px); /* Efecto de desenfoque en el fondo */
+}
+
+
 .text-danger {
     font-weight: bold;
 }
 
 
 h4.text-section {
-    color: #bbb8b8;
+    color:  #212042 ;
+    border: 3px solid rgb(126, 6, 224); 
     font: 12px "Public Sans", sans-serif;
     font-weight: bold;
     margin: 20px 0px 12px;
     padding: 2px 30px;
 }
 
-body {
-    max-height: max-content;
+h4.text-section {
+    color:  #212042 ;
+    font: 12px "Public Sans", sans-serif;
+    font-weight: bold;
+    margin: 20px 0px 12px;
+    padding: 2px 30px;
 }
 
 a {
@@ -39,16 +63,43 @@ li {
 }
 
 h1 {
-
     font-size: 1.5rem;
 }
+.bn {
+	text-decoration: underline;
+}
 
+.bn:hover {
+	cursor: pointer;
+}
 
+.form-check-input {
+	margin-top: 8px !important;
+}
+
+.form-control:focus {
+	box-shadow: none;
+	background: #212042;
+	color: #fff;
+	letter-spacing: 1px;
+}
+
+.btn{
+	background: linear-gradient(135deg, rgb(68, 103, 243) 40%, rgb(149, 95, 224) 70%) !important;
+    border: none; /* Borde blanco */
+	border-radius: 180px;
+	width: 100%;
+    margin-top: 20px !important;
+}
+
+.btn:focus {
+	box-shadow: none;
+	border: none;
+}
 
 .wrapper {
     display: flex;
     height: max-content;
-
 }
 
 .main {
@@ -64,6 +115,21 @@ h1 {
     overflow-y: auto;
     overflow-x: hidden;
 }
+h3 {
+    background: linear-gradient(136deg, #0f47b9, #a332e0); /* Degradado del texto */
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    font-weight: bold; 
+    display: inline-block;
+}
+
+.titulos{
+    color: #c8c8c8 !important;
+}
+
+input{
+	background: #212042 !important;
+}
 
 .container-scroll {
     background-color: transparent;
@@ -74,18 +140,32 @@ h1 {
     max-height: 530px;
     overflow-y: auto;
     overflow-x: hidden;
-    color: #FFF;
+    color: #0f0f0f;
 }
 
 .form-control {
-    background-color: transparent !important;
-    border: 1px solid #141414 !important; 
-    color: #333; 
+	border-radius: 15px;
+	background: #212042;
+    color: #f4ebeb;
+	margin-bottom: 20px;
+	letter-spacing: 1px;
     box-shadow: none; 
+}   
+
+#referencias{
+    border-radius: 15px;
+	background: #212042;
+    color: #f4ebeb;
+	margin-bottom: 20px;
+	letter-spacing: 1px;
+    box-shadow: none;  
 }
-.input-error {
-    border: 2px solid red;
-    background-color: #ffe6e6;
+
+.form-control:hover {
+    box-shadow: none;
+	background: #212042;
+	color: #fff;
+	letter-spacing: 1px;
 }
 
 
@@ -220,38 +300,28 @@ h1 {
 
 
 .input-error {
-    border: 2px solid red;
-    background-color: #ffe6e6;
+    border: 1px solid rgb(162, 0, 255); /* Borde rojo */
+    background: #212042; /* Mismo fondo que el resto */
+    color: #f4ebeb; /* Mismo color de texto */
 }
 
 .text-danger {
-    font-size: 75%;
+    font-size: 80%;
+}
+
+#pregunta{
+    color: #fff;
+}
+#link{
+    color: #a332e0;
 }
 
 .cerrarS {
-    color: rgb(240, 61, 61);
+    color: rgb(135, 34, 202);
     font-weight: bold;
 
 }
 
-#sidebar {
-    width: 70px;
-    min-width: 70px;
-    z-index: 1000;
-    transition: all .25s ease-in-out;
-    background-color: rgb(32, 36, 52);
-    display: flex;
-    flex-direction: column;
-    font-family: "oxygen", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-
-}
-
-#sidebar.expand {
-    width: 260px;
-    min-width: 260px;
-}
 
 .toggle-btn {
     background-color: transparent;
@@ -285,7 +355,7 @@ h1 {
 .dropdown-divider {
     height: 1px;
     margin: 0.5rem 0;
-    background: #404361;
+    background: #363434;
 }
 
 .sidebar-nav {
@@ -321,7 +391,7 @@ a.sidebar-link:hover {
 #sidebar:not(.expand) .sidebar-item .sidebar-dropdown:hover {
     background-color: #202434;
     border: none;
-    color: #747474;
+    color: #f3f0f0;
 }
 
 .sidebar-item {
@@ -333,7 +403,7 @@ a.sidebar-link:hover {
     position: absolute;
     top: 0;
     left: 70px;
-    background-color: #202434;
+    background-color: #b7b7ba;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 0;
