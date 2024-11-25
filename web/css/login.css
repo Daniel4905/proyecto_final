@@ -116,6 +116,10 @@ p {
 	border: none;
 	border-radius: 50px;
 }
+.btn-primary:hover {
+	color: #1f1d1d !important;
+	background: linear-gradient(135deg, rgb(153, 204, 252) 39%, rgb(197, 169, 238) 101%) !important;
+}
 
 .btn-primary:focus {
 	box-shadow: none;

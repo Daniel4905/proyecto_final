@@ -73,6 +73,26 @@ html {
     max-height: 1200px;
     overflow-y: auto;
     overflow-x: hidden;
+    background-color: transparent; 
+}
+
+.sideScroll::-webkit-scrollbar {
+    width: 5px; 
+    background-color: transparent; 
+}
+
+.sideScroll::-webkit-scrollbar-track {
+    background-color: transparent; 
+}
+
+.sideScroll::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 128, 128, 0.6); 
+    border-radius: 5px; 
+    min-height: 10px; 
+}
+
+.sideScroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(128, 128, 128, 0.9); 
 }
 
 /* Pantallas pequeñas, móviles */
@@ -184,10 +204,7 @@ html {
     }
 }
 
-/* Pantallas medianas (laptops pequeñas) */
 @media (min-width: 1025px) and (max-width: 1366px) {
-
-    /* Ejemplo: laptops con resolución estándar */
     .container-scroll {
         max-height: 600px;
         overflow-y: auto;
@@ -195,10 +212,9 @@ html {
     }
 }
 
-/* Pantallas grandes (desktops comunes) */
-@media (min-width: 1367px) and (max-width: 1919px) {
+@media (min-width: 1367px) and (max-width: 1921px) {
     .container-scroll {
-        max-height: 650px;
+        max-height: 750px;
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -354,3 +370,4 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
+

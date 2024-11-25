@@ -14,7 +14,6 @@ class AccesoController
 
         $sql = "SELECT * FROM usuarios WHERE usu_documento = '$user' AND est_id=1";
         $usuario = $obj->consult($sql);
-        //bxdshbcxjs
         if ($usuario && count($usuario) > 0) {
             foreach ($usuario as $usu) {
                 if (password_verify($password, $usu['usu_clave'])) {
@@ -113,7 +112,7 @@ class AccesoController
             redirect("index.php");
         } else {
             $_SESSION['ErrorReg'][]="No se pudo realizar el registro";
-            //redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
+            redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
         }
     }
 

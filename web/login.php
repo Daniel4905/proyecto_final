@@ -90,7 +90,7 @@ if (isset($_SESSION['error'])) {
                 <?php endif; ?>
             </div>
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                <button type="submit" class="btn btn-primary">Iniciar sesión</button>
 
             </div>
             <div class=" my-3">
