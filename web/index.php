@@ -14,8 +14,9 @@
                                 if(isset($_GET['modulo'])){
                                     resolve();
                                 }else{
-                                    echo "<h1>Bienvenido a AccidentEye</h1>";
-                                echo "<p>Selecciona una opción del menú para comenzar.</p>";
+                                     echo "<h1>Bienvenido a AccidentEye</h1>";
+                                     echo "<p>Selecciona una opción del menú para comenzar.</p>";
+                                     //include_once "../view/partials/content.php";
                                 }
                                 echo"</div>";
                         echo "</div>";

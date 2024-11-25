@@ -1,9 +1,9 @@
 <div class="container">
-<div class="mt-3">
-    <h3 class="display-4">
-        Consultar Usuarios
-    </h3>
-</div>
+    <div class="mt-3">
+        <h3 class="display-4">
+            Consultar Usuarios
+        </h3>
+    </div>
 </div>
 <div class="container container-scroll">
     <div class="row">
@@ -24,6 +24,7 @@
                     <th>Rol</th>
                     <th>Estado</th>
                     <th>Editar</th>
+                    <th>Detalles</th>
                 </thead>
                 <tbody>
 
@@ -63,15 +64,33 @@
                             "</button>" .
                             "</a>";
                         echo "</td>";
+                        echo "<td>" ."<button class='btn btn-outline-secondary btn-detalles' data-id='" . $usu['usu_id'] . "' data-url='" . getUrl("Usuarios", "Usuarios", "detallesUsuario", false, "ajax") . "'>Ver detalles
+                        </button>" .
+                        "</td>";
                         echo "</tr>";
                     }
                     ?>
 
-
                 </tbody>
             </table>
+
             <div id="datError" class='alert alert-danger d-none' role='alert'>
                 No se encontraron resultados en la busqueda
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detallesModalLabel">Detalles del Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="contenidoDetalles">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

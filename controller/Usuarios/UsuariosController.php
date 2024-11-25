@@ -44,10 +44,10 @@ class UsuariosController
         $numeroSc = $_POST['numeroSecundario'];
         $numeroTerc = $_POST['numeroTerciario'];
         $referencias = $_POST['referencias'];
-        if(!empty($referencias)){
+        if (!empty($referencias)) {
             $ref = "Ref.";
-        }else{
-            $ref="";
+        } else {
+            $ref = "";
         }
 
         $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
@@ -147,7 +147,7 @@ class UsuariosController
         $sqldoc = "SELECT * FROM tipo_documento ORDER BY doc_id ASC";
 
         $sqlRol = "SELECT * FROM rol";
-        
+
         $roles = $obj->consult($sqlRol);
         $usuarios = $obj->consult($sql);
         $docs = $obj->consult($sqldoc);
@@ -171,14 +171,14 @@ class UsuariosController
         $usu_clave = $_POST['usu_clave'];
         $usu_clavenew = $_POST['usu_clavenew'];
         $usu_tel = $_POST['usu_tel'];
-       // $usu_rol = $_POST['rol_id'];
+        // $usu_rol = $_POST['rol_id'];
 
-        if(empty( $_POST['rol_id'])){
-            $usu_rol=1;
-        }else{
+        if (empty($_POST['rol_id'])) {
+            $usu_rol = 1;
+        } else {
             $usu_rol = $_POST['rol_id'];
         }
-        
+
         $doc_id = $_POST['doc_id'];
 
 
@@ -221,10 +221,10 @@ class UsuariosController
                 }
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
             } else {
-               redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
+                redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
             }
         } else {
-           redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
+            redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
         }
     }
     public function postUpdateStatus()
@@ -252,7 +252,8 @@ class UsuariosController
             echo "No se puede actualizar el estado";
         }
     }
-    public function getUpdateUsu(){
+    public function getUpdateUsu()
+    {
         $obj = new UsuariosModel();
 
         $usu_id = $_GET['usu_id'];
@@ -261,16 +262,44 @@ class UsuariosController
 
         $sqldoc = "SELECT * FROM tipo_documento ORDER BY doc_id ASC";
 
-        $sqlRol = "SELECT * FROM rol";
-        
-        $roles = $obj->consult($sqlRol);
+        $sqlsex = "SELECT * FROM sexo";
+
+
+        $docs = $obj->consult($sqldoc);
+        $sexo = $obj->consult($sqlsex);
         $usuarios = $obj->consult($sql);
         $docs = $obj->consult($sqldoc);
 
 
         include_once '../view/usuarios/actualizarDatosUsu.php';
     }
-    public function postUpdateUsu(){
 
+
+    public function postUpdateUsu()
+    {
+
+    }
+
+    public function detallesUsuario()
+    {
+        $obj = new UsuariosModel();
+        $usu_id = $_POST['usu_id'];
+        $sql = "SELECT u.*,s.sex_desc, td.nombre_tipo, td.doc_abrev, r.rol_nombre FROM usuarios u
+            JOIN rol r ON u.rol_id = r.rol_id JOIN sexo s ON u.sex_id = s.sex_id JOIN tipo_documento td ON u.doc_id= td.doc_id WHERE usu_id = $usu_id";
+        $usuarios = $obj->consult($sql);
+        foreach ($usuarios as $usuario) {
+            if ($usuario) {
+            echo "<p><strong>Documento:</strong> " . $usuario['doc_abrev'] . " " . $usuario['usu_documento'] . "</p>" .
+            "<p><strong>Nombres:</strong> " . $usuario['usu_nombre1'] . " " . $usuario['usu_nombre2'] . "</p>" .
+            "<p><strong>Apellidos:</strong> " . $usuario['usu_apellido1'] . " " . $usuario['usu_apellido2'] . "</p>" .
+            "<p><strong>Correo:</strong> " . $usuario['usu_correo'] . "</p>" .
+            "<p><strong>Teléfono:</strong> " . $usuario['usu_tel'] . "</p>" .
+            "<p><strong>Dirección:</strong> " . $usuario['usu_direccion'] . "</p>" .
+            "<p><strong>Sexo biologico:</strong> " . $usuario['sex_desc'] . "</p>" .
+            "<p><strong>Rol:</strong> " . $usuario['rol_nombre'] . "</p>";
+            } else {
+                echo "<p class='text-danger'>No se encontraron detalles para este usuario.</p>";
+            }
+        }
     }
 }

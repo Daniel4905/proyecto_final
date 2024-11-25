@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.php" id="navbar-logo"><img src="img/logo_normal.png"   id="logonav"  alt=""

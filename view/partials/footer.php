@@ -2,3 +2,4 @@
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/global.js"></script>
 <script src="assets/js/script.js"></script>
+<script src="assets/js/datosUsu.js"></script>
