@@ -96,6 +96,7 @@
                 </div>
                 
                 <div class="row d-none" id="direccionDiv">
+                    
                     <div class="col-md-3 mt-3">
                         <label for="tipoVia">Tipo de vía*</label>
                         <select id="tipoVia" name="tipoVia" class="form-control">

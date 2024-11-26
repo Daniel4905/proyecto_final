@@ -152,7 +152,6 @@ class UsuariosController
         $usuarios = $obj->consult($sql);
         $docs = $obj->consult($sqldoc);
 
-
         include_once '../view/usuarios/update.php';
     }
 
@@ -252,6 +251,8 @@ class UsuariosController
             echo "No se puede actualizar el estado";
         }
     }
+
+    
     public function getUpdateUsu()
     {
         $obj = new UsuariosModel();
@@ -270,15 +271,93 @@ class UsuariosController
         $usuarios = $obj->consult($sql);
         $docs = $obj->consult($sqldoc);
 
-
         include_once '../view/usuarios/actualizarDatosUsu.php';
     }
 
+    public function postUpdateUsu(){
+        $obj = new UsuariosModel();
 
-    public function postUpdateUsu()
-    {
+        $usu_id = $_SESSION['id'];
+        $usu_doc = $_POST['usu_documento'];
+        $usu_nombre1 = $_POST['usu_nombre1'];
+        $usu_nombre2 = $_POST['usu_nombre2'];
+        $usu_apellido1 = $_POST['usu_apellido1'];
+        $usu_apellido2 = $_POST['usu_apellido2'];
+        $usu_correo = $_POST['usu_correo'];
+        $usu_clave = $_POST['usu_clave'];
+        $usu_clavenew = $_POST['usu_clavenew'];
+        $usu_tel = $_POST['usu_tel'];
 
+        $tipoV = $_POST['tipoVia'];
+        $numeroPr = $_POST['numeroPrincipal'];
+        $comp1 = $_POST['complemento1'];
+        $comp2 = $_POST['complemento2'];
+        $numeroSc = $_POST['numeroSecundario'];
+        $numeroTerc = $_POST['numeroTerciario'];
+        $referencias = $_POST['referencias'];
+
+        if (!empty($referencias)) {
+            $ref = "Ref.";
+        } else {
+            $ref = "";
+        }
+
+        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
+    
+
+        $doc_id = $_POST['doc_id'];
+
+        $sqlcontra = "SELECT usu_clave FROM usuarios WHERE usu_id = $usu_id";
+        $resultado = $obj->consult($sqlcontra);
+
+        if ($resultado && isset($resultado[0])) {
+            $contraBase = $resultado[0]['usu_clave'];
+        } else {
+            echo "No se encontraron resultados";
+        }
+        $validacion = true;
+
+        if (!empty($usu_clave)) {
+            if (!password_verify($usu_clave, $contraBase)) {
+                $_SESSION['error'][] = "La contraseña actual ingresada no es correcta";
+                $validacion = false;
+            }
+        }
+
+
+        if (empty($usu_clavenew)) {
+            $hash = $contraBase;
+        } else {
+            $hash = password_hash($usu_clavenew, PASSWORD_DEFAULT);
+        }
+        $sql = "";
+        if (empty($usu_apellido2) && empty($usu_nombre2)) {
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = NULL, usu_apellido1 = '$usu_apellido1', usu_apellido2 = NULL, usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',, doc_id = $doc_id WHERE usu_id = $usu_id";
+        } else if (empty($usu_nombre2)) {
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = NULL, usu_apellido1 = '$usu_apellido1', usu_apellido2 = '$usu_apellido2', usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',  doc_id = $doc_id WHERE usu_id = $usu_id";
+        } else if (empty($usu_apellido2)) {
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = '$usu_nombre2', usu_apellido1 = '$usu_apellido1', usu_apellido2 = NULL, usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',   doc_id = $doc_id WHERE usu_id = $usu_id";
+        } else {
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = '$usu_nombre2', usu_apellido1 = '$usu_apellido1', usu_apellido2 = '$usu_apellido2', usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',  doc_id = $doc_id WHERE usu_id = $usu_id";
+        }
+        if ($validacion) {
+            $ejecutar = $obj->update($sql);
+            if ($ejecutar) {
+                if ($usu_id == $_SESSION['id']) {
+                    $_SESSION['nombre'] = $usu_nombre1;
+                    $_SESSION['apellido'] = $usu_apellido1;
+                }
+                redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
+            } else {
+                redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
+            }
+        } else {
+            redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
+        }
     }
+
+    
+    
 
     public function detallesUsuario()
     {
