@@ -10,13 +10,14 @@ $(document).ready(function () {
         campo.addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
     }
 
-    function validarCampo(campo, patron, mensaje) {
-        if (campo.val().trim() === '') {
-            agregarError(campo, `Por favor, ingrese ${mensaje}`);
+    function validarCampo(campo, patron, campoNombre, mensajeError) {
+        const valor = campo.val().trim();
+        if (valor === '') {
+            agregarError(campo, `Por favor, ingrese ${campoNombre}.`);
             return false;
         }
-        if (campo.val().trim() !== '' && !patron.test(campo.val().trim())) {
-            agregarError(campo, `El campo ${mensaje} solo admite letras`);
+        if (!patron.test(valor)) {
+            agregarError(campo, mensajeError);
             return false;
         }
         return true;
@@ -30,93 +31,90 @@ $(document).ready(function () {
 
         let valido = true;
 
-        // Validación para los nombres y apellidos
-        if (!validarCampo($('#nombre1'), patronTexto, 'el primer nombre')) {
+
+        if (!validarCampo($('#nombre1'), patronTexto, 'el primer nombre', 'El primer nombre solo debe contener letras y espacios.')) {
             valido = false;
         }
-        if ($('#nombre2').val().trim() !== '' && !validarCampo($('#nombre2'), patronTexto, 'el segundo nombre (opcional)')) {
+        if ($('#nombre2').val().trim() !== '' && !validarCampo($('#nombre2'), patronTexto, 'el segundo nombre (opcional)', 'El segundo nombre solo debe contener letras y espacios.')) {
             valido = false;
         }
-        if (!validarCampo($('#apellido1'), patronTexto, 'el primer apellido')) {
+        if (!validarCampo($('#apellido1'), patronTexto, 'el primer apellido', 'El primer apellido solo debe contener letras y espacios.')) {
             valido = false;
         }
-        if ($('#apellido2').val().trim() !== '' && !validarCampo($('#apellido2'), patronTexto, 'el segundo apellido (opcional)')) {
+        if ($('#apellido2').val().trim() !== '' && !validarCampo($('#apellido2'), patronTexto, 'el segundo apellido (opcional)', 'El segundo apellido solo debe contener letras y espacios.')) {
             valido = false;
         }
 
-        // Validación del tipo de documento
-        const documento = $('#doc').val().trim();
-        if (documento === '') {
-            agregarError($('#doc'), 'Por favor, seleccione un tipo de documento');
+        const tipoDoc = $('#doc').val().trim();
+        if (tipoDoc === '') {
+            agregarError($('#doc'), 'Por favor, seleccione un tipo de documento.');
             valido = false;
         }
 
-        if (!validarCampo($('#documento'), patronNumero, 'un número de documento válido')) {
-            valido = false;
-        }
+        if (!validarCampo($('#documento'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos.')) valido = false;
 
-        // Validación del sexo
+
         const sexo = $('#sexo').val().trim();
         if (sexo === '') {
-            agregarError($('#sexo'), 'Por favor, seleccione su sexo biológico');
+            agregarError($('#sexo'), 'Por favor, seleccione su sexo biológico.');
             valido = false;
         }
 
-        // Validación del teléfono
-        if (!validarCampo($('#telefono'), patronNumero, 'un número de teléfono válido')) {
-            valido = false;
-        }
 
-        // Validación del tipo de vía
+        if (!validarCampo($('#telefono'), patronNumero, 'el número de teléfono', 'El número de teléfono solo debe contener dígitos.')) valido = false;
+
+
         const tipoVia = $('#tipoVia').val().trim();
         if (tipoVia === '') {
-            agregarError($('#tipoVia'), 'Por favor, seleccione un tipo de vía');
+            agregarError($('#tipoVia'), 'Por favor, seleccione un tipo de vía.');
             valido = false;
         }
 
-        // Validación de números principales, secundarios y terciarios
-        if (!validarCampo($('#numeroPrincipal'), patronNumero, 'el número principal')) {
+
+        if (!validarCampo($('#numeroPrincipal'), patronNumero, 'el número principal', 'El número principal solo debe contener dígitos.')) {
             valido = false;
         }
-        if (!validarCampo($('#numeroSecundario'), patronNumero, 'el número secundario')) {
+        if (!validarCampo($('#numeroSecundario'), patronNumero, 'el número secundario', 'El número secundario solo debe contener dígitos.')) {
             valido = false;
         }
-        if (!validarCampo($('#numeroTerciario'), patronNumero, 'el número terciario')) {
+        if (!validarCampo($('#numeroTerciario'), patronNumero, 'el número terciario', 'El número terciario solo debe contener dígitos.')) {
             valido = false;
         }
 
-        // Validación del complemento (si se proporciona)
-        const complemento = $('#complemento').val().trim();
-        if (complemento !== '' && !patronTexto.test(complemento)) {
-            agregarError($('#complemento'), 'El campo complemento solo admite letras');
+
+        const complemento1 = $('#complemento').val().trim();
+        if (complemento1 !== '' && !patronTexto.test(complemento1)) {
+            agregarError($('#complemento'), 'El complemento solo debe contener letras y espacios.');
             valido = false;
         }
 
-        // Validación del correo
-        if (!validarCampo($('#correo'), patronCorreo, 'un correo válido')) {
+        const complemento2 = $('#complemento2').val().trim();
+        if (complemento2 !== '' && !patronTexto.test(complemento2)) {
+            agregarError($('#complemento2'), 'El complemento solo debe contener letras y espacios.');
             valido = false;
         }
 
-        // Validación del rol
+
+        if (!validarCampo($('#correo'), patronCorreo, 'el correo electrónico', 'El correo electrónico debe seguir el formato "usuario@dominio.com".')) {
+            valido = false;
+        }
+
+
+        if (!validarCampo($('#clave'), patronClave, 'la contraseña', 'La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial.')) {
+            valido = false;
+        }
         const rol = $('#rol').val().trim();
-        if (rol === '') {
-            agregarError($('#rol'), 'Por favor, seleccione un rol');
+        if (rol == '') {
+            agregarError($('#rol'), 'Debe seleccionar al menos un rol.');
             valido = false;
         }
 
-        // Validación de la contraseña
-        if (!validarCampo($('#clave'), patronClave, 'una contraseña válida')) {
-            valido = false;
-        }
-
-        // Validación de la confirmación de contraseña
         const clavenew = $('#clavenew').val().trim();
         if (clavenew === '' || clavenew !== $('#clave').val().trim()) {
-            agregarError($('#clavenew'), 'Las contraseñas no coinciden');
+            agregarError($('#clavenew'), 'La confirmación de la contraseña no coincide con la contraseña ingresada.');
             valido = false;
         }
 
-        // Si todas las validaciones son correctas, se envía el formulario
         if (valido) {
             this.submit();
         }
