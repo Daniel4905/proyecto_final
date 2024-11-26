@@ -147,7 +147,7 @@ include_once "../lib/helpers.php";
                                 <option value="Transversal">Transversal</option>
                                 <option value="Diagonal">Diagonal</option>
                             </select>
-                            <small class="form-text text-muted">Ejemplo: Calle</small>
+                            <small class="form-text text-muted titulos">Ejemplo: Calle</small>
                         </div>
                         <div class="col-md-2 mt-3">
                             <label class="titulos" for="numeroPrincipal">Número principal*</label>
@@ -158,7 +158,7 @@ include_once "../lib/helpers.php";
                             <label class="titulos" for="complemento1">Complemento</label>
                             <input type="text" id="complemento1" name="complemento1" class="form-control"
                                 placeholder="J" maxlength="3">
-                            <small class="form-text text-muted">Opcional.</small>
+                            <small class="form-text text-muted titulos">Opcional.</small>
                         </div>
                         <div class="col-md-1 mt-3">
                             <label class="titulos" for="numeroSecundario">Número 1</label>
@@ -169,7 +169,7 @@ include_once "../lib/helpers.php";
                             <label class="titulos" for="complemento2">Complemento</label>
                             <input type="text" id="complemento2" name="complemento2" class="form-control"
                                 placeholder="Bis/A/Sur">
-                            <small class="form-text text-muted">Opcional.</small>
+                            <small class="form-text text-muted titulos">Opcional.</small>
                         </div>
                         <div class="col-md-1 mt-3">
                             <label class="titulos" for="numeroTerciario">Número 2</label>
@@ -180,7 +180,7 @@ include_once "../lib/helpers.php";
                             <label class="titulos" for="referencias">Referencias adicionales</label>
                             <textarea id="referencias" name="referencias" class="form-control" rows="2" maxlength="100"
                                 placeholder="Frente al parque o cerca del supermercado"></textarea>
-                            <small class="form-text text-muted">Opcional. Máximo 100 caracteres.</small>
+                            <small class="form-text text-muted titulos">Opcional. Máximo 100 caracteres.</small>
                         </div>
                         <div class="col-md-3 mt-3">
                             <label class="titulos" for="usu_correo">Correo*</label>
