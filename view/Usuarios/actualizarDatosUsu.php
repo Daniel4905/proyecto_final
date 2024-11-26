@@ -158,13 +158,25 @@
                         value="<?php echo $usu['usu_correo']; ?>">
                 </div>
                 <div class="col-md-3 mt-2">
-                    <label for="usu_clave">Clave*</label>
+                    <label for="usu_claveAnt">Clave anterior</label>
                     <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave">
                 </div>
-                <div class="col-md-3 mt-2">
-                    <label for="usu_clave">Confirmar clave*</label>
+                <div class="col-md-12 mt-2">
+
+                <input type="checkbox" name="cambiarCont" id="cambiarCont">
+                <label for="cambiarCont">Cambiar contraseña</label>
+                </div>
+                <div class="row col-md-7 mt-2 d-none" id="divContra">
+                <div class="col-md-6 mt-2">
+                    <label for="usu_clave">Clave nueva</label>
+                    <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave">
+                </div>
+                <div class="col-md-6 mt-2">
+                    <label for="usu_clave">Confirmar clave nueva*</label>
                     <input type="password" name="usu_clavenew" id="clavenew" class="form-control claves" placholder="Clave">
                 </div>
+                </div>
+                
                 <div class="mt-3">
                     <input type="submit" value="Enviar" class="btn btn-success">
                 </div>

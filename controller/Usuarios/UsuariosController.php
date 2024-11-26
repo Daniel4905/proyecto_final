@@ -215,7 +215,7 @@ class UsuariosController
             $ejecutar = $obj->update($sql);
             if ($ejecutar) {
                 if ($usu_id == $_SESSION['id']) {
-                    $_SESSION['nombre'] = $usu_nombre1;
+                    $_SESSION['nombre'] = $usu_nombre1." ".$usu_nombre2;
                     $_SESSION['apellido'] = $usu_apellido1;
                 }
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
@@ -287,7 +287,8 @@ class UsuariosController
         $usu_clave = $_POST['usu_clave'];
         $usu_clavenew = $_POST['usu_clavenew'];
         $usu_tel = $_POST['usu_tel'];
-
+        $check  = $_POST['cambiarDir'];
+        if(isset($check)){
         $tipoV = $_POST['tipoVia'];
         $numeroPr = $_POST['numeroPrincipal'];
         $comp1 = $_POST['complemento1'];
@@ -295,15 +296,21 @@ class UsuariosController
         $numeroSc = $_POST['numeroSecundario'];
         $numeroTerc = $_POST['numeroTerciario'];
         $referencias = $_POST['referencias'];
-
         if (!empty($referencias)) {
             $ref = "Ref.";
         } else {
             $ref = "";
         }
-
         $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
-    
+        }else{
+        $sqldire = "SELECT usu_direccion FROM usuarios WHERE usu_id = $usu_id";
+        $resultado = $obj->consult($sqldire);
+        if ($resultado && isset($resultado[0])) {
+            $direccion = $resultado[0]['usu_direccion'];
+        } else {
+            echo "No se encontraron resultados";
+        }
+        }
 
         $doc_id = $_POST['doc_id'];
 
@@ -332,19 +339,19 @@ class UsuariosController
         }
         $sql = "";
         if (empty($usu_apellido2) && empty($usu_nombre2)) {
-            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = NULL, usu_apellido1 = '$usu_apellido1', usu_apellido2 = NULL, usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',, doc_id = $doc_id WHERE usu_id = $usu_id";
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = NULL, usu_apellido1 = '$usu_apellido1', usu_apellido2 = NULL, usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel', usu_direccion='$direccion', doc_id = $doc_id WHERE usu_id = $usu_id";
         } else if (empty($usu_nombre2)) {
-            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = NULL, usu_apellido1 = '$usu_apellido1', usu_apellido2 = '$usu_apellido2', usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',  doc_id = $doc_id WHERE usu_id = $usu_id";
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = NULL, usu_apellido1 = '$usu_apellido1', usu_apellido2 = '$usu_apellido2', usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel', usu_direccion='$direccion', doc_id = $doc_id WHERE usu_id = $usu_id";
         } else if (empty($usu_apellido2)) {
-            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = '$usu_nombre2', usu_apellido1 = '$usu_apellido1', usu_apellido2 = NULL, usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',   doc_id = $doc_id WHERE usu_id = $usu_id";
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = '$usu_nombre2', usu_apellido1 = '$usu_apellido1', usu_apellido2 = NULL, usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel', usu_direccion='$direccion', doc_id = $doc_id WHERE usu_id = $usu_id";
         } else {
-            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = '$usu_nombre2', usu_apellido1 = '$usu_apellido1', usu_apellido2 = '$usu_apellido2', usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel',  doc_id = $doc_id WHERE usu_id = $usu_id";
+            $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = '$usu_nombre2', usu_apellido1 = '$usu_apellido1', usu_apellido2 = '$usu_apellido2', usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel', usu_direccion='$direccion', doc_id = $doc_id WHERE usu_id = $usu_id";
         }
         if ($validacion) {
             $ejecutar = $obj->update($sql);
             if ($ejecutar) {
                 if ($usu_id == $_SESSION['id']) {
-                    $_SESSION['nombre'] = $usu_nombre1;
+                    $_SESSION['nombre'] = $usu_nombre1." ".$usu_nombre2;
                     $_SESSION['apellido'] = $usu_apellido1;
                 }
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));

@@ -31,6 +31,17 @@ $(document).ready(function () {
     }
   });
 
+  $(document).on('change', "#cambiarCont", function () {
+
+    var contra = $("#divContra");
+
+    if ($(this).is(":checked")) {
+      contra.removeClass("d-none");
+    } else {
+      contra.addClass("d-none");
+    }
+  });
+
   const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
   const patronNumero = /^[0-9]+$/;
   const patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

@@ -204,9 +204,9 @@ html {
     }
 }
 
-@media (min-width: 1025px) and (max-width: 1366px) {
+@media (min-width: 1025px) and (max-width: 1367px) {
     .container-scroll {
-        max-height: 600px;
+        max-height: 400px;
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -214,7 +214,7 @@ html {
 
 @media (min-width: 1367px) and (max-width: 1921px) {
     .container-scroll {
-        max-height: 750px;
+        max-height: 450px;
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -370,4 +370,3 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
-
