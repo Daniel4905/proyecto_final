@@ -17,7 +17,6 @@ class UsuariosController
         $sexo = $obj->consult($sqlsex);
 
 
-
         include_once '../view/usuarios/create.php';
     }
 

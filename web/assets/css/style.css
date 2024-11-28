@@ -370,3 +370,42 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
+
+/* Estilo para el contenedor del botón y dropdown */
+.pqrs-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Mostrar el menú desplegable solo cuando se pase el ratón sobre el dropdown */
+/* Estilo para el contenedor del botón y dropdown */
+.pqrs-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Posicionamiento del ícono dentro del botón */
+.pqrs-btn i {
+    font-size: 24px; /* Ajusta el tamaño del ícono */
+}
+
+.pqrs-btn .dropdown-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 10px;
+    display: none; 
+}
+
+.pqrs-btn .dropdown-menu.show {
+    display: block;
+}
+
+
+
+  

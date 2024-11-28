@@ -19,6 +19,12 @@ $(document).ready(function () {
 
     }
   });
+  $(document).on('click', '.dropdown-item', function () {
+
+    var id = $(this).data('bs-id'); 
+
+    $('#pqrsId').val(id);
+  });
 
   $(document).on('change', "#cambiarDir", function () {
 
@@ -107,7 +113,7 @@ $(document).ready(function () {
 
 
     const telefono = $('#telefono').val().trim();
-    if (telefono !== ''  && telefono.length != 10) {
+    if (telefono !== '' && telefono.length != 10) {
       agregarError($('#telefono'), 'El campo telefono debe contener (10) digitos');
     }
 
