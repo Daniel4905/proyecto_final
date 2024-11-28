@@ -91,7 +91,6 @@ if (isset($_SESSION['error'])) {
             </div>
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-
             </div>
             <div class=" my-3">
                 <span>¿No tienes cuenta? <a

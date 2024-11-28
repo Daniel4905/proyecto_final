@@ -73,18 +73,18 @@ $(document).ready(function () {
     let valido = true;
 
 
-    if (!validarCampo($('#nombre1'), patronTexto, 'el primer nombre', 'El primer nombre solo debe contener letras y espacios.')){
+    if (!validarCampo($('#nombre1'), patronTexto, 'el primer nombre', 'El primer nombre solo debe contener letras y espacios.')) {
       valido = false;
-    } 
-    if ($('#nombre2').val().trim() !== '' && !validarCampo($('#nombre2'), patronTexto, 'el segundo nombre (opcional)', 'El segundo nombre solo debe contener letras y espacios.')){
+    }
+    if ($('#nombre2').val().trim() !== '' && !validarCampo($('#nombre2'), patronTexto, 'el segundo nombre (opcional)', 'El segundo nombre solo debe contener letras y espacios.')) {
       valido = false;
-    } 
-    if (!validarCampo($('#apellido1'), patronTexto, 'el primer apellido', 'El primer apellido solo debe contener letras y espacios.')){
+    }
+    if (!validarCampo($('#apellido1'), patronTexto, 'el primer apellido', 'El primer apellido solo debe contener letras y espacios.')) {
       valido = false;
-    } 
-    if ($('#apellido2').val().trim() !== '' && !validarCampo($('#apellido2'), patronTexto, 'el segundo apellido (opcional)', 'El segundo apellido solo debe contener letras y espacios.')){
+    }
+    if ($('#apellido2').val().trim() !== '' && !validarCampo($('#apellido2'), patronTexto, 'el segundo apellido (opcional)', 'El segundo apellido solo debe contener letras y espacios.')) {
       valido = false;
-    } 
+    }
 
     const tipoDoc = $('#doc').val().trim();
     if (tipoDoc === '') {
@@ -92,17 +92,39 @@ $(document).ready(function () {
       valido = false;
     }
 
-    if (!validarCampo($('#documento'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos.')) valido = false;
+    if (!validarCampo($('#documento'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos mín(8) y máx(10).')) {
+      valido = false;
+    }
+    const documento = $('#documento').val().trim();
 
-   
+    if (documento !== '' && documento.length < 8) {
+      agregarError($('#documento'), 'El campo documento debe contener mín(8) y máx(10) dígitos');
+    }
+
+    if (documento !== '' && documento.length > 10) {
+      agregarError($('#documento'), 'El campo documento debe contener mín(8) y máx(10) dígitos');
+    }
+
+
+    const telefono = $('#telefono').val().trim();
+    if (telefono !== ''  && telefono.length != 10) {
+      agregarError($('#telefono'), 'El campo telefono debe contener (10) digitos');
+    }
+
+
+
+
+
     const sexo = $('#sexo').val().trim();
     if (sexo === '') {
       agregarError($('#sexo'), 'Por favor, seleccione su sexo biológico.');
       valido = false;
     }
 
-    
-    if (!validarCampo($('#telefono'), patronNumero, 'el número de teléfono', 'El número de teléfono solo debe contener dígitos.')) valido = false;
+
+    if (!validarCampo($('#telefono'), patronNumero, 'el número de teléfono', 'El número de teléfono solo debe contener dígitos.')) {
+      valido = false;
+    }
 
 
     const tipoVia = $('#tipoVia').val().trim();
@@ -112,17 +134,17 @@ $(document).ready(function () {
     }
 
 
-    if (!validarCampo($('#numeroPrincipal'), patronNumero, 'el número principal', 'El número principal solo debe contener dígitos.')){
+    if (!validarCampo($('#numeroPrincipal'), patronNumero, 'el número principal', 'El número principal solo debe contener dígitos.')) {
       valido = false;
-    } 
-    if (!validarCampo($('#numeroSecundario'), patronNumero, 'el número secundario', 'El número secundario solo debe contener dígitos.')){
+    }
+    if (!validarCampo($('#numeroSecundario'), patronNumero, 'el número secundario', 'El número secundario solo debe contener dígitos.')) {
       valido = false;
-    } 
+    }
     if (!validarCampo($('#numeroTerciario'), patronNumero, 'el número terciario', 'El número terciario solo debe contener dígitos.')) {
       valido = false;
     }
 
- 
+
     const complemento1 = $('#complemento1').val().trim();
     if (complemento1 !== '' && !patronTexto.test(complemento1)) {
       agregarError($('#complemento1'), 'El complemento solo debe contener letras y espacios.');
@@ -136,12 +158,12 @@ $(document).ready(function () {
     }
 
 
-    if (!validarCampo($('#correo'), patronCorreo, 'el correo electrónico', 'El correo electrónico debe seguir el formato "usuario@dominio.com".')){
+    if (!validarCampo($('#correo'), patronCorreo, 'el correo electrónico', 'El correo electrónico debe seguir el formato "usuario@dominio.com".')) {
       valido = false;
-    } 
+    }
 
 
-    if (!validarCampo($('#clave'), patronClave, 'la contraseña', 'La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial.')){
+    if (!validarCampo($('#clave'), patronClave, 'la contraseña', 'La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial.')) {
       valido = false;
     }
 
@@ -151,11 +173,122 @@ $(document).ready(function () {
       valido = false;
     }
 
-  
+
     if (valido) {
       this.submit();
     }
+
   });
+
+  $(document).on('keyup', ".validar-nombre", function () {
+    const $campo = $(this);
+    const valor = $campo.val().trim();
+    const patron = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+
+    $campo.next('.text-danger').remove();
+    $campo.removeClass('input-error');
+
+    if (valor !== '' && !patron.test(valor)) {
+      $campo.after("<p class='text-danger'>Este campo solo admite letras</p>");
+      $campo.addClass('input-error');
+      valido = false;
+    } else {
+      valido = true;
+    }
+  });
+
+  $(document).on('keyup', ".validar-num", function () {
+    const $campo = $(this);
+    const valor = $campo.val().trim();
+    const patronNum = /^[0-9]+$/;
+
+    $campo.next('.text-danger').remove();
+    $campo.removeClass('input-error');
+
+    if (valor !== '' && !patronNum.test(valor)) {
+      $campo.after("<p class='text-danger'>Este campo solo admite numeros</p>");
+      $campo.addClass('input-error');
+      valido = false;
+    } else {
+      valido = true;
+    }
+  });
+
+  $(document).on('keyup', "#correo", function () {
+    const $campo = $(this);
+    const valor = $campo.val().trim();
+    const patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    $campo.next('.text-danger').remove();
+    $campo.removeClass('input-error');
+
+    if (valor !== '' && !patronCorreo.test(valor)) {
+      $campo.after("<p class='text-danger fw-bold'>El campo correo debe contener la estructura usuario@dominio.com</p>");
+      $campo.addClass('input-error');
+      valido = false;
+    } else {
+      valido = true;
+    }
+
+  });
+
+
+  $(document).on('keyup', ".claves", function () {
+    const $campo = $(this);
+    const patronClave = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+
+    $campo.next('.text-danger').remove();
+    $campo.removeClass('input-error');
+
+
+    const clave = $('#clave').val().trim();
+    if ($campo.is('#clave') && clave !== '' && !patronClave.test(clave)) {
+      $campo.after("<p class='text-danger'>La contraseña debe contener al menos un carácter especial, una mayúscula y una minúscula, y ser de al menos 8 caracteres</p>");
+      $campo.addClass('input-error');
+      return;
+    }
+
+    const clavenew = $('#clavenew').val().trim();
+    // if ($campo.is('#clavenew') && clavenew !== '' && !patronClave.test(clavenew)) {
+    //     $campo.after("<p class='text-danger'>La contraseña debe contener al menos un carácter especial, una mayúscula y una minúscula, y ser de al menos 8 caracteres</p>");
+    //     return;
+    // }
+    if (clave !== '' && clavenew !== '' && clave != clavenew) {
+      $('#clavenew').next('.text-danger').remove();
+      $('#clavenew').after("<p class='text-danger'>Las contraseñas no coinciden</p>");
+      $campo.addClass('input-error');
+    }
+  });
+  $(document).on('keyup', "#documento", function () {
+    const $campo = $(this);
+    const valor = $campo.val().trim();
+    $campo.next('.text-danger').remove();
+    $campo.removeClass('input-error');
+    if (valor !== '' && valor.length < 8) {
+      $campo.after("<p class='text-danger'>Este campo debe contener solo números (mín.8)</p>");
+      $campo.addClass('input-error');
+      valido = false;
+    } else if (valor !== '' && valor.length > 10) {
+      $campo.after("<p class='text-danger'>Este campo debe contener solo números (máx.10)</p>");
+      $campo.addClass('input-error');
+      valido = false;
+    }
+  });
+
+  $(document).on('keyup', "#telefono", function () {
+    const $campo = $(this);
+    const valor = $campo.val().trim();
+    $campo.next('.text-danger').remove();
+    $campo.removeClass('input-error');
+    if (valor !== '' && valor.length != 10) {
+      $campo.after("<p class='text-danger'>Este campo debe contener solo números (10)</p>");
+      $campo.addClass('input-error');
+      valido = false;
+    } else {
+      valido = true;
+    }
+  });
+
 
 
 

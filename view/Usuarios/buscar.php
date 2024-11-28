@@ -9,8 +9,6 @@ foreach ($usuario as $usu) {
     echo "<td>" . $usu['usu_apellido1'] . " " . $usu['usu_apellido2'] . "</td>";
     echo "<td>" . $usu['usu_correo'] . "</td>";
     echo "<td>" . $usu['usu_tel'] . "</td>";
-    echo "<td>" . $usu['usu_direccion'] . "</td>";
-    echo "<td>" . $usu['rol_nombre'] . "</td>";
     if ($_SESSION['id'] == $usu['usu_id'] || stristr($usu['rol_nombre'], "Admin")) {
         $disabled = "disabled";
     } else {

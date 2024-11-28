@@ -18,14 +18,14 @@ class AccesoController
             foreach ($usuario as $usu) {
                 if (password_verify($password, $usu['usu_clave'])) {
                     $_SESSION['id'] = $usu["usu_id"];
-                    $_SESSION['nombre'] = $usu["usu_nombre1"]." ".$usu["usu_nombre2"];
+                    $_SESSION['nombre'] = $usu["usu_nombre1"] . " " . $usu["usu_nombre2"];
                     $_SESSION['apellido'] = $usu["usu_apellido1"];
                     $_SESSION['correo'] = $usu["usu_correo"];
                     $_SESSION['estado'] = $usu["est_id"];
                     $_SESSION['rol'] = $usu["rol_id"];
                     $_SESSION['sexo'] = $usu["sex_id"];
                     $_SESSION['auth'] = "ok";
-                    
+
                     redirect('index.php');
                 } else {
                     $_SESSION['error'] = "Usuario y/o contraseña incorrectos.";
@@ -81,13 +81,64 @@ class AccesoController
         $numeroSc = $_POST['numeroSecundario'];
         $numeroTerc = $_POST['numeroTerciario'];
         $referencias = $_POST['referencias'];
-        if(!empty($referencias)){
+        if (!empty($referencias)) {
             $ref = "Ref.";
-        }else{
-            $ref="";
+        } else {
+            $ref = "";
         }
 
         $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
+        $validacion = true;
+
+        if (empty($usu_nombre1)) {
+            $_SESSION['errores'][] = "El campo primer nombre es requerido";
+            $validacion = false;
+        }
+        if (empty($usu_apellido1)) {
+            $_SESSION['errores'][] = "El campo primer apellido es requerido";
+            $validacion = false;
+        }
+        if (empty($usu_correo)) {
+            $_SESSION['errores'][] = "El campo correo es requerido";
+            $validacion = false;
+        }
+
+        if (empty($usu_clave)) {
+            $_SESSION['errores'][] = "El campo clave es requerido";
+            $validacion = false;
+        }
+        if (empty($doc_id)) {
+            $_SESSION['errores'][] = "El campo documento es requerido";
+            $validacion = false;
+        }
+        if (empty($sex_id)) {
+            $_SESSION['errores'][] = "El campo sexo biologico es requerido";
+            $validacion = false;
+        }
+        if (empty($usu_tel)) {
+            $_SESSION['errores'][] = "El campo telefono es requerido";
+            $validacion = false;
+        }
+        if (empty($tipoV)) {
+            $_SESSION['errores'][] = "El campo tipoVia es requerido";
+            $validacion = false;
+        }
+        if (empty($numeroPr)) {
+            $_SESSION['errores'][] = "El campo numero principal es requerido";
+            $validacion = false;
+        }
+        if (empty($numeroSc)) {
+            $_SESSION['errores'][] = "El campo numero 1 es requerido";
+            $validacion = false;
+        }
+        if (empty($numeroTerc)) {
+            $_SESSION['errores'][] = "El campo numero 2 es requerido";
+            $validacion = false;
+        }
+
+        if (!validarCampos($usu_nombre1, $usu_nombre2, $usu_apellido1, $usu_apellido2, $usu_correo, $usu_clave, $usu_tel, $usu_doc)) {
+            $validacion = false;
+        }
 
 
         $hash = password_hash($usu_clave, PASSWORD_DEFAULT);
@@ -104,16 +155,21 @@ class AccesoController
         } else {
             $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', 2, 1, $doc_id, $sex_id)";
         }
+        if ($validacion) {
+            $ejecutar = $obj->insert($sql);
 
-        $ejecutar = $obj->insert($sql);
-
-        if ($ejecutar) {
-            $_SESSION['RegExitoso'][]="Registro exitoso";
-            redirect("index.php");
-        } else {
-            $_SESSION['ErrorReg'][]="No se pudo realizar el registro";
-            redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
+            if ($ejecutar) {
+                $_SESSION['RegExitoso'][] = "Registro exitoso";
+                redirect("index.php");
+            } else {
+                $_SESSION['errores'][] = "No se pudo realizar el registro";
+                redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
+            }
+        }else{
+            $_SESSION['errores'][] = "No se pudo realizar el registro";
+                redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
         }
+
     }
 
 }

@@ -69,31 +69,57 @@ session_start();
         }
     }
 
-    function validarCampos($nombre, $apellido, $correo, $clave) {
-        $patronNombre = "/^[a-zA-Z\s]+$/"; 
+    function validarCampos($nombre, $nombre2, $apellido, $apellido2, $correo, $clave, $telefono, $documento) {
+        $patronNombre = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/"; 
         $patronCorreo = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
         $patronClave = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/";
+        $patronNumero = "/^[0-9]+$/"; 
         
-        
+    
         if (!preg_match($patronNombre, $nombre)) {
-            $_SESSION['errores'][] = "El campo nombre solo admite letras";
+            $_SESSION['errores'][] = "El campo primer nombre solo admite letras";
+            return false;
+        }
+        if (!preg_match($patronNombre, $nombre2)) {
+            $_SESSION['errores'][] = "El campo segundo nombre solo admite letras";
             return false;
         }
         if (!preg_match($patronNombre, $apellido)) {
-            $_SESSION['errores'][] = "El campo apellido solo admite letras";
+            $_SESSION['errores'][] = "El campo primer apellido solo admite letras";
             return false;
         }
+        if (!preg_match($patronNombre, $apellido2)) {
+            $_SESSION['errores'][] = "El campo segundo apellido solo admite letras";
+            return false;
+        }
+
         if (!preg_match($patronCorreo, $correo)) {
             $_SESSION['errores'][] = "El formato de correo ingresado es inválido";
             return false;
         }
+    
         if (!preg_match($patronClave, $clave)) {
-            $_SESSION['errores'][] = "La contraseña permite mínimo 8 caracteres, una mayúscula, una minúscula y un símbolo";
+            $_SESSION['errores'][] = "La contraseña debe contener mínimo 8 caracteres, una mayúscula, una minúscula y un símbolo";
+            return false;
+        }
+    
+        if (!preg_match($patronNumero, $telefono)) {
+            $_SESSION['errores'][] = "El campo teléfono solo admite dígitos";
+            return false;
+        }
+        if (strlen($telefono) != 10) {
+            $_SESSION['errores'][] = "El campo teléfono debe contener 10 dígitos";
+            return false;
+        }
+    
+        if (!preg_match($patronNumero, $documento) || strlen($documento) < 8 || strlen($documento) > 10) {
+            $_SESSION['errores'][] = "El campo documento debe contener entre 8 y 10 dígitos";
             return false;
         }
         
         return true;
     }
+    
     
     
     function validarCamponum($input) {

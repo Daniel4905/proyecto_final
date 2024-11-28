@@ -5,6 +5,7 @@ include_once "../lib/helpers.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,33 +38,12 @@ include_once "../lib/helpers.php";
 </head>
 
 <body class="">
-    <div class='wrapper' id ="cajita1">
-        <div class='container-fluid' >
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid p-4">
-                    <a class="navbar-brand" href="index.php" id="navbar-logo"><img src="img/logo_normal.png"
-                            id="logonav" alt="" style="width: 120px; ">
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-                    <ul class="navbar-nav md-3">
-                        <div >
-                            <span id="pregunta">¿Ya tienes cuenta? <a href="index.php" id="link">Ingresar</a></span>
-                        </div>
-                    </ul>
-            </nav>
-
-            <div class="container">
-                <div class="mt-3" id="tituloM">
-                    <h3 class="display-4">Registrar Usuarios</h3>
-                </div>
+    <div class='container-fluid'>
+        <div class="container" id="cajita2">
+            <div class="mt-3" id="tituloM">
+                <img src="img/logo_claro.png" id="logonav" alt="" width="300px">
             </div>
-            <div class="container container-scroll"  id="cajita2">
-
+            <div class="container-scroll">
                 <form action="<?php echo getUrl("Acceso", "Acceso", "postCreate", false, "ajax"); ?>" method="POST"
                     id="formRegistrolog">
                     <div class="row mt-5">
@@ -137,9 +117,10 @@ include_once "../lib/helpers.php";
                         </div>
 
 
-                        <div class="col-md-3 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="titulos" for="tipoVia">Tipo de vía*</label>
-                            <select id="tipoVia" name="tipoVia" class="form-control">
+                            <select id="tipoVia" name="tipoVia" class="form-control"
+                                title="Escoja el tipo de via, por ejemplo: Calle">
                                 <option value="">Seleccione...</option>
                                 <option value="Calle">Calle</option>
                                 <option value="Carrera">Carrera</option>
@@ -147,40 +128,36 @@ include_once "../lib/helpers.php";
                                 <option value="Transversal">Transversal</option>
                                 <option value="Diagonal">Diagonal</option>
                             </select>
-                            <small class="form-text text-muted titulos">Ejemplo: Calle</small>
                         </div>
-                        <div class="col-md-2 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="titulos" for="numeroPrincipal">Número principal*</label>
                             <input type="number" id="numeroPrincipal" name="numeroPrincipal" class="form-control"
                                 placeholder="123" min="1" max="300">
                         </div>
-                        <div class="col-md-1 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="titulos" for="complemento1">Complemento</label>
                             <input type="text" id="complemento1" name="complemento1" class="form-control"
                                 placeholder="J" maxlength="3">
-                            <small class="form-text text-muted titulos">Opcional.</small>
                         </div>
-                        <div class="col-md-1 mt-3">
+                        <div class="col-md-3 mt-3">
                             <label class="titulos" for="numeroSecundario">Número 1</label>
                             <input type="number" id="numeroSecundario" name="numeroSecundario" class="form-control"
-                                placeholder="" min="1" max="300" maxlength="3">
+                                placeholder="22" min="1" max="300" maxlength="3">
                         </div>
-                        <div class="col-md-1 mt-3">
+                        <div class="col-md-3 mt-3">
                             <label class="titulos" for="complemento2">Complemento</label>
                             <input type="text" id="complemento2" name="complemento2" class="form-control"
                                 placeholder="Bis/A/Sur">
-                            <small class="form-text text-muted titulos">Opcional.</small>
                         </div>
-                        <div class="col-md-1 mt-3">
+                        <div class="col-md-3 mt-3">
                             <label class="titulos" for="numeroTerciario">Número 2</label>
                             <input type="number" id="numeroTerciario" name="numeroTerciario" class="form-control"
-                                placeholder="" min="1" max="300" maxlength="3">
+                                placeholder="42" min="1" max="300" maxlength="3">
                         </div>
                         <div class="col-md-3 mt-3">
                             <label class="titulos" for="referencias">Referencias adicionales</label>
                             <textarea id="referencias" name="referencias" class="form-control" rows="2" maxlength="100"
-                                placeholder="Frente al parque o cerca del supermercado"></textarea>
-                            <small class="form-text text-muted titulos">Opcional. Máximo 100 caracteres.</small>
+                                placeholder="Máx. 100 Carácteres"></textarea>
                         </div>
                         <div class="col-md-3 mt-3">
                             <label class="titulos" for="usu_correo">Correo*</label>
@@ -197,15 +174,18 @@ include_once "../lib/helpers.php";
                             <input type="password" name="usu_clavenew" id="clavenew" class="form-control claves"
                                 placeholder="Confirmar clave">
                         </div>
-                        <div class="mt-3_s">
-                            <input type="submit" value="Enviar"  class="btn">
-                        </div>
                     </div>
-
-
             </div>
-            </form>
+            <div class="mt-3_s enviar">
+                <input type="submit" value="Registrarme" class="btn">
+                <div class="mt-2">
+                    <span id="pregunta">¿Ya tienes cuenta? <a href="index.php" id="link">Ingresar</a></span>
+                </div>
+            </div>
         </div>
+
+        </form>
+    </div>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

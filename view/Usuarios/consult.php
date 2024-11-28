@@ -4,14 +4,16 @@
             Consultar Usuarios
         </h3>
     </div>
-</div>
-<div class="container container-scroll">
-    <div class="row">
-        <div class="col-md-3">
+    <div class="col-md-3">
             <input type="text" name="buscar" placeholder="Buscar por nombre o por documento" id="buscar"
                 class="form-control mt-3 mb-3"
                 data-url='<?php echo getUrl("Usuarios", "Usuarios", "buscar", false, "ajax") ?>'>
         </div>
+</div>
+
+<div class="container container-scroll">
+    <div class="row">
+        
         <div class="table-responsive">
             <table class="table table-hover table-striped">
                 <thead>
@@ -20,14 +22,11 @@
                     <th>Apellidos</th>
                     <th>Correo</th>
                     <th>Telefono</th>
-                    <th>Direccion</th>
-                    <th>Rol</th>
                     <th>Estado</th>
                     <th>Editar</th>
                     <th>Detalles</th>
                 </thead>
                 <tbody>
-
                     <?php
                     foreach ($usuario as $usu) {
                         $clase = "";
@@ -39,8 +38,6 @@
                         echo "<td>" . $usu['usu_apellido1'] . " " . $usu['usu_apellido2'] . "</td>";
                         echo "<td>" . $usu['usu_correo'] . "</td>";
                         echo "<td>" . $usu['usu_tel'] . "</td>";
-                        echo "<td>" . $usu['usu_direccion'] . "</td>";
-                        echo "<td>" . $usu['rol_nombre'] . "</td>";
                         if ($_SESSION['id'] == $usu['usu_id'] || stristr($usu['rol_nombre'], "Admin")) {
                             $disabled = "disabled";
                         } else {

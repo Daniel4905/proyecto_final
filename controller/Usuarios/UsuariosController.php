@@ -49,6 +49,33 @@ class UsuariosController
         } else {
             $ref = "";
         }
+        $validacion = true;
+
+        if (empty($usu_nombre1)) {
+            $_SESSION['errores'][] = "El campo primer nombre es requerido";
+            $validacion = false;
+        }
+        if (empty($usu_apellido1)) {
+            $_SESSION['errores'][] = "El campo primer apellido es requerido";
+            $validacion = false;
+        }
+        if (empty($usu_correo)) {
+            $_SESSION['errores'][] = "El campo correo es requerido";
+            $validacion = false;
+        }
+
+        if (empty($usu_clave)) {
+            $_SESSION['errores'][] = "El campo clave es requerido";
+            $validacion = false;
+        }
+        if (empty($usu_rol)) {
+            $_SESSION['errores'][] = "El campo rol es requerido";
+            $validacion = false;
+        }
+
+        if (!validarCampos($usu_nombre1, $usu_nombre2, $usu_apellido1, $usu_apellido2, $usu_correo, $usu_clave, $usu_tel, $usu_doc)) {
+            $validacion = false;
+        }
 
         $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
 
@@ -68,13 +95,18 @@ class UsuariosController
             $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
         }
 
-        $ejecutar = $obj->insert($sql);
+        if ($validacion) {
+            $ejecutar = $obj->insert($sql);
 
-        if ($ejecutar) {
-            redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
+            if ($ejecutar) {
+                redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
+            } else {
+                redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
+            }
         } else {
             redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
         }
+
     }
 
     public function getUsuarios()
@@ -215,7 +247,7 @@ class UsuariosController
             $ejecutar = $obj->update($sql);
             if ($ejecutar) {
                 if ($usu_id == $_SESSION['id']) {
-                    $_SESSION['nombre'] = $usu_nombre1." ".$usu_nombre2;
+                    $_SESSION['nombre'] = $usu_nombre1 . " " . $usu_nombre2;
                     $_SESSION['apellido'] = $usu_apellido1;
                 }
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
@@ -240,7 +272,7 @@ class UsuariosController
         }
         $sql = "UPDATE usuarios SET est_id= $statusToModify WHERE usu_id= $usu_id";
         $ejecutar = $obj->update($sql);
- 
+
         if ($ejecutar) {
             $sql = "SELECT u.*, r.rol_nombre FROM usuarios u
                      JOIN rol r ON u.rol_id = r.rol_id ORDER BY u.usu_id ASC";
@@ -252,7 +284,7 @@ class UsuariosController
         }
     }
 
-    
+
     public function getUpdateUsu()
     {
         $obj = new UsuariosModel();
@@ -274,7 +306,8 @@ class UsuariosController
         include_once '../view/usuarios/actualizarDatosUsu.php';
     }
 
-    public function postUpdateUsu(){
+    public function postUpdateUsu()
+    {
         $obj = new UsuariosModel();
 
         $usu_id = $_SESSION['id'];
@@ -287,29 +320,29 @@ class UsuariosController
         $usu_clave = $_POST['usu_clave'];
         $usu_clavenew = $_POST['usu_clavenew'];
         $usu_tel = $_POST['usu_tel'];
-        $check  = $_POST['cambiarDir'];
-        if(isset($check)){
-        $tipoV = $_POST['tipoVia'];
-        $numeroPr = $_POST['numeroPrincipal'];
-        $comp1 = $_POST['complemento1'];
-        $comp2 = $_POST['complemento2'];
-        $numeroSc = $_POST['numeroSecundario'];
-        $numeroTerc = $_POST['numeroTerciario'];
-        $referencias = $_POST['referencias'];
-        if (!empty($referencias)) {
-            $ref = "Ref.";
+        $check = $_POST['cambiarDir'];
+        if (isset($check)) {
+            $tipoV = $_POST['tipoVia'];
+            $numeroPr = $_POST['numeroPrincipal'];
+            $comp1 = $_POST['complemento1'];
+            $comp2 = $_POST['complemento2'];
+            $numeroSc = $_POST['numeroSecundario'];
+            $numeroTerc = $_POST['numeroTerciario'];
+            $referencias = $_POST['referencias'];
+            if (!empty($referencias)) {
+                $ref = "Ref.";
+            } else {
+                $ref = "";
+            }
+            $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
         } else {
-            $ref = "";
-        }
-        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
-        }else{
-        $sqldire = "SELECT usu_direccion FROM usuarios WHERE usu_id = $usu_id";
-        $resultado = $obj->consult($sqldire);
-        if ($resultado && isset($resultado[0])) {
-            $direccion = $resultado[0]['usu_direccion'];
-        } else {
-            echo "No se encontraron resultados";
-        }
+            $sqldire = "SELECT usu_direccion FROM usuarios WHERE usu_id = $usu_id";
+            $resultado = $obj->consult($sqldire);
+            if ($resultado && isset($resultado[0])) {
+                $direccion = $resultado[0]['usu_direccion'];
+            } else {
+                echo "No se encontraron resultados";
+            }
         }
 
         $doc_id = $_POST['doc_id'];
@@ -351,7 +384,7 @@ class UsuariosController
             $ejecutar = $obj->update($sql);
             if ($ejecutar) {
                 if ($usu_id == $_SESSION['id']) {
-                    $_SESSION['nombre'] = $usu_nombre1." ".$usu_nombre2;
+                    $_SESSION['nombre'] = $usu_nombre1 . " " . $usu_nombre2;
                     $_SESSION['apellido'] = $usu_apellido1;
                 }
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
@@ -363,26 +396,28 @@ class UsuariosController
         }
     }
 
-    
-    
+
+
 
     public function detallesUsuario()
     {
         $obj = new UsuariosModel();
         $usu_id = $_POST['usu_id'];
         $sql = "SELECT u.*,s.sex_desc, td.nombre_tipo, td.doc_abrev, r.rol_nombre FROM usuarios u
-            JOIN rol r ON u.rol_id = r.rol_id JOIN sexo s ON u.sex_id = s.sex_id JOIN tipo_documento td ON u.doc_id= td.doc_id WHERE usu_id = $usu_id";
+            JOIN rol r ON u.rol_id = r.rol_id 
+            JOIN sexo s ON u.sex_id = s.sex_id 
+            JOIN tipo_documento td ON u.doc_id = td.doc_id WHERE usu_id = $usu_id";
         $usuarios = $obj->consult($sql);
         foreach ($usuarios as $usuario) {
             if ($usuario) {
-            echo "<p><strong>Documento:</strong> " . $usuario['doc_abrev'] . " " . $usuario['usu_documento'] . "</p>" .
-            "<p><strong>Nombres:</strong> " . $usuario['usu_nombre1'] . " " . $usuario['usu_nombre2'] . "</p>" .
-            "<p><strong>Apellidos:</strong> " . $usuario['usu_apellido1'] . " " . $usuario['usu_apellido2'] . "</p>" .
-            "<p><strong>Correo:</strong> " . $usuario['usu_correo'] . "</p>" .
-            "<p><strong>Teléfono:</strong> " . $usuario['usu_tel'] . "</p>" .
-            "<p><strong>Dirección:</strong> " . $usuario['usu_direccion'] . "</p>" .
-            "<p><strong>Sexo biologico:</strong> " . $usuario['sex_desc'] . "</p>" .
-            "<p><strong>Rol:</strong> " . $usuario['rol_nombre'] . "</p>";
+                echo "<p><strong>Documento:</strong> " . $usuario['doc_abrev'] . " " . $usuario['usu_documento'] . "</p>" .
+                    "<p><strong>Nombres:</strong> " . $usuario['usu_nombre1'] . " " . $usuario['usu_nombre2'] . "</p>" .
+                    "<p><strong>Apellidos:</strong> " . $usuario['usu_apellido1'] . " " . $usuario['usu_apellido2'] . "</p>" .
+                    "<p><strong>Correo:</strong> " . $usuario['usu_correo'] . "</p>" .
+                    "<p><strong>Teléfono:</strong> " . $usuario['usu_tel'] . "</p>" .
+                    "<p><strong>Dirección:</strong> " . $usuario['usu_direccion'] . "</p>" .
+                    "<p><strong>Sexo biologico:</strong> " . $usuario['sex_desc'] . "</p>" .
+                    "<p><strong>Rol:</strong> " . $usuario['rol_nombre'] . "</p>";
             } else {
                 echo "<p class='text-danger'>No se encontraron detalles para este usuario.</p>";
             }

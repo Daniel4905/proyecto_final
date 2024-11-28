@@ -2,7 +2,19 @@
     <div class="mt 3">
         <h3 class="display-4">Registrar Usuarios</h3>
     </div>
+    <?php
+    if (isset($_SESSION['errores'])) {
+        echo "<div class='alert alert-danger' role='alert'>";
+        foreach ($_SESSION['errores'] as $error) {
+            echo $error . "<br>";
+        }
+        echo "</div>";
+        unset($_SESSION['errores']);
+    }
+
+    ?>
 </div>
+
 <div class="container container-scroll">
 
     <form action="<?php echo getUrl("Usuarios", "Usuarios", "postCreate"); ?> " method="post" id="formRegistro">
@@ -10,17 +22,7 @@
             <div class='alert alert-danger d-none' role='alert' id="error">
 
             </div>
-            <?php
-            if (isset($_SESSION['errores'])) {
-                echo "<div class='alert alert-danger' role='alert'>";
-                foreach ($_SESSION['errores'] as $error) {
-                    echo $error . "<br>";
-                }
-                echo "</div>";
-                unset($_SESSION['errores']);
-            }
 
-            ?>
 
             <div class="col-md-3">
                 <label for="usu_nombre1">Primer nombre*</label>
