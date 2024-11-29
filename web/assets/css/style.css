@@ -370,41 +370,51 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
-
-/* Estilo para el contenedor del botón y dropdown */
-.pqrs-btn {
+    
+#pqrs-specific {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
+    bottom: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+    text-align: center;
 }
 
-/* Mostrar el menú desplegable solo cuando se pase el ratón sobre el dropdown */
-/* Estilo para el contenedor del botón y dropdown */
-.pqrs-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
 
-/* Posicionamiento del ícono dentro del botón */
-.pqrs-btn i {
-    font-size: 24px; /* Ajusta el tamaño del ícono */
-}
-
-.pqrs-btn .dropdown-menu {
+#pqrs-specific .dropdown-menu {
+    display: none;
     position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 10px;
-    display: none; 
+    bottom: 40px;
+    right: 0; 
+    background-color: #202434;
+    color: #c2bfbf;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.pqrs-btn .dropdown-menu.show {
+
+#pqrs-specific .dropdown-menu .dropdown-item {
+    display: block;
+    padding: 5px 15px;
+    text-decoration: none;
+    color: #c2bfbf;
+    transition: background-color 0.2s;
+}
+
+#pqrs-specific .dropdown-menu .dropdown-item:hover {
+    background-color: #c2bfbf;
+    color: #202434;
+}
+
+#pqrs-specific:hover .dropdown-menu {
     display: block;
 }
+
+
+.redN{
+    border-radius: 50% !important; 
+}
+
 
 
 

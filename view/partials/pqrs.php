@@ -1,19 +1,16 @@
-<div class="dropdown pqrs-btn dropup">
-    <button class="btn rounded-circle dropdown-toggle" type="button" id="pqrsDropdown" data-bs-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false" style="background-color: #6f42c1; color: white;">
+<div class="pqrs-btn" id="pqrs-specific">
+    <button class="btn redN" type="button" id="pqrsDropdown" 
+        aria-haspopup="true" aria-expanded="false" 
+        style="background-color: #202434; color: #c2bfbf; size: 50px;" 
+        title="Haga sus peticiones, quejas, reclamos y sugerencias">
         <i class="fas fa-question"></i>
     </button>
-    <ul class="dropdown-menu" aria-labelledby="pqrsDropdown">
-        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#pqrsModal"
-                data-bs-id="1">Petición</a></li>
-        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#pqrsModal"
-                data-bs-id="2">Queja</a></li>
-        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#pqrsModal"
-                data-bs-id="3">Reclamo</a></li>
-        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#pqrsModal"
-                data-bs-id="4">Sugerencia</a></li>
-    </ul>
+    <div class="dropdown-menu">
+        <a href="#" class="dropdown-item">Seguir PQRS</a>
+        <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#pqrsModal">Enviar PQRS</a>
+    </div>
 </div>
+
 <div class="modal fade" id="pqrsModal" tabindex="-1" aria-labelledby="pqrsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -23,9 +20,19 @@
             </div>
             <div class="modal-body">
                 <form action="<?php echo getUrl('PQRS', 'PQRS', 'postCreate'); ?>" method="post">
-                    <input type="hidden" id="pqrsId" name="pqrsId">
+
                     <input type="hidden" name="usu_id" id="usu_id" value="<?php echo $_SESSION['id']; ?>">
 
+                    <div class="col-md-3">
+                        <label for="pqrsId" class="form-label">Seleccione el tipo de PQRS:</label>
+                        <select id="pqrsId" name="pqrsId" class="form-select">
+                            <option value="">Seleccione...</option>
+                            <option value="1">Petición</option>
+                            <option value="2">Queja</option>
+                            <option value="3">Reclamo</option>
+                            <option value="4">Sugerencia</option>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="pqrsTextarea" class="form-label">Escribe tu mensaje (Petición, Queja, Reclamo o
                             Sugerencia)</label>
@@ -37,6 +44,7 @@
                     </div>
                 </form>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>

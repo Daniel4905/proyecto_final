@@ -17,53 +17,46 @@
             </a>
         </li>
 
-        <h4 class="text-section d-none" id="sol">SOLICITUDES</h4>
-        <li class="sidebar-item">
-            <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getAccidentes'); ?>" class="sidebar-link " title="Reportar accidente">
-                <img src="img/accidentes.png" style="width: 30px;" alt="">
-                <span class="gradient-text">Reportar accidente</span>
-            </a>
-        </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#senales"
                 aria-expanded="false" aria-controls="senales" title="Señales">
-                <img src="img/señal.png" style="width: 30px;" alt="">
-                <span class="gradient-text">Señales</span>
+                <img src="img/solicitudes.png" style="width: 30px;" alt="">
+                <span class="gradient-text">SOLICITUDES</span>
             </a>
             <ul id="senales" class="sidebar-dropdown list-unstyled collapse">
                 <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSeñalesNuevo'); ?>"
-                        class="sidebar-link gradient-text" title="Nuevo">Nuevo</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitud'); ?>"
+                        class="sidebar-link gradient-text" title="Nuevo">Hacer una solicitud</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSeñalesDaño'); ?>"
-                        class="sidebar-link gradient-text" title="Reparacion">Reparación</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitudConsult'); ?>"
+                        class="sidebar-link gradient-text" title="Reparacion">Consultar solicitudes</a>
                 </li>
             </ul>
         </li>
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#reductores" aria-expanded="false" aria-controls="reductores" title="Reductores">
-                <img src="img/reductores.png" style="width: 30px;" alt="">
-                <span class="gradient-text">Reductores</span>
-            </a>
-            <ul id="reductores" class="sidebar-dropdown list-unstyled collapse">
-                <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getReductoresNuevo'); ?>"
-                        class="sidebar-link gradient-text" title="Nuevo">Nuevo</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getReductoresDaño'); ?>"
-                        class="sidebar-link gradient-text" title="Reparacion">Reparación</a>
-                </li>
-            </ul>
-        </li>
-        <li class="sidebar-item">
-            <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getVias'); ?>" class="sidebar-link">
-                <img src="img/carretera.png" style="width: 30px;" alt="" title="Reportar daño en la via">
-                <span class="gradient-text">Reportar daño en la via</span>
-            </a>
-        </li>
+            <!-- <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                    data-bs-target="#reductores" aria-expanded="false" aria-controls="reductores" title="Reductores">
+                    <img src="img/reductores.png" style="width: 30px;" alt="">
+                    <span class="gradient-text">Reductores</span>
+                </a>
+                <ul id="reductores" class="sidebar-dropdown list-unstyled collapse">
+                    <li class="sidebar-item">
+                        <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getReductoresNuevo'); ?>"
+                            class="sidebar-link gradient-text" title="Nuevo">Nuevo</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getReductoresDaño'); ?>"
+                            class="sidebar-link gradient-text" title="Reparacion">Reparación</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getVias'); ?>" class="sidebar-link">
+                    <img src="img/carretera.png" style="width: 30px;" alt="" title="Reportar daño en la via">
+                    <span class="gradient-text">Reportar daño en la via</span>
+                </a>
+            </li> -->
         <h4 class="text-section d-none" id="rep">REPORTES</h4>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#reportes"

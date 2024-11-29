@@ -1,3 +1,38 @@
+
+<style>
+    .image-upload {
+        width: 150px;
+        height: 150px;
+        border: 2px dashed #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .image-upload input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .image-upload img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+    }
+
+    .placeholder {
+        font-size: 24px;
+        color: #aaa;
+    }
+</style>
 <div class="container">
     <div class="container-scroll">
         <h3>Detalle el accidente</h3>
@@ -145,15 +180,56 @@
                         </select>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="imagen" class="form-label">Adjunte una foto (JPG, JPEG, PNG):</label>
-                    <input type="file" id="imagen" name="imagen" accept=".jpg,.jpeg,.png" class="form-control">
+                <div class="col-6 col-md-3">
+                    <div class="image-upload">
+                        <span class="placeholder">+</span>
+                        <input type="file" accept="image/*" onchange="previewImage(this)">
+                    </div>
                 </div>
-                <div class="mt-3">
-                    <input type="submit" value="Enviar" class="btn btn-success">
+                <div class="col-6 col-md-3">
+                    <div class="image-upload">
+                        <span class="placeholder">+</span>
+                        <input type="file" accept="image/*" onchange="previewImage(this)">
+                    </div>
                 </div>
+                <div class="col-6 col-md-3">
+                    <div class="image-upload">
+                        <span class="placeholder">+</span>
+                        <input type="file" accept="image/*" onchange="previewImage(this)">
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="image-upload">
+                        <span class="placeholder">+</span>
+                        <input type="file" accept="image/*" onchange="previewImage(this)">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <input type="submit" value="Enviar" class="btn btn-success">
+            </div>
         </form>
     </div>
 </div>
-</div>
-</div>
+<script>
+    function previewImage(input) {
+        const file = input.files[0];
+        const parent = input.closest(".image-upload");
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                let img = parent.querySelector("img");
+                if (!img) {
+                    img = document.createElement("img");
+                    parent.appendChild(img);
+                }
+                img.src = e.target.result;
+                parent.querySelector(".placeholder").style.display = "none";
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
