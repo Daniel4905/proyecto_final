@@ -80,7 +80,7 @@ session_start();
             $_SESSION['errores'][] = "El campo primer nombre solo admite letras";
             return false;
         }
-        if (!preg_match($patronNombre, $nombre2)) {
+        if (!empty($nombre2) && !preg_match($patronNombre, $nombre2)) {
             $_SESSION['errores'][] = "El campo segundo nombre solo admite letras";
             return false;
         }
@@ -88,7 +88,7 @@ session_start();
             $_SESSION['errores'][] = "El campo primer apellido solo admite letras";
             return false;
         }
-        if (!preg_match($patronNombre, $apellido2)) {
+        if (!empty($apellido2) && !preg_match($patronNombre, $apellido2)) {
             $_SESSION['errores'][] = "El campo segundo apellido solo admite letras";
             return false;
         }

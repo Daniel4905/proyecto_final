@@ -18,23 +18,31 @@
         </li>
 
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#senales"
-                aria-expanded="false" aria-controls="senales" title="Señales">
-                <img src="img/solicitudes.png" style="width: 30px;" alt="">
-                <span class="gradient-text">SOLICITUDES</span>
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#solicitudes" aria-expanded="false" aria-controls="solicitudes"
+                title="Realiza la solicitud que desees">
+                <img src="img/solicitudes.png" style="width: 30px;" alt="" title="Realiza la solicitud que desees">
+                <span class="gradient-text">Solicitudes</span>
             </a>
-            <ul id="senales" class="sidebar-dropdown list-unstyled collapse">
+            <ul id="solicitudes" class="sidebar-dropdown list-unstyled collapse">
                 <li class="sidebar-item">
                     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitud'); ?>"
-                        class="sidebar-link gradient-text" title="Nuevo">Hacer una solicitud</a>
+                        class="sidebar-link gradient-text" title="Realiza solicitudes">
+                        <img src="img/realizar.png" style="width: 25px; margin-right: 15px; margin-left: 7px;" alt="" title="Realiza la solicitud que desees">
+                        Hacer una solicitud
+                    </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitudConsult'); ?>"
-                        class="sidebar-link gradient-text" title="Reparacion">Consultar solicitudes</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'viaConsult'); ?>"
+                        class="sidebar-link gradient-text" title="Mira tus solicitudes">
+                        <img src="img/consulta.png" style="width: 25px;  margin-right: 15px; margin-left: 7px;" alt="" title="Realiza la solicitud que desees">
+                        Consultar solicitudes
+                    </a>
                 </li>
             </ul>
         </li>
-            <!-- <li class="sidebar-item">
+
+        <!-- <li class="sidebar-item">
                 <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                     data-bs-target="#reductores" aria-expanded="false" aria-controls="reductores" title="Reductores">
                     <img src="img/reductores.png" style="width: 30px;" alt="">
@@ -81,14 +89,15 @@
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#gestionUsuarios" aria-expanded="false" aria-controls="gestionUsuarios" title="Gestion de usuarios">
+                data-bs-target="#gestionUsuarios" aria-expanded="false" aria-controls="gestionUsuarios"
+                title="Gestion de usuarios">
                 <img src="img/gestion-usu.png" style="width: 30px;" alt="">
                 <span class="gradient-text">Gestión de usuarios</span>
             </a>
             <ul id="gestionUsuarios" class="sidebar-dropdown list-unstyled collapse">
                 <li class="sidebar-item">
                     <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'getCreate'); ?>"
-                        class="sidebar-link gradient-text"title="Registrar usuarios" >Registrar usuarios</a>
+                        class="sidebar-link gradient-text" title="Registrar usuarios">Registrar usuarios</a>
                 </li>
                 <li class="sidebar-item">
                     <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUsuarios'); ?>"
@@ -100,7 +109,8 @@
     </ul>
     <li class="sidebar-footer">
         <a href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
-            onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');" class="sidebar-link" title="Cerrar sesión">
+            onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');" class="sidebar-link"
+            title="Cerrar sesión">
             <img src="img/cerrarS.png" style="width: 30px;" alt="">
             <span class="cerrarS">Cerrar sesion</span>
         </a>

@@ -111,10 +111,14 @@ class UsuariosController
     public function getUsuarios()
     {
         $obj = new UsuariosModel();
-
-        $sql = "SELECT u.*,s.sex_desc,td.doc_abrev, r.rol_nombre FROM usuarios u
-            JOIN rol r ON u.rol_id = r.rol_id JOIN sexo s ON u.sex_id = s.sex_id JOIN tipo_documento td ON u.doc_id= td.doc_id ORDER BY u.usu_id ASC";
-
+    
+        $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id FROM usuarios u
+                JOIN rol r ON u.rol_id = r.rol_id 
+                JOIN sexo s ON u.sex_id = s.sex_id 
+                JOIN tipo_documento td ON u.doc_id = td.doc_id
+                JOIN estados est ON u.est_id = est.est_id
+                ORDER BY u.usu_id ASC";
+    
         $usuario = $obj->consult($sql);
         include_once '../view/usuarios/consult.php';
     }
@@ -124,8 +128,11 @@ class UsuariosController
         $obj = new UsuariosModel();
         $usu_id = $_GET['usu_id'];
 
-        $sql = "SELECT u.*,s.sex_desc,td.nombre_tipo, r.rol_nombre FROM usuarios u
-            JOIN rol r ON u.rol_id = r.rol_id JOIN sexo s ON u.sex_id = s.sex_id JOIN tipo_documento td ON u.doc_id= td.doc_id WHERE usu_id = $usu_id";
+        $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id FROM usuarios u
+                JOIN rol r ON u.rol_id = r.rol_id 
+                JOIN sexo s ON u.sex_id = s.sex_id 
+                JOIN estados est ON u.est_id = est.est_id
+                 WHERE usu_id = $usu_id";
 
         $perfil = $obj->consult($sql);
         include_once '../view/usuarios/viewProfile.php';
@@ -273,13 +280,16 @@ class UsuariosController
         $ejecutar = $obj->update($sql);
 
         if ($ejecutar) {
-            $sql = "SELECT u.*, r.rol_nombre FROM usuarios u
-                     JOIN rol r ON u.rol_id = r.rol_id ORDER BY u.usu_id ASC";
+            $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
+                 JOIN rol r ON u.rol_id = r.rol_id
+                 JOIN estados est ON u.est_id = est.est_id
+                 ORDER BY u.usu_id ASC";
             $usuario = $obj->consult($sql);
 
             include_once "../view//usuarios/buscar.php";
         } else {
             echo "No se puede actualizar el estado";
+            
         }
     }
 
@@ -401,7 +411,7 @@ class UsuariosController
     public function detallesUsuario()
     {
         $obj = new UsuariosModel();
-        $usu_id = $_POST['usu_id'];
+        $usu_id = $_POST['id'];
         $sql = "SELECT u.*,s.sex_desc, td.nombre_tipo, td.doc_abrev, r.rol_nombre FROM usuarios u
             JOIN rol r ON u.rol_id = r.rol_id 
             JOIN sexo s ON u.sex_id = s.sex_id 
