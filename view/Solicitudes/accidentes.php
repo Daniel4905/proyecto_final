@@ -82,7 +82,7 @@
                         <option value="">Seleccione...</option>
                         <?php
                         foreach ($tipoAc as $tA) {
-                            echo "<option value='" . $tA['id_tipo_accidente'] . "' data-id='" . $tA['id_tipo_accidente'] . "'>" . $tA['nombre'] . "</option>";
+                            echo "<option value='" . $tA['tipo_choque_id'] . "' data-id='" . $tA['tipo_choque_id'] . "'>" . $tA['tipo_choque_desc'] . "</option>";
                         }
                         ?>
                     </select>

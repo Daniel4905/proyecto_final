@@ -138,7 +138,7 @@
                             <option value="">Seleccione..</option>
                             <?php
                             foreach ($danos as $danio) {
-                                echo "<option value='" . $danio['tipo_danio_id'] . "'>" . $danio['descripcion'] . "</option>";
+                                echo "<option value='" . $danio['tipo_danio_id'] . "'>" . $danio['tipo_danio_desc'] . "</option>";
                             }
                             ?>
                         </select>

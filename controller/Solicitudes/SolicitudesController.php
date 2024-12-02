@@ -46,9 +46,9 @@ class SolicitudesController
     {
         $obj = new SolicitudesModel();
 
-        $sql = "SELECT td.tipo_danio_id, td.descripcion FROM tipo_danio td
-                JOIN categoria_danio cd ON td.categoria_danio_id = cd.categoria_danio_id
-                WHERE cd.descripcion = 'Vías'";
+        $sql = "SELECT td.tipo_danio_id, td.tipo_danio_desc FROM  danio cd  
+                JOIN tipo_danio td ON td.tipo_danio_id = cd.danio_id
+                WHERE cd.solicitud_id = 1";
 
         $danos = $obj->consult($sql);
 
@@ -58,7 +58,7 @@ class SolicitudesController
     public function getAccidentes()
     {
         $obj = new SolicitudesModel();
-        $sqlT = "SELECT * FROM tipo_accidente";
+        $sqlT = "SELECT * FROM tipo_choque";
         $tipoAc = $obj->consult($sqlT);
         include_once '../view/Solicitudes/accidentes.php';
     }
@@ -70,12 +70,14 @@ class SolicitudesController
             $idTipo = $_POST['id_tipo_accidente'];
 
 
-            $sqlTip = "SELECT id_detalle_accidente, descripcion FROM detalle_accidente WHERE id_tipo_accidente = $idTipo";
+            $sqlTip = "SELECT cd.*, tp.tipo_choque_id  FROM choque_detalle cd
+                       JOIN tipo_choque tp ON tp.tipo_choque_id = cd.id_perteneciente
+                       WHERE tp.tipo_choque_id  = $idTipo";
 
             $tip = $obj->consult($sqlTip);
 
             foreach ($tip as $t) {
-                echo "<option value='" . $t['id_detalle_accidente'] . "'>" . $t['descripcion'] . "</option>";
+                echo "<option value='" . $t['choq_detal_id'] . "'>" . $t['descripcion'] . "</option>";
             }
         } else {
             echo "<option value=''>No se recibieron datos válidos...</option>";
@@ -185,7 +187,7 @@ class SolicitudesController
 
 
         $accidentes = $obj->consult($sql);
-        
+
 
 
         include_once "../view/solicitudes/consultarAccidentes.php";
@@ -197,13 +199,13 @@ class SolicitudesController
         $obj = new SolicitudesModel();
         // $usu_id=$_POST['usu_id'];
 
-        $sql = " SELECT svd.*, td.descripcion AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+        $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
         STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre
         FROM solicitud_via_dan svd
         LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
         LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
         LEFT JOIN estados est ON svd.est_sol_id = est.est_id
-        LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.descripcion, u.usu_nombre1";
+        LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1";
 
 
 
@@ -224,14 +226,14 @@ class SolicitudesController
         $obj = new SolicitudesModel();
         $id = $_POST['id'];
 
-        $sql = "SELECT svd.*, td.descripcion AS tipo_danio,  u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+        $sql = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio,  u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
         STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre FROM solicitud_via_dan svd
         LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
         LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
         LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
         LEFT JOIN estados est ON svd.est_sol_id = est.est_id
         WHERE svd.sol_via_dan_id = $id 
-        GROUP BY svd.sol_via_dan_id, td.descripcion, u.usu_nombre1, est.est_nombre";
+        GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre";
 
 
         $vias = $obj->consult($sql);
@@ -384,6 +386,10 @@ class SolicitudesController
 
                 } else {
                     echo "No se movio el archivo";
+                    echo $sql;
+                    echo "Ruta temporal: " . $_FILES['imagenes']['tmp_name'][$index];
+                    echo "Ruta destino: " . $rutaDestino;
+
                 }
             }
         }
