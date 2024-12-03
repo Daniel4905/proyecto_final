@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'viaConsult'); ?>"
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitudConsult'); ?>"
                         class="sidebar-link gradient-text" title="Mira tus solicitudes">
                         <img src="img/consulta.png" style="width: 25px;  margin-right: 15px; margin-left: 7px;" alt="" title="Realiza la solicitud que desees">
                         Consultar solicitudes
