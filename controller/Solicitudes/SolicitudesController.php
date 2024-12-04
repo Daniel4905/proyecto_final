@@ -174,16 +174,18 @@ class SolicitudesController
         $obj = new SolicitudesModel();
         // $usu_id=$_POST['usu_id'];
 
-        $sql = "SELECT ra.*, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, 
-        STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, tc.tipo_choque_desc AS tipo_choque FROM registro_accidente ra
-        LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
-        LEFT JOIN  reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
-        LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
-        LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
-        LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
-        LEFT JOIN choque_detalle dta ON rda.reg_det_acc_id = dta.choq_detal_id
-        LEFT JOIN tipo_choque tc ON ra.tipo_accidente_id = tc.tipo_choque_id
-        GROUP BY ra.reg_acc_id, tc.tipo_choque_desc";
+        $sql = "SELECT ra.*, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, 
+            STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+            STRING_AGG(DISTINCT tc.tipo_choque_desc, ', ') AS tipo_choque FROM registro_accidente ra
+            LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
+            LEFT JOIN reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
+            LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
+            LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
+            LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
+            LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
+            LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
+            GROUP BY  ra.reg_acc_id";
+
 
 
 
@@ -277,16 +279,17 @@ class SolicitudesController
     {
         $obj = new SolicitudesModel();
         $acc_id = $_POST['id'];
-        $sql = "SELECT ra.*, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, 
-        STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, tc.tipo_choque_desc AS tipo_choque FROM registro_accidente ra
-        LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
-        LEFT JOIN  reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
-        LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
-        LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
-        LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
-        LEFT JOIN choque_detalle dta ON reg_det_acc_id = dta.choq_detal_id
-        LEFT JOIN tipo_choque tc ON ra.tipo_accidente_id = tc.tipo_choque_id
-        WHERE ra.reg_acc_id = $acc_id GROUP BY ra.reg_acc_id, tc.tipo_choque_desc";
+        $sql = "SELECT ra.*, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, 
+            STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+            STRING_AGG(DISTINCT tc.tipo_choque_desc, ', ') AS tipo_choque FROM registro_accidente ra
+            LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
+            LEFT JOIN reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
+            LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
+            LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
+            LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
+            LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
+            LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
+            WHERE ra.reg_acc_id = $acc_id GROUP BY ra.reg_acc_id";
 
         $accidentes = $obj->consult($sql);
 

@@ -214,11 +214,13 @@ html {
 
 @media (min-width: 1367px) and (max-width: 1921px) {
     .container-scroll {
-        max-height: 750px;
+        max-height: 650px;
         overflow-y: auto;
         overflow-x: hidden;
     }
 }
+
+
 
 
 .input-error {
