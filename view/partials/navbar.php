@@ -39,22 +39,18 @@
                       <h4><?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h4>
                       <p class="text-muted"><?php echo $_SESSION['correo']; ?></p>
                       <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'viewProfile', array("usu_id" => $_SESSION['id'])); ?>"
-                        class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                        class="btn btn-xs btn-secondary btn-sm">Ver perfil</a>
                     </div>
                   </div>
                 </li>
                 <li>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item"
-                    href="<?php echo getUrl('Usuarios', 'Usuarios', 'viewProfile', array("usu_id" => $_SESSION['id'])); ?>">Mi
-                    perfil</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item"
                     href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUpdateUsu', array("usu_id" => $_SESSION['id'])); ?>">Configuracion
                     de la cuenta</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item text-danger" href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
-                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');">Cerrar sesion</a>
+                  <a class="dropdown-item" href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
+                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');" style="color: red; font-weight: bold;">Cerrar sesion</a>
                 </li>
               </div>
             </ul>

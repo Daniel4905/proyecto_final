@@ -15,11 +15,16 @@
                                     resolve();
                                 }else{
                                     if (isset($_SESSION['pqrs'])) {
-                                        echo "<div class='alert alert-success alert-dismissible fade show' role='alert' id='success-alert'>";
-                                        foreach ($_SESSION['pqrs'] as $reg) {
-                                            echo $reg . "<br>";
-                                        }
-                                        echo "</div>";
+                                        echo "<script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Éxito',
+                                                    text: 'PRS Registrado con exito',
+                                                    confirmButtonText: 'Ok'
+                                                });
+                                            });
+                                        </script>";
                                         unset($_SESSION['pqrs']);
                                     }
                                      echo "<h1>Bienvenido a AccidentEye</h1>";

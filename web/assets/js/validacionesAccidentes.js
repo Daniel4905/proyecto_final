@@ -60,10 +60,14 @@ $(document).ready(function () {
         }
 
         const observaciones = $('#observaciones').val().trim();
-        if (!patronTexto.test(observaciones) || observaciones.length > 300) {
+        if (observaciones ===! '' && !patronTexto.test(observaciones) || observaciones.length > 300) {
             agregarError($('#observaciones'), "El campo observaciones solo admite letras (máx. 300)");
             valido = false;
         }
+         if (observaciones === ''){
+            agregarError($('#observaciones'), "El campo observaciones es requerido (máx. 300)");
+            valido = false;
+         }
 
         const tipoVia = $('#tipoVia').val().trim();
         if (tipoVia === '') {

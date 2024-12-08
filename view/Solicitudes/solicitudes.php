@@ -1,3 +1,20 @@
+
+<?php 
+if (isset($_SESSION['regAcc'])) {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Accidente registrado con exito',
+                confirmButtonText: 'Ok'
+            });
+        });
+    </script>";
+    unset($_SESSION['regAcc']);
+}
+
+?>
 <div class="container">
     <form>
         <div class="col-md-4 mb-3">

@@ -1,4 +1,19 @@
 <div class="container">
+    <?php
+    if (isset($_SESSION['mensaje_exito'])) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: '" . $_SESSION['mensaje_exito'] . "',
+                    confirmButtonText: 'Ok'
+                });
+            });
+        </script>";
+        unset($_SESSION['mensaje_exito']);
+    }
+    ?>
     <div class="mt 3">
         <h3 class="display-4">Actuliza tus datos <?php echo $_SESSION['nombre']; ?></h3>
     </div>
@@ -9,21 +24,22 @@
         ?>
         <form action="<?php echo getUrl("Usuarios", "Usuarios", "postUpdateUsu"); ?> " method="post" id="formUpdateUsu">
             <div class="row mt-5">
-                <div class='alert alert-danger d-none' role='alert' id="error">
-
-                </div>
                 <?php
-                if (isset($_SESSION['errores'])) {
-                    echo "<div class='alert alert-danger' role='alert'>";
-                    foreach ($_SESSION['errores'] as $error) {
-                        echo $error . "<br>";
-                    }
-                    echo "</div>";
-                    unset($_SESSION['errores']);
-                }
+                // if (isset($_SESSION['errores'])) {
+                //     echo "<script>
+                //         document.addEventListener('DOMContentLoaded', function () {
+                //             Swal.fire({
+                //                 icon: 'error',
+                //                 title: 'Errores detectados',
+                //                 html: '" . implode("<br>", $_SESSION['errores']) . "',
+                //                 confirmButtonText: 'Ok'
+                //             });
+                //         });
+                //     </script>";
+                //     unset($_SESSION['errores']);
+                // }
 
                 ?>
-
                 <div class="col-md-3">
                     <label for="usu_nombre1">Primer nombre*</label>
                     <input type="text" name="usu_nombre1" id="nombre1" class="form-control validar-nombre"
@@ -89,14 +105,14 @@
                         value="<?php echo $usu['usu_tel']; ?>">
                 </div>
                 <div class="col-md-12 mt-3">
-                <small class="form-text text-muted">Direccion actual : <?php echo $usu['usu_direccion']; ?>
-                </small><br>
-                <input type="checkbox" name="cambiarDir" id="cambiarDir">
-                <label for="cambiarDir">Actualizar direccion</label>
+                    <small class="form-text text-muted">Direccion actual : <?php echo $usu['usu_direccion']; ?>
+                    </small><br>
+                    <input type="checkbox" name="cambiarDir" id="cambiarDir">
+                    <label for="cambiarDir">Actualizar direccion</label>
                 </div>
-                
+
                 <div class="row d-none" id="direccionDiv">
-                    
+
                     <div class="col-md-3 mt-3">
                         <label for="tipoVia">Tipo de vía*</label>
                         <select id="tipoVia" name="tipoVia" class="form-control">
@@ -158,25 +174,30 @@
                         value="<?php echo $usu['usu_correo']; ?>">
                 </div>
                 <div class="col-md-3 mt-2">
-                    <label for="usu_claveAnt">Clave anterior</label>
-                    <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave">
+                    <label for="usu_claveAnt">Contraseña</label>
+                    <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave"
+                        data-id="<?php echo $_SESSION['id']; ?>"
+                        data-url="<?php echo getUrl('Usuarios', 'Usuarios', "ValidarCont", false, "ajax"); ?>">
+                    <small class="form-text text-muted">Para actualizar sus datos debe igresar su contraseña.</small>
                 </div>
                 <div class="col-md-12 mt-2">
 
-                <input type="checkbox" name="cambiarCont" id="cambiarCont">
-                <label for="cambiarCont">Cambiar contraseña</label>
+                    <input type="checkbox" name="cambiarCont" id="cambiarCont">
+                    <label for="cambiarCont">Cambiar contraseña</label>
                 </div>
                 <div class="row col-md-7 mt-2 d-none" id="divContra">
-                <div class="col-md-6 mt-2">
-                    <label for="usu_clave">Clave nueva</label>
-                    <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave">
+                    <div class="col-md-6 mt-2">
+                        <label for="usu_clave">Clave nueva</label>
+                        <input type="password" name="usu_clavenew" id="clavenewUp" class="form-control claves"
+                            placholder="Clave">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <label for="usu_clave">Confirmar clave nueva*</label>
+                        <input type="password" name="usu_clavenewConf" id="clavenewConf" class="form-control claves"
+                            placholder="Clave">
+                    </div>
                 </div>
-                <div class="col-md-6 mt-2">
-                    <label for="usu_clave">Confirmar clave nueva*</label>
-                    <input type="password" name="usu_clavenew" id="clavenew" class="form-control claves" placholder="Clave">
-                </div>
-                </div>
-                
+
                 <div class="mt-3">
                     <input type="submit" value="Enviar" class="btn btn-success">
                 </div>
@@ -186,3 +207,4 @@
     <?php
     }
     ?>
+

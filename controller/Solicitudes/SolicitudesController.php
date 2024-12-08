@@ -113,7 +113,6 @@ class SolicitudesController
         }
         $iddetalleAcc = $_POST['detalleChoque'];
 
-        echo $iddetalleAcc. "<br>";
 
 
         $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
@@ -137,9 +136,7 @@ class SolicitudesController
                     $ejecutar = $obj->insert($sql);
                     if ($ejecutar) {
                         echo "Funciona";
-                    } else {
-                        echo "No FIN";
-                    }
+                    } 
 
                 } else {
 
@@ -152,19 +149,17 @@ class SolicitudesController
                 $ejecutar = $obj->insert($sqlVehi);
                 if ($ejecutar) {
                     echo "Funciona vehiculos";
-                } else {
-                    echo "$sqlVehi";
-                }
+                } 
             }
             $idDet = $obj->autoIncrement("registro_detalle_accidente", " reg_det_acc_id");
             $sqlDet = "INSERT INTO registro_detalle_accidente VALUES($idDet, $idAcc,  $iddetalleAcc)";
             $ejecutar = $obj->insert($sqlDet);
             if ($ejecutar) {
                 echo "Funciona detalles";
-            } else {
-                echo "No funciona detalles";
-                echo $sqlDet;
-            }
+            } 
+
+            $_SESSION['regAcc'][]='Registro exitoso';
+            redirect(getUrl('Solicitudes', 'Solicitudes', 'getSolicitud'));
         } else {
             echo $sqlAcc;
         }

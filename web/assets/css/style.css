@@ -204,9 +204,17 @@ html {
     }
 }
 
-@media (min-width: 1025px) and (max-width: 1367px) {
+@media (min-width: 1024px) and (max-width: 1367px) {
     .container-scroll {
         max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+@media (min-width: 1022px) and (max-width: 1024px) {
+    .container-scroll {
+        max-height: 300px;
         overflow-y: auto;
         overflow-x: hidden;
     }

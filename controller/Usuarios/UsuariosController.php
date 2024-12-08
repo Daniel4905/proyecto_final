@@ -128,9 +128,10 @@ class UsuariosController
         $obj = new UsuariosModel();
         $usu_id = $_GET['usu_id'];
 
-        $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id FROM usuarios u
+        $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id, td.nombre_tipo FROM usuarios u
                 JOIN rol r ON u.rol_id = r.rol_id 
                 JOIN sexo s ON u.sex_id = s.sex_id 
+                JOIN tipo_documento td ON u.doc_id = td.doc_id
                 JOIN estados est ON u.est_id = est.est_id
                  WHERE usu_id = $usu_id";
 
@@ -186,6 +187,11 @@ class UsuariosController
 
         $sqlRol = "SELECT * FROM rol";
 
+        $sqlsex = "SELECT * FROM sexo";
+
+
+
+        $sexo = $obj->consult($sqlsex);
         $roles = $obj->consult($sqlRol);
         $usuarios = $obj->consult($sql);
         $docs = $obj->consult($sqldoc);
@@ -327,10 +333,10 @@ class UsuariosController
         $usu_apellido2 = $_POST['usu_apellido2'];
         $usu_correo = $_POST['usu_correo'];
         $usu_clave = $_POST['usu_clave'];
-        $usu_clavenew = $_POST['usu_clavenew'];
+        
         $usu_tel = $_POST['usu_tel'];
-        $check = $_POST['cambiarDir'];
-        if (isset($check)) {
+      
+        if (isset($_POST['cambiarDir'])) {
             $tipoV = $_POST['tipoVia'];
             $numeroPr = $_POST['numeroPrincipal'];
             $comp1 = $_POST['complemento1'];
@@ -354,6 +360,8 @@ class UsuariosController
             }
         }
 
+
+
         $doc_id = $_POST['doc_id'];
 
         $sqlcontra = "SELECT usu_clave FROM usuarios WHERE usu_id = $usu_id";
@@ -366,19 +374,20 @@ class UsuariosController
         }
         $validacion = true;
 
-        if (!empty($usu_clave)) {
-            if (!password_verify($usu_clave, $contraBase)) {
-                $_SESSION['error'][] = "La contraseña actual ingresada no es correcta";
-                $validacion = false;
-            }
+   
+        if (!password_verify($usu_clave, $contraBase)) {
+            $_SESSION['errores'][] = "La contraseña actual ingresada no es correcta";
+            $validacion = false;
         }
+        
 
-
-        if (empty($usu_clavenew)) {
-            $hash = $contraBase;
-        } else {
+        if (isset($_POST['cambiarCont'])){
+            $usu_clavenew = $_POST['usu_clavenew'];
             $hash = password_hash($usu_clavenew, PASSWORD_DEFAULT);
+        }else{
+            $hash = $contraBase;
         }
+
         $sql = "";
         if (empty($usu_apellido2) && empty($usu_nombre2)) {
             $sql = "UPDATE usuarios SET usu_documento = '$usu_doc', usu_nombre1 = '$usu_nombre1', usu_nombre2 = NULL, usu_apellido1 = '$usu_apellido1', usu_apellido2 = NULL, usu_correo = '$usu_correo', usu_clave = '$hash',  usu_tel = '$usu_tel', usu_direccion='$direccion', doc_id = $doc_id WHERE usu_id = $usu_id";
@@ -396,12 +405,35 @@ class UsuariosController
                     $_SESSION['nombre'] = $usu_nombre1 . " " . $usu_nombre2;
                     $_SESSION['apellido'] = $usu_apellido1;
                 }
-                redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
+                $_SESSION['mensaje_exito'] = "¡Actualización exitosa!";
+                redirect(getUrl("Usuarios", "Usuarios", "getUpdateUsu", array("usu_id" => $usu_id)));
             } else {
-                redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
+                redirect(getUrl("Usuarios", "Usuarios", "getUpdateUsu", array("usu_id" => $usu_id)));
             }
         } else {
-            redirect(getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu_id)));
+            redirect(getUrl("Usuarios", "Usuarios", "getUpdateUsu", array("usu_id" => $usu_id)));
+        }
+    }
+
+    public function validarCont() {
+        $obj = new UsuariosModel();
+    
+        $usu_id = $_POST['id'];
+        $usu_clave = $_POST['clave'];
+
+        $sql = "SELECT * FROM usuarios WHERE usu_id = $usu_id";
+        $resultado = $obj->consult($sql);
+    
+        if ($resultado && isset($resultado[0])) {
+            $contraBase = $resultado[0]['usu_clave'];
+    
+            if (password_verify($usu_clave, $contraBase)) {
+                echo "Contraseña válida";  
+            } else {
+                echo "La contraseña ingresada no es correcta.";  
+            }
+        } else {
+            echo "Usuario no encontrado."; 
         }
     }
 

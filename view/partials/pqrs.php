@@ -6,7 +6,7 @@
         <i class="fas fa-question"></i>
     </button>
     <div class="dropdown-menu">
-        <a href="#" class="dropdown-item">Seguir PQRS</a>
+        <a href="<?php echo getUrl('PQRS', 'PQRS', 'getPQRS'); ?>" class="dropdown-item">Seguir PQRS</a>
         <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#pqrsModal">Enviar PQRS</a>
     </div>
 </div>

@@ -3,6 +3,7 @@
 <script src="assets/js/global.js"></script>
 <script src="assets/js/script.js"></script>
 <script src="assets/js/datosUsu.js"></script>
+<script src="assets/js/validacionesUpdate.js"></script>
 <script>
     setTimeout(function() {
         var alert = document.getElementById('success-alert');
@@ -11,3 +12,4 @@
         }
     }, 2000);
 </script>
+
