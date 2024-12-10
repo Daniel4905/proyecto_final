@@ -14,6 +14,21 @@ if (isset($_SESSION['regAcc'])) {
     unset($_SESSION['regAcc']);
 }
 
+
+if (isset($_SESSION['regVia'])) {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Solicitud registrada exitosamente',
+                confirmButtonText: 'Ok'
+            });
+        });
+    </script>";
+    unset($_SESSION['regVia']);
+}
+
 ?>
 <div class="container">
     <form>

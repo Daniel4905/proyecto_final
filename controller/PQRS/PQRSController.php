@@ -37,7 +37,7 @@
             $sql = "SELECT p.*,  STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, tp.desc_tipo_pqrs FROM PQRS p
                     JOIN usuarios u ON  p.usu_id = u.usu_id
                     JOIN tipo_pqrs tp ON tp.id_tipo_pqrs= p.tipo_pqrs
-                     GROUP BY p.id_pqrs, tp.desc_tipo_pqrs";
+                     GROUP BY p.id_pqrs, tp.desc_tipo_pqrs, p.desc_pqrs, p.tipo_pqrs, p.usu_id";
 
 
             $pqrs = $obj->consult($sql);

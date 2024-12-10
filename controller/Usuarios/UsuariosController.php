@@ -79,7 +79,7 @@ class UsuariosController
         $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
 
 
-        $hash = password_hash($usu_clave, PASSWORD_DEFAULT);
+        $hash = hash('sha256', $usu_clave);
 
 
         $id = $obj->autoIncrement("usuarios", "usu_id");

@@ -33,7 +33,13 @@
                 <li>
                   <div class="user-box">
                     <div class="avatar-lg">
-                      <img src="img/descarga.png" alt="image profile" class="avatar-img rounded" />
+                    <?php
+                      if ($_SESSION['sexo'] == 1) {
+                        echo '<img src="img/hombre.png" alt="image profile" class="avatar-img rounded" />';
+                      } else if($_SESSION['sexo'] == 2) {
+                        echo '<img src="img/mujer.png" alt="image profile" class="avatar-img rounded" />';
+                      }
+                    ?>
                     </div>
                     <div class="u-text">
                       <h4><?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h4>

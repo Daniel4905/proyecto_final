@@ -47,8 +47,8 @@ class SolicitudesController
         $obj = new SolicitudesModel();
 
         $sql = "SELECT td.tipo_danio_id, td.tipo_danio_desc FROM  danio cd  
-                JOIN tipo_danio td ON td.tipo_danio_id = cd.danio_id
-                WHERE cd.solicitud_id = 1";
+        JOIN tipo_danio td ON td.tipo_danio_id = cd.danio_id
+        WHERE cd.solicitud_id = 1";
 
         $danos = $obj->consult($sql);
 
@@ -164,7 +164,8 @@ class SolicitudesController
             echo $sqlAcc;
         }
     }
-    public function getSolicitudConsult()
+
+    public function acConsult()
     {
         $obj = new SolicitudesModel();
         // $usu_id=$_POST['usu_id'];
@@ -220,6 +221,7 @@ class SolicitudesController
 
 
     }
+   
     public function detallesVia()
     {
         $obj = new SolicitudesModel();
@@ -385,12 +387,10 @@ class SolicitudesController
 
                 } else {
                     echo "No se movio el archivo";
-                    echo $sql;
-                    echo "Ruta temporal: " . $_FILES['imagenes']['tmp_name'][$index];
-                    echo "Ruta destino: " . $rutaDestino;
-
                 }
             }
+            $_SESSION['regVia'][]='Registro exitoso';
+            redirect(getUrl('Solicitudes', 'Solicitudes', 'getSolicitud'));
         }
     }
 

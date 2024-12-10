@@ -151,7 +151,7 @@ $(document).ready(function () {
     }
 
 
-    const complemento1 = $('#complemento').val().trim();
+    const complemento1 = $('#complemento1').val().trim();
     if (complemento1 !== '' && !patronTexto.test(complemento1)) {
       agregarError($('#complemento'), 'El complemento solo debe contener letras y espacios.');
       valido = false;

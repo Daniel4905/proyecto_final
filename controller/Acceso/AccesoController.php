@@ -12,11 +12,13 @@ class AccesoController
         $user = $_POST['numeroId'];
         $password = $_POST['password'];
 
+        $hashlog= hash('sha256', $password);
+
         $sql = "SELECT * FROM usuarios WHERE usu_documento = '$user' AND est_id=1";
         $usuario = $obj->consult($sql);
         if ($usuario && count($usuario) > 0) {
             foreach ($usuario as $usu) {
-                if (password_verify($password, $usu['usu_clave'])) {
+                if ( $hashlog === $usu['usu_clave']){
                     $_SESSION['id'] = $usu["usu_id"];
                     $_SESSION['nombre'] = $usu["usu_nombre1"] . " " . $usu["usu_nombre2"];
                     $_SESSION['apellido'] = $usu["usu_apellido1"];
@@ -140,8 +142,7 @@ class AccesoController
             $validacion = false;
         }
 
-
-        $hash = password_hash($usu_clave, PASSWORD_DEFAULT);
+        $hash = hash('sha256', $usu_clave);
 
 
         $id = $obj->autoIncrement("usuarios", "usu_id");

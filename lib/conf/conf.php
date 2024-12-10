@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "postgres";
-$pass = "123";
-$database = "proyecto_final";
+$pass = "12345";
+$database = "Proyecto_final";
 $port = "5432";
 ?>
