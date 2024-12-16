@@ -1,0 +1,112 @@
+MAP
+    NAME Colombia
+    SIZE 800 600
+    STATUS ON
+    EXTENT -76.5333 -83.5903 180.8705 3.4500
+    SHAPEPATH "shape"
+    FONTSET "misc/fonts/fonts.txt"
+    SYMBOLSET "misc/symbols/symbols.sym"
+    IMAGECOLOR 255 255 255
+    UNITS dd
+
+    WEB
+        IMAGEPATH "C:/ms4w/tmp/ms_tmp"
+        IMAGEURL "/ms_tmp/"
+    END
+
+    LAYER
+        NAME "Cali"
+        STATUS ON
+        DATA "cinco.shp"
+        TYPE POLYGON
+        CLASS
+            STYLE
+                COLOR 255 250 255  
+                OUTLINECOLOR 120 160 120  
+            END
+        END
+    END
+    LAYER
+        NAME "Comunas"
+        STATUS ON
+        DATA "six.shp"
+        LABELITEM "Comuna"
+        TYPE LINE
+        CLASS
+            STYLE
+                COLOR 100 100 100  
+                OUTLINECOLOR 150 150 150  
+            END
+            LABEL 
+                SIZE SMALL
+                COLOR 30 30 30  
+            END
+        END
+    END
+
+    LAYER
+        NAME "Vias"
+        STATUS ON
+        DATA "two.shp"
+        TYPE LINE
+        LABELITEM "nomenclatu"
+        CLASS
+            STYLE
+                COLOR 180 180 180  
+            END
+            LABEL 
+                SIZE SMALL
+                COLOR 90 90 90 
+            END
+        END
+    END
+        LAYER
+        NAME "Barrios"
+        STATUS ON
+        DATA "one.shp"
+        TYPE LINE
+        LABELITEM "BARRIO"
+        CLASS
+            STYLE
+                COLOR 230 230 230 
+                OUTLINECOLOR 180 180 180  
+            END
+            LABEL 
+                SIZE SMALL
+                COLOR 0 0 0
+            END
+        END
+    END
+
+    
+
+    LAYER
+        CONNECTIONTYPE postgis
+        NAME "Accidentes"
+        STATUS ON
+        DATA "geom FROM (SELECT * FROM punto_accidente) AS puntosAccidente USING UNIQUE id SRID=4326"
+        CONNECTION "user=postgres password=123 dbname=proyecto_final host=localhost port=5434"
+        TYPE POINT
+        CLASS
+            STYLE
+                SYMBOL puntoAccidente
+                SIZE 25
+            END
+        END
+    END
+
+    LAYER
+        CONNECTIONTYPE postgis
+        NAME "Viadano"
+        STATUS ON
+        DATA "geom FROM (SELECT * FROM punto_via) AS puntosVia USING UNIQUE id SRID=4326"
+        CONNECTION "user=postgres password=123 dbname=proyecto_final host=localhost port=5434"
+        TYPE POINT
+        CLASS
+           STYLE
+               SYMBOL puntoVia
+               SIZE 20
+            END
+        END
+    END
+END

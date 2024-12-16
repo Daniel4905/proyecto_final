@@ -98,6 +98,7 @@ class UsuariosController
             $ejecutar = $obj->insert($sql);
 
             if ($ejecutar) {
+                $_SESSION['regEx'][]='Registro exitoso';
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
             } else {
                 redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
@@ -112,12 +113,13 @@ class UsuariosController
     {
         $obj = new UsuariosModel();
     
-        $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id FROM usuarios u
-                JOIN rol r ON u.rol_id = r.rol_id 
-                JOIN sexo s ON u.sex_id = s.sex_id 
-                JOIN tipo_documento td ON u.doc_id = td.doc_id
-                JOIN estados est ON u.est_id = est.est_id
-                ORDER BY u.usu_id ASC";
+        $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id 
+        FROM usuarios u
+        LEFT JOIN rol r ON u.rol_id = r.rol_id 
+        LEFT JOIN sexo s ON u.sex_id = s.sex_id 
+        LEFT JOIN tipo_documento td ON u.doc_id = td.doc_id
+        LEFT JOIN estados est ON u.est_id = est.est_id
+        ORDER BY u.usu_id ASC;";
     
         $usuario = $obj->consult($sql);
         include_once '../view/usuarios/consult.php';
@@ -232,18 +234,19 @@ class UsuariosController
         } else {
             echo "No se encontraron resultados";
         }
-        $validacion = true;
-
-        if (!empty($usu_clave)) {
-            if (!password_verify($usu_clave, $contraBase)) {
-                $_SESSION['error'][] = "La contraseña actual ingresada no es correcta";
-                $validacion = false;
-            }
+        $hash1 = hash('sha256', $usu_clave);
+        
+        if ($hash1 !=$contraBase) {
+            $_SESSION['errores'][] = "La contraseña actual ingresada no es correcta";
+            $validacion = false;
         }
-        if (empty($usu_clavenew)) {
+        
+
+        if (isset($_POST['cambiarCont'])){
+            $usu_clavenew = $_POST['usu_clavenew'];
+            $hash = hash('sha256',$usu_clavenew );
+        }else{
             $hash = $contraBase;
-        } else {
-            $hash = password_hash($usu_clavenew, PASSWORD_DEFAULT);
         }
         $sql = "";
         if (empty($usu_apellido2) && empty($usu_nombre2)) {
@@ -374,8 +377,9 @@ class UsuariosController
         }
         $validacion = true;
 
-   
-        if (!password_verify($usu_clave, $contraBase)) {
+        $hash1 = hash('sha256', $usu_clave);
+        
+        if ($hash1 !=$contraBase) {
             $_SESSION['errores'][] = "La contraseña actual ingresada no es correcta";
             $validacion = false;
         }
@@ -383,7 +387,7 @@ class UsuariosController
 
         if (isset($_POST['cambiarCont'])){
             $usu_clavenew = $_POST['usu_clavenew'];
-            $hash = password_hash($usu_clavenew, PASSWORD_DEFAULT);
+            $hash = hash('sha256',$usu_clavenew );
         }else{
             $hash = $contraBase;
         }
@@ -423,11 +427,11 @@ class UsuariosController
 
         $sql = "SELECT * FROM usuarios WHERE usu_id = $usu_id";
         $resultado = $obj->consult($sql);
-    
+        $hash = hash('sha256', $usu_clave);
         if ($resultado && isset($resultado[0])) {
             $contraBase = $resultado[0]['usu_clave'];
     
-            if (password_verify($usu_clave, $contraBase)) {
+            if ($contraBase === $hash) {
                 echo "Contraseña válida";  
             } else {
                 echo "La contraseña ingresada no es correcta.";  

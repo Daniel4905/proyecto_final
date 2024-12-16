@@ -207,4 +207,5 @@
     <?php
     }
     ?>
+    <script src="assets/js/validacionesUpdate.js"></script>
 

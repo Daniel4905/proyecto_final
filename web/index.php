@@ -3,7 +3,7 @@
     include_once "../lib/helpers.php";
     include_once "../view/partials/head.php";
     if (!isset($_SESSION['auth'])) {
-      header("Location: login.php");
+      redirect("login.php");
     }
     echo "<body>";
             echo"<div class='wrapper'>";
@@ -14,22 +14,10 @@
                                 if(isset($_GET['modulo'])){
                                     resolve();
                                 }else{
-                                    if (isset($_SESSION['pqrs'])) {
-                                        echo "<script>
-                                            document.addEventListener('DOMContentLoaded', function () {
-                                                Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'Éxito',
-                                                    text: 'PRS Registrado con exito',
-                                                    confirmButtonText: 'Ok'
-                                                });
-                                            });
-                                        </script>";
-                                        unset($_SESSION['pqrs']);
-                                    }
+                                     include_once "../view/partials/mensajesExito.php";
                                      echo "<h1>Bienvenido a AccidentEye</h1>";
-                                     echo "<p>Selecciona una opción del menú para comenzar.</p>";
-                                    //  include_once "../view/partials/content.php";
+                                     echo "<p>Selecciona una zona del mapa para realizar una solicitud.</p>";
+                                     include_once "maqueta.php";
                                 }
                                 echo"</div>";
                         echo "</div>";

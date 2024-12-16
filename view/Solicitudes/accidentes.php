@@ -74,8 +74,11 @@
         <form action="<?php echo getUrl("Solicitudes", "Solicitudes", "regAccidentes"); ?>" id="formAccidentes"
             enctype="multipart/form-data" method="post">
             <input type="hidden" name="usu_id" value="<?php echo $_SESSION['id']; ?>">
+            <input type="hidden" name="" id="coordenadas" class="form-control">
+            <input type="hidden" name="punto1" id="Coord1">
+            <input type="hidden" name="punto2" id="Coord2">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-6">
                     <label for="tipoChoque" class="form-label">Tipo de choque:</label>
                     <select id="tipoChoque" name="tipoChoque" class="form-select"
                         data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getDetalleAc", false, "ajax") ?>'>
@@ -87,13 +90,13 @@
                         ?>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <label for="detalleChoque" class="form-label">Detalles del choque:</label>
                     <select id="detalleChoque" name="detalleChoque" class="form-select">
                         <option value="">Seleccione un tipo de choque primero...</option>
                     </select>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-12 mt-2">
                     <label class="form-label">Vehículos involucrados:</label>
                     <div class="row">
                         <div class="col-md-4">
@@ -164,64 +167,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-5">
                     <label for="Lesionados" class="form-label">¿Hay lesionados?</label><br>
                     <input type="checkbox" id="lesionados" name="lesionados" value="lesionados"
                         class="form-check-input">
                     <small class="form-text text-muted">Seleccione si hay lesionados</small>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <label for="observaciones" class="form-label">Observaciones:</label>
                     <textarea id="observaciones" name="observaciones" placeholder="Detalle el accidente..."
                         class="form-control" style="height: 100px;"></textarea>
                 </div>
-
-                <h3>Ubicación</h3>
-                <div class="row">
-                    <div class="col-md-4 mt-3">
-                        <label class="titulos" for="tipoVia">Tipo de vía*</label>
-                        <select id="tipoVia" name="tipoVia" class="form-control"
-                            title="Escoja el tipo de via, por ejemplo: Calle">
-                            <option value="">Seleccione...</option>
-                            <option value="Calle">Calle</option>
-                            <option value="Carrera">Carrera</option>
-                            <option value="Avenida">Avenida</option>
-                            <option value="Transversal">Transversal</option>
-                            <option value="Diagonal">Diagonal</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mt-3">
-                        <label class="titulos" for="numeroPrincipal">Número principal*</label>
-                        <input type="number" id="numeroPrincipal" name="numeroPrincipal" class="form-control"
-                            placeholder="123" min="1" max="300">
-                    </div>
-                    <div class="col-md-4 mt-3">
-                        <label class="titulos" for="complemento1">Complemento</label>
-                        <input type="text" id="complemento1" name="complemento1" class="form-control" placeholder="J"
-                            maxlength="3">
-                    </div>
-                    <div class="col-md-3 mt-3">
-                        <label class="titulos" for="numeroSecundario">Número 1</label>
-                        <input type="number" id="numeroSecundario" name="numeroSecundario" class="form-control"
-                            placeholder="22" min="1" max="300" maxlength="3">
-                    </div>
-                    <div class="col-md-3 mt-3">
-                        <label class="titulos" for="complemento2">Complemento</label>
-                        <input type="text" id="complemento2" name="complemento2" class="form-control"
-                            placeholder="Bis/A/Sur">
-                    </div>
-                    <div class="col-md-3 mt-3">
-                        <label class="titulos" for="numeroTerciario">Número 2</label>
-                        <input type="number" id="numeroTerciario" name="numeroTerciario" class="form-control"
-                            placeholder="42" min="1" max="300" maxlength="3">
-                    </div>
-                    <div class="col-md-3 mt-3">
-                        <label class="titulos" for="referencias">Referencias adicionales</label>
-                        <textarea id="referencias" name="referencias" class="form-control" rows="2" maxlength="100"
-                            placeholder="Máx. 100 Carácteres"></textarea>
-                    </div>
-                </div>
-
                 <h3>Adjunta la evidencia que desees</h3>
                 <div class="row">
                     <div class="col-12 col-md-4 mb-3">
@@ -270,6 +226,13 @@
         </form>
     </div>
 </div>
+<script>
+    var valorPunto1 = document.getElementById("punto1").value; 
+    var valorPunto2 = document.getElementById("punto2").value; 
+
+    document.getElementById("Coord1").value = valorPunto1;
+    document.getElementById("Coord2").value = valorPunto2;
+</script>
 <script>
     $(document).ready(function () {
         $('.image-upload input[type="file"]').on('change', function () {

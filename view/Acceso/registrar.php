@@ -95,8 +95,8 @@ include_once "../lib/helpers.php";
                         </div>
                         <div class="col-md-3 mt-3">
                             <label class="titulos" for="usu_documento">Nro Documento*</label>
-                            <input type="text" name="usu_documento" id="documento" class="form-control validar-num"
-                                placeholder="Documento">
+                            <input type="text" name="usu_documento" id="documentoRegistro" class="form-control validar-num"
+                                placeholder="Documento" data-url="<?php echo getUrl("Acceso", "Acceso", "validarDoc", false,"ajax") ?>">
                         </div>
                         <div class="col-md-3 mt-3">
                             <label class="titulos" for="usu_tel">Teléfono*</label>

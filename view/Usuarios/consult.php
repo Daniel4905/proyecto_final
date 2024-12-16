@@ -1,3 +1,18 @@
+<?php
+if (isset($_SESSION['RegEx'])) {
+    echo "<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'Usuario registrado exitosamente',
+                    confirmButtonText: 'Ok'
+                });
+            });
+             </script>";
+    unset($_SESSION['RegEx']);
+}
+?>
 <div class="container">
     <div class="mt-3">
         <h3 class="display-4">
@@ -5,15 +20,15 @@
         </h3>
     </div>
     <div class="col-md-3">
-            <input type="text" name="buscar" placeholder="Buscar por nombre o por documento" id="buscar"
-                class="form-control mt-3 mb-3"
-                data-url='<?php echo getUrl("Usuarios", "Usuarios", "buscar", false, "ajax") ?>'>
-        </div>
+        <input type="text" name="buscar" placeholder="Buscar por nombre o por documento" id="buscar"
+            class="form-control mt-3 mb-3"
+            data-url='<?php echo getUrl("Usuarios", "Usuarios", "buscar", false, "ajax") ?>'>
+    </div>
 </div>
 
 <div class="container container-scroll">
     <div class="row">
-        
+
         <div class="table-responsive">
             <table class="table table-hover table-striped">
                 <thead>
@@ -61,16 +76,15 @@
                             "</button>" .
                             "</a>";
                         echo "</td>";
-                        echo "<td>" ."<button class='btn btn-outline-secondary btn-detalles' data-id='" . $usu['usu_id'] . "' data-url='" . getUrl("Usuarios", "Usuarios", "detallesUsuario", false, "ajax") . "'>Ver detalles
+                        echo "<td>" . "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $usu['usu_id'] . "' data-url='" . getUrl("Usuarios", "Usuarios", "detallesUsuario", false, "ajax") . "'>Ver detalles
                         </button>" .
-                        "</td>";
+                            "</td>";
                         echo "</tr>";
                     }
                     ?>
 
                 </tbody>
             </table>
-
             <div id="datError" class='alert alert-danger d-none' role='alert'>
                 No se encontraron resultados en la busqueda
             </div>

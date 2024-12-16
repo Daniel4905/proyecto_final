@@ -19,7 +19,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="<?php echo getUrl('PQRS', 'PQRS', 'postCreate'); ?>" method="post">
+                <form action="<?php echo getUrl('PQRS', 'PQRS', 'postCreate'); ?>" method="post" id="formPQRS">
 
                     <input type="hidden" name="usu_id" id="usu_id" value="<?php echo $_SESSION['id']; ?>">
 
@@ -36,11 +36,11 @@
                     <div class="mb-3">
                         <label for="pqrsTextarea" class="form-label">Escribe tu mensaje (Petición, Queja, Reclamo o
                             Sugerencia)</label>
-                        <textarea class="form-control" id="pqrsTextarea" rows="4" placeholder="Escribe aquí..."
+                        <textarea class="form-control" id="observaciones" rows="4" placeholder="Escribe aquí..."
                             name="texto"></textarea>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <button type="submit" class="btn btn-success">Enviar</button>
                     </div>
                 </form>
             </div>
@@ -51,3 +51,5 @@
         </div>
     </div>
 </div>
+<script src="assets/js/validacionesPQRS.js"></script>
+

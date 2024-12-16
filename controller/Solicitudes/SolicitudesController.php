@@ -2,46 +2,35 @@
 include_once '../model/Solicitudes/SolicitudesModel.php';
 class SolicitudesController
 {
-    public function getSolicitud()
+    //Metodo que incluye el select-option que trae el tipo de solicitud que se desea hacer
+   public function getSolicitud()
     {
         $obj = new SolicitudesModel();
 
         include_once '../view/Solicitudes/solicitudes.php';
     }
 
+
+    //Metodo que trae incluye el formulario de acuerdo al tipo de solicitud que se escogió
     public function getSolicitudEscogida()
     {
         $tipoSolicitud = $_POST['tipoSolicitud'];
         if ($tipoSolicitud == 1) {
             $this->getAccidentes();
         } elseif ($tipoSolicitud == 2) {
-            include_once '../view/Solicitudes/señalesNuevo.php';
+            $this->getSenalesNuevo();
         } elseif ($tipoSolicitud == 3) {
-            include_once '../view/Solicitudes/señalesDaños.php';
+            $this->getSenalesDaño();
         } elseif ($tipoSolicitud == 4) {
-            include_once '../view/Solicitudes/reductoresNuevo.php';
+            $this->getReductoresNuevo();
         } elseif ($tipoSolicitud == 5) {
-            include_once '../view/Solicitudes/reductoresDaños.php';
+            $this->getReductoresDaño();
         } else if ($tipoSolicitud == 6) {
             $this->getVias();
         }
 
     }
-    public function getSeñalesNuevo()
-    {
-        $obj = new SolicitudesModel();
-
-        include_once '../view/Solicitudes/señalesNuevo.php';
-    }
-    public function reporteDano()
-    {
-        echo "Funciona";
-    }
-    public function solicitarSenal()
-    {
-        echo "Funciona 2";
-    }
-
+    //VISTAS-FORMULARIOS
     public function getVias()
     {
         $obj = new SolicitudesModel();
@@ -62,7 +51,33 @@ class SolicitudesController
         $tipoAc = $obj->consult($sqlT);
         include_once '../view/Solicitudes/accidentes.php';
     }
+    public function getSenalesNuevo()
+    {
+        $obj = new SolicitudesModel();
 
+        include_once '../view/Solicitudes/senalesNuevo.php';
+    }
+    public function getSenalesDaño()
+    {
+        $obj = new SolicitudesModel();
+
+        include_once '../view/Solicitudes/senalesDanos.php';
+    }
+    public function getReductoresNuevo()
+    {
+        $obj = new SolicitudesModel();
+
+        include_once '../view/Solicitudes/reductoresDanos.php';
+    }
+    public function getReductoresDaño()
+    {
+        $obj = new SolicitudesModel();
+
+       include_once '../view/Solicitudes/reductoresNuevo.php';
+    }
+
+
+    //Metodo que llena input de detalle del cohque como: Bus con bicicleta, carro con moto, etc.
     public function getDetalleAc()
     {
         if (isset($_POST['id_tipo_accidente'])) {
@@ -84,46 +99,43 @@ class SolicitudesController
         }
     }
 
+    // Metodo que registra accidentes
     public function regAccidentes()
     {
         $obj = new SolicitudesModel();
         $usu_id = $_POST['usu_id'];
         $tipoChoque = $_POST['tipoChoque'];
         $vehiculos = $_POST['vehiculos'];
+
+        $punto1 = $_POST['punto1'];
+        $punto2 = $_POST['punto2'];
+
+        
+
+        $punto1Procesado = eliminarSegundoPunto($punto1);
+        $punto2rocesado = eliminarSegundoPunto($punto2);
+
+
         if (!empty($_POST['lesionados'])) {
             $lesionados = "TRUE";
         } else {
             $lesionados = "FALSE";
         }
         $observaciones = $_POST['observaciones'];
-        $tipoV = $_POST['tipoVia'];
-        $numeroPr = $_POST['numeroPrincipal'];
-        $comp1 = $_POST['complemento1'];
-        $comp2 = $_POST['complemento2'];
-        $numeroSc = $_POST['numeroSecundario'];
-        $numeroTerc = $_POST['numeroTerciario'];
-        $referencias = $_POST['referencias'];
 
-        $fechaActual = (new DateTime())->format('Y-m-d H:i:s');
-
-        if (!empty($referencias)) {
-            $ref = "Ref.";
-        } else {
-            $ref = "";
-        }
         $iddetalleAcc = $_POST['detalleChoque'];
-
-
-
-        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
 
         $idAcc = $obj->autoIncrement("registro_accidente", "reg_acc_id");
 
-        $sqlAcc = "INSERT INTO registro_accidente VALUES($idAcc, '$direccion', '$fechaActual', $tipoChoque, $lesionados, '$observaciones', $usu_id)";
+        $sqlAcc = "INSERT INTO registro_accidente VALUES($idAcc, date_trunc('second', NOW()), $tipoChoque, $lesionados, '$observaciones', $usu_id)";
         $ejecutar = $obj->insert($sqlAcc);
 
         if ($ejecutar) {
-            echo $sqlAcc;
+            $sqlPuntos = "INSERT INTO punto_accidente (id_accidente, geom) VALUES ($idAcc, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+            $punto = $obj->insert($sqlPuntos);
+            if(!$punto){
+                return;
+            }
             foreach ($_FILES['imagenes']['name'] as $index => $nombreArchivo) {
 
                 $nombreArchivoSinEspacios = str_replace(' ', '', $nombreArchivo);
@@ -136,7 +148,7 @@ class SolicitudesController
                     $ejecutar = $obj->insert($sql);
                     if ($ejecutar) {
                         echo "Funciona";
-                    } 
+                    }
 
                 } else {
 
@@ -149,22 +161,23 @@ class SolicitudesController
                 $ejecutar = $obj->insert($sqlVehi);
                 if ($ejecutar) {
                     echo "Funciona vehiculos";
-                } 
+                }
             }
             $idDet = $obj->autoIncrement("registro_detalle_accidente", " reg_det_acc_id");
             $sqlDet = "INSERT INTO registro_detalle_accidente VALUES($idDet, $idAcc,  $iddetalleAcc)";
             $ejecutar = $obj->insert($sqlDet);
             if ($ejecutar) {
                 echo "Funciona detalles";
-            } 
+            }
 
-            $_SESSION['regAcc'][]='Registro exitoso';
-            redirect(getUrl('Solicitudes', 'Solicitudes', 'getSolicitud'));
+            $_SESSION['regAcc'][] = 'Registro exitoso';
+            redirect("index.php");
         } else {
             echo $sqlAcc;
         }
     }
 
+    //Metodo que consulta los accidentes
     public function acConsult()
     {
         $obj = new SolicitudesModel();
@@ -221,7 +234,7 @@ class SolicitudesController
 
 
     }
-   
+
     public function detallesVia()
     {
         $obj = new SolicitudesModel();
@@ -241,12 +254,11 @@ class SolicitudesController
 
         foreach ($vias as $via) {
             if ($via) {
-                $evidencia = !empty($via['imagenes']) ? explode(', ', $via['imagenes']) : [];
+                $evidencia = !empty($via['imagenes']) ? explode(', ', $via['imagenes']) : array();
 
                 echo "<p><strong>ID:</strong> " . $via['sol_via_dan_id'] . "</p>" .
                     "<p><strong>Fecha y hora:</strong> " . $via['fecha_hora'] . "</p>" .
                     "<p><strong>Solicitante:</strong> " . $via['usuario_nombre'] . "</p>" .
-                    "<p><strong>Ubicacion:</strong> " . $via['direccion_via'] . "</p>" .
                     "<p><strong>Descripción:</strong> " . $via['descripcion_via'] . "</p>" .
                     "<p><strong>Tipo de daño:</strong> " . $via['tipo_danio'] . "</p>" .
                     "<p><strong>Estado:</strong> " . $via['est_nombre'] . "</p>";
@@ -255,11 +267,12 @@ class SolicitudesController
                 if (!empty($evidencia)) {
                     echo "<p><strong>Evidencia adjunta:</strong></p>";
                     foreach ($evidencia as $ruta) {
-                        if (!empty(trim($ruta)) && file_exists($ruta)) {
+                        $rutasinEs = trim($ruta);
+                        if (!empty($rutasinEs) && file_exists($rutasinEs)) {
                             echo "<div style='border: 5px solid; max-width: 200px;'>";
                             echo "<img src='" . $ruta . "' alt='Evidencia' style='max-width: 150px; margin: 10px;'>";
                             echo "</div>";
-                        } elseif (!empty(trim($ruta))) {
+                        } elseif (!empty($rutasinEs)) {
                             echo "<p>No se pudo cargar la imagen: $ruta</p>";
                         }
                     }
@@ -303,7 +316,6 @@ class SolicitudesController
                     "<p><strong>Fecha y hora:</strong> " . $acc['reg_acc_fecha_hora'] . "</p>" .
                     "<p><strong>Solicitante:</strong> " . $acc['usuario_nombre'] . "</p>" .
                     "<p><strong>Lesionados:</strong> " . $texto . "</p>" .
-                    "<p><strong>Dirección:</strong> " . $acc['reg_acc_direccion_accidente'] . "</p>" .
                     "<p><strong>Detalles adicionales:</strong> " . $acc['reg_acc_observaciones'] . "</p>" .
                     "<p><strong>Tipo de accidente:</strong> " . $acc['tipo_choque'] . " - " . $acc['detalles_accidente'] . "</p>" .
                     "<p><strong>Vehículos involucrados:</strong> " . $vehiculos . "</p>";
@@ -313,11 +325,12 @@ class SolicitudesController
                     echo "<p><strong>Evidencia adjunta:</strong></p>";
                     $rutas = explode(', ', $acc['img_rutas']);
                     foreach ($rutas as $ruta) {
-                        if (!empty(trim($ruta)) && file_exists($ruta)) {
-                            echo "<div style = 'border: 5px solid; max-width: 200px;'>";
+                        $rutasinEs = trim($ruta);
+                        if (!empty($rutasinEs) && file_exists($rutasinEs)) {
+                            echo "<div style='border: 5px solid; max-width: 200px;'>";
                             echo "<img src='" . $ruta . "' alt='Evidencia' style='max-width: 150px; margin: 10px;'>";
                             echo "</div>";
-                        } elseif (!empty(trim($ruta))) {
+                        } elseif (!empty($rutasinEs)) {
                             echo "<p>No se pudo cargar la imagen: $ruta</p>";
                         }
                     }
@@ -340,35 +353,24 @@ class SolicitudesController
         $obj = new SolicitudesModel();
         $usu_id = $_POST['usu_id'];
         $tipoDaño = $_POST['tipoDanio'];
-
+        $punto1 = $_POST['punto1'];
+        $punto2 = $_POST['punto2'];
         $detalles = $_POST['detalles'];
-        $tipoV = $_POST['tipoVia'];
-        $numeroPr = $_POST['numeroPrincipal'];
-        $comp1 = $_POST['complemento1'];
-        $comp2 = $_POST['complemento2'];
-        $numeroSc = $_POST['numeroSecundario'];
-        $numeroTerc = $_POST['numeroTerciario'];
-        $referencias = $_POST['referencias'];
         $estado = 3;
-
-        $fechaActual = (new DateTime())->format('Y-m-d H:i:s');
-
-        if (!empty($referencias)) {
-            $ref = "Ref.";
-        } else {
-            $ref = "";
-        }
-
-        $direccion = "$tipoV $numeroPr $comp1 $numeroSc $comp2 $numeroTerc $ref $referencias";
+        $punto1Procesado = eliminarSegundoPunto($punto1);
+        $punto2rocesado = eliminarSegundoPunto($punto2);
 
         $id = $obj->autoIncrement("solicitud_via_dan", "sol_via_dan_id");
 
-        $sql = "INSERT INTO solicitud_via_dan VALUES($id, $tipoDaño, '$detalles','$direccion', '$fechaActual',  $estado, $usu_id)";
+        $sql = "INSERT INTO solicitud_via_dan VALUES($id, $tipoDaño, '$detalles', date_trunc('second', NOW()),  $estado, $usu_id)";
         $ejecutar = $obj->insert($sql);
 
         if ($ejecutar) {
-            echo $sql;
-
+            $sqlPuntos = "INSERT INTO punto_via (id_via, geom) VALUES ($id, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+            $punto = $obj->insert($sqlPuntos);
+            if(!$punto){
+                return;
+            }
             foreach ($_FILES['imagenes']['name'] as $index => $nombreArchivo) {
 
                 $nombreArchivoSinEspacios = str_replace(' ', '', $nombreArchivo);
@@ -389,23 +391,46 @@ class SolicitudesController
                     echo "No se movio el archivo";
                 }
             }
-            $_SESSION['regVia'][]='Registro exitoso';
-            redirect(getUrl('Solicitudes', 'Solicitudes', 'getSolicitud'));
+            $_SESSION['regVia'][] = 'Registro exitoso';
+            redirect("index.php");
         }
     }
-
-
-    public function getReductoresNuevo()
-    {
+    public function getSolicitudConsult(){
+        include_once '../view/Solicitudes/consultarSolicitudes.php';
+    }
+    public function updateEstadoVias(){
         $obj = new SolicitudesModel();
 
-        include_once '../view/Solicitudes/reductoresDaños.php';
-    }
-    public function getReductoresDaño()
-    {
-        $obj = new SolicitudesModel();
+        $sol_id = $_POST['solicitud'];
+        $est_id = $_POST['id'];
 
-        include_once '../view/Solicitudes/reductoresNuevo.php';
+
+       
+        if ($est_id !== null) {
+            $sql = "UPDATE solicitud_via_dan SET est_sol_id = $est_id WHERE sol_via_dan_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if($ejecutar){
+                $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+                STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre
+                FROM solicitud_via_dan svd
+                LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+                LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+                LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+                LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1";
+        
+                $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+                           JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+                $vias = $obj->consult($sql);
+                $estados = $obj->consult($sqlEst);
+        
+                include_once "../view/solicitudes/buscarVias.php";
+            }
+        }
+
     }
+
+
+    
 }
 ?>

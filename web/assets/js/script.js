@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+  let docValido = false;
   $(document).on("click", ".toggle-btn", function () {
 
     $("#sidebar").toggleClass("expand");
@@ -21,7 +21,7 @@ $(document).ready(function () {
   });
   $(document).on('click', '.dropdown-item', function () {
 
-    var id = $(this).data('bs-id'); 
+    var id = $(this).data('bs-id');
 
     $('#pqrsId').val(id);
   });
@@ -54,7 +54,7 @@ $(document).ready(function () {
   const patronClave = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 
   function agregarError(campo, mensaje) {
-    campo.addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
+    $(campo).addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
   }
 
   function validarCampo(campo, patron, campoNombre, mensajeError) {
@@ -98,17 +98,17 @@ $(document).ready(function () {
       valido = false;
     }
 
-    if (!validarCampo($('#documento'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos mín(8) y máx(10).')) {
+    if (!validarCampo($('#documentoRegistro'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos mín(8) y máx(10).')) {
       valido = false;
     }
-    const documento = $('#documento').val().trim();
+    const documento = $('#documentoRegistro').val().trim();
 
     if (documento !== '' && documento.length < 8) {
-      agregarError($('#documento'), 'El campo documento debe contener mín(8) y máx(10) dígitos');
+      agregarError($('#documentoRegistro'), 'El campo documento debe contener mín(8) y máx(10) dígitos');
     }
 
     if (documento !== '' && documento.length > 10) {
-      agregarError($('#documento'), 'El campo documento debe contener mín(8) y máx(10) dígitos');
+      agregarError($('#documentoRegistro'), 'El campo documento debe contener mín(8) y máx(10) dígitos');
     }
 
 
@@ -180,6 +180,10 @@ $(document).ready(function () {
     }
 
 
+    if (!docValido && documento !== '') {
+      agregarError($('#documentoRegistro'), 'El documento ya existe.');
+      valido = false;
+    }
     if (valido) {
       this.submit();
     }
@@ -293,6 +297,32 @@ $(document).ready(function () {
     } else {
       valido = true;
     }
+  });
+  $('#documentoRegistro').on('blur', function () {
+    let input = $(this);
+    let doc = input.val();
+    let url = $(this).attr('data-url');
+    console.log(url);
+
+    $.ajax({
+      url: url,
+      data: { doc },
+      type: "POST",
+      success: function (response) {
+        console.log(response);
+        if (response.trim() === "Documento valido") {
+          docValido = true;
+          console.log("Documento válido");
+        } else {
+          agregarError($('#documentoRegistro'), response);
+          docValido = false;
+        }
+      },
+      error: function () {
+        docValido = false;
+        console.log("Error en la solicitud");
+      }
+    });
   });
 
 

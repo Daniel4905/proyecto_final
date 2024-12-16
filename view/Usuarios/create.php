@@ -57,8 +57,8 @@
             </div>
             <div class="col-md-2 mt-3">
                 <label for="usu_tel">Nro Documento*</label>
-                <input type="text" name="usu_documento" id="documento" class="form-control validar-num"
-                    placeholder="Documento">
+                <input type="text" name="usu_documento" id="documentoRegistro" class="form-control validar-num"
+                    placeholder="Documento" data-url="<?php echo getUrl("Acceso", "Acceso", "validarDoc", false,"ajax") ?>">
             </div>
             <div class="col-md-2 mt-3">
                 <label for="sex_id">Sexo biologico*</label>
@@ -145,7 +145,7 @@
             </div>
             <div class="col-md-3 mt-2">
                 <label for="usu_clave">Clave*</label>
-                <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave">
+                <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave" >
             </div>
             <div class="col-md-3 mt-2">
                 <label for="usu_clave">Confirmar clave*</label>

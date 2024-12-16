@@ -172,6 +172,28 @@ class AccesoController
         }
 
     }
+    
+    public function validarDoc() {
+        $obj = new AccesoModel();
+    
+        $doc = isset($_POST['doc']) ? $_POST['doc'] : '';
+    
+        if (empty($doc)) {
+            //echo "Error: No se envió el documento";
+            return;
+        }
+    
+        $sql = "SELECT * FROM usuarios WHERE usu_documento = '$doc'";
+    
+        $docs = $obj->consult($sql);
+
+        if ($docs && count($docs) > 0) {
+            echo "El documento ingresado ya existe"; 
+        } else {
+            echo "Documento valido"; 
+        }
+    }
+    
 
 }
 ?>

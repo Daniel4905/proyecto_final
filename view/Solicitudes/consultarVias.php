@@ -6,39 +6,43 @@
                     <th>ID</th>
                     <th>Daño</th>
                     <th>Fecha</th>
-                    <th>Ubicacion</th>
                     <th>Solicitante</th>
                     <th>Estado</th>
                     <th>Detalles</th>
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($vias as $via) {
-                        echo "<tr>";
-                        echo "<td>" . $via['sol_via_dan_id'] . "</td>";
-                        echo "<td>" . $via['tipo_danio']. "</td>";
-                        echo "<td>" . $via['fecha_hora'] . "</td>";
-                        echo "<td>" . $via['direccion_via'] . "</td>";
-                        echo "<td>" . $via['usuario_nombre'] .  "</td>";
-                        echo "<td>";
-                        echo "<select id='estados' name='estado' class='form-select' 
-                                 data-url='" . getUrl("Solicitudes", "Solicitudes", "getDetalleAc", false, "ajax") . "'>";
-                        echo "<option value=''>Seleccione...</option>";
-                        foreach ($estados as $est) {
-                            if ($est['est_id'] == $via['est_sol_id']) {
-                                $selected = "selected";
-                            } else {
+                    if (isset($vias) && is_array($vias) && count($vias) > 0) {
+                        foreach ($vias as $via) {
+                            echo "<tr>";
+                            echo "<td>" . $via['sol_via_dan_id'] . "</td>";
+                            echo "<td>" . $via['tipo_danio'] . "</td>";
+                            echo "<td>" . $via['fecha_hora'] . "</td>";
+                            echo "<td>" . $via['usuario_nombre'] . "</td>";
+                            echo "<td>";
+                            echo "<select id='' name='estado' class='form-select estado_solicitud' 
+                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoVias", false, "ajax") . "' 
+                        data-soli='" . $via['sol_via_dan_id'] . "'>";
+                            echo "<option value=''>Seleccione...</option>";
+                            foreach ($estados as $est) {
                                 $selected = "";
+                                if ($est['est_id'] == $via['est_sol_id']) {
+                                    $selected = "selected";
+                                }
+                                echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
                             }
-                            echo "<option value='" . $est['est_id'] . "' data-id='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
-                        }
-                        echo "</select>";
-                        echo"</td>";
-                        echo "<td>" .
-                            "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesVia", false, "ajax") . "'>Ver detalles
+                            echo "</select>";
+
+
+                            echo "</td>";
+                            echo "<td>" .
+                                "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesVia", false, "ajax") . "'>Ver detalles
                               </button>" .
-                            "</td>";
-                        echo "</tr>";
+                                "</td>";
+                            echo "</tr>";
+                        }
+                    }else{
+                        echo "<tr><td colspan='8' class='text-center text-danger'>No se encontraron resultados en la búsqueda</td></tr>";
                     }
                     ?>
                 </tbody>

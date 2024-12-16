@@ -37,6 +37,8 @@ if (isset($_SESSION['error'])) {
             },
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
     <link rel="stylesheet" href="css/login.css"> <!-- Enlaza el archivo CSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Incluye jQuery -->
@@ -47,11 +49,16 @@ if (isset($_SESSION['error'])) {
     <div class="container">
         <?php
         if (isset($_SESSION['RegExitoso'])) {
-            echo "<div class='alert alert-success' role='alert'>";
-            foreach ($_SESSION['RegExitoso'] as $reg) {
-                echo $reg . "<br>";
-            }
-            echo "</div>";
+            echo "<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'Bienvenido a AccidentEye, ya puedes acceder',
+                    confirmButtonText: 'Acceder'
+                });
+            });
+             </script>";
             unset($_SESSION['RegExitoso']);
         }
         ?>
@@ -129,7 +136,7 @@ if (isset($_SESSION['error'])) {
                     event.preventDefault();
                 }
             });
- 
+
             $(document).on('click', ".toggle-password", function () {
                 var password = $("#password");
                 var boton = $("#toggleIcon");
@@ -148,6 +155,7 @@ if (isset($_SESSION['error'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+        
 
 </body>
 

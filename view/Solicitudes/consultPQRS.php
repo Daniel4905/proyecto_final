@@ -10,14 +10,18 @@
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($pqrs as $pq) {
-                        echo "<tr>";
-                        echo "<td>" . $pq['id_pqrs'] . "</td>";
-                        echo "<td>" . $pq['desc_tipo_pqrs']. "</td>";
-                        echo "<td>" . $pq['desc_pqrs'] .  "</td>";
-                        echo "<td>" . $pq['usuario_nombre'] .  "</td>";
-                       
-                        echo "</tr>";
+                    if (isset($pqrs) && is_array($pqrs) && count($pqrs) > 0) {
+                        foreach ($pqrs as $pq) {
+                            echo "<tr>";
+                            echo "<td>" . $pq['id_pqrs'] . "</td>";
+                            echo "<td>" . $pq['desc_tipo_pqrs'] . "</td>";
+                            echo "<td>" . $pq['desc_pqrs'] . "</td>";
+                            echo "<td>" . $pq['usuario_nombre'] . "</td>";
+
+                            echo "</tr>";
+                        }
+                    }else{
+                        echo "<tr><td colspan='8' class='text-center text-danger'>No hay ninguna pqrs registrada</td></tr>";
                     }
                     ?>
                 </tbody>

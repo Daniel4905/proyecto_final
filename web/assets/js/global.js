@@ -1,5 +1,6 @@
 
 $(document).ready(function () {
+    let docValido = false;
 
     const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     const patronNumero = /^[0-9]+$/;
@@ -7,7 +8,7 @@ $(document).ready(function () {
     const patronClave = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 
     function agregarError(campo, mensaje) {
-        campo.addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
+        $(campo).addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
     }
 
     function validarCampo(campo, patron, campoNombre, mensajeError) {
@@ -50,8 +51,8 @@ $(document).ready(function () {
             agregarError($('#doc'), 'Por favor, seleccione un tipo de documento.');
             valido = false;
         }
-
-        if (!validarCampo($('#documento'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos.')) valido = false;
+        const documento = $('#documentoRegistro').val().trim();
+        if (!validarCampo($('#documentoRegistro'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos.')) valido = false;
 
 
         const sexo = $('#sexo').val().trim();
@@ -114,10 +115,14 @@ $(document).ready(function () {
             agregarError($('#clavenew'), 'La confirmación de la contraseña no coincide con la contraseña ingresada.');
             valido = false;
         }
-
+        if(!docValido && documento !== ''){
+            agregarError($('#documentoRegistro'), 'El documento ya existe.');
+            valido = false;
+        }
         if (valido) {
             this.submit();
         }
+        
     });
 
     $('#formUpdate').submit(function (event) {
@@ -267,11 +272,10 @@ $(document).ready(function () {
             data: { 'buscar': buscar },
             success: function (data) {
                 $('tbody').html(data);
-                if (data.trim() === '') {
+                if (data.trim() === '' || $('tbody').children().length === 0) {
                     $('#datError').removeClass('d-none');
                 } else {
                     $('#datError').addClass('d-none');
-
                 }
             }
 
@@ -425,6 +429,52 @@ $(document).ready(function () {
             valido = true;
         }
     });
+
+    $(document).on("change", ".estado_solicitud", function () {
+        let select = $(this);
+        let id = select.val();
+        let url = $(this).attr('data-url');
+        let solicitud = $(this).attr('data-soli');
+
+
+        $.ajax({
+            url: url,
+            data: { id, solicitud},
+            type: "POST",
+            success: function (data) {
+                $("tbody").html(data);
+            }
+
+        });
+    });
+
+    $('#documentoRegistro').on('blur', function () {
+        let input = $(this);
+        let doc = input.val();
+        let url = $(this).attr('data-url');
+        console.log(url);  
+        
+        $.ajax({
+            url: url,
+            data: { doc },
+            type: "POST",
+            success: function (response) {
+                console.log(response); 
+                if (response.trim() === "Documento valido") {
+                    docValido = true;
+                    console.log("Documento válido");
+                } else {
+                    docValido = false;
+                    //agregarError($('#documentoRegistro'), response);
+                }
+            },
+            error: function () {
+                docValido = false;
+                console.log("Error en la solicitud");
+            }
+        });
+    });
+    
 
 
 

@@ -73,37 +73,41 @@ html {
     max-height: 1200px;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: transparent; 
+    background-color: transparent;
 }
 
 .sideScroll::-webkit-scrollbar {
-    width: 5px; 
-    background-color: transparent; 
+    width: 5px;
+    background-color: transparent;
 }
 
 .sideScroll::-webkit-scrollbar-track {
-    background-color: transparent; 
+    background-color: transparent;
 }
 
 .sideScroll::-webkit-scrollbar-thumb {
-    background-color: rgba(128, 128, 128, 0.6); 
-    border-radius: 5px; 
-    min-height: 10px; 
+    background-color: rgba(128, 128, 128, 0.6);
+    border-radius: 5px;
+    min-height: 10px;
 }
 
 .sideScroll::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(128, 128, 128, 0.9); 
+    background-color: rgba(128, 128, 128, 0.9);
 }
 
-/* Pantallas pequeñas, móviles */
+
 @media (max-width: 360px) {
 
-    /* Ejemplo: Galaxy S8, Pixel 2 */
     .container-scroll {
         max-height: 530px;
-        /* Puedes ajustar este valor si es necesario */
         overflow-y: auto;
         overflow-x: hidden;
+    }
+
+    .container-scrollMap {
+        max-height: 5%;
+        overflow-y: auto;
+        overflow-x: auto;
     }
 }
 
@@ -117,6 +121,12 @@ html {
         overflow-y: auto;
         overflow-x: hidden;
     }
+
+    .container-scrollMap {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 }
 
 @media (min-width: 411px) and (max-width: 413px) {
@@ -127,6 +137,12 @@ html {
         /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
+    }
+
+    .container-scrollMap {
+        max-height: 550px;
+        overflow-y: auto;
+        overflow-x: auto;
     }
 }
 
@@ -139,6 +155,12 @@ html {
         overflow-y: auto;
         overflow-x: hidden;
     }
+
+    .container-scrollMap {
+        max-height: 550px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 }
 
 @media (min-width: 413px) and (max-width: 414px) {
@@ -150,6 +172,12 @@ html {
         overflow-y: auto;
         overflow-x: hidden;
     }
+
+    .container-scrollMap {
+        max-height: 600px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 }
 
 /* Tablets pequeñas */
@@ -157,6 +185,12 @@ html {
 
     /* Ejemplo: iPad Mini, iPad en modo vertical */
     .container-scroll {
+        max-height: 650px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    .container-scrollMap {
         max-height: 650px;
         overflow-y: auto;
         overflow-x: auto;
@@ -171,12 +205,24 @@ html {
         overflow-y: auto;
         overflow-x: auto;
     }
+
+    .container-scrollMap {
+        max-height: 5%;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 }
 
 @media (min-width: 1023px) and (max-width: 1025px) {
 
     /* Ejemplo: iPad en modo horizontal */
     .container-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    .container-scrollMap {
         max-height: 300px;
         overflow-y: auto;
         overflow-x: auto;
@@ -202,6 +248,12 @@ html {
         overflow-y: auto;
         overflow-x: auto;
     }
+
+    .container-scrollMap {
+        max-height: 700px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 }
 
 @media (min-width: 1024px) and (max-width: 1367px) {
@@ -209,6 +261,12 @@ html {
         max-height: 400px;
         overflow-y: auto;
         overflow-x: hidden;
+    }
+
+    .container-scrollMap {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: auto;
     }
 }
 
@@ -218,22 +276,31 @@ html {
         overflow-y: auto;
         overflow-x: hidden;
     }
+
+    .container-scrollMap {
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 }
 
 @media (min-width: 1367px) and (max-width: 1921px) {
     .container-scroll {
-        max-height: 450px;
+        max-height: 650px;
         overflow-y: auto;
         overflow-x: hidden;
     }
+
+    .container-scrollMap {
+        max-height: 650px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
 }
-
-
-
 
 .input-error {
     border: 2px solid red;
-    background-color: #ffe6e6;
+    /* background-color: #ffe6e6; */
 }
 
 .text-danger {
@@ -380,12 +447,12 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
-    
+
 #pqrs-specific {
     position: fixed;
-    bottom: 20px; 
-    right: 20px; 
-    z-index: 1000; 
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
     text-align: center;
 }
 
@@ -394,7 +461,7 @@ a.sidebar-link:hover {
     display: none;
     position: absolute;
     bottom: 40px;
-    right: 0; 
+    right: 0;
     background-color: #202434;
     color: #c2bfbf;
     padding: 10px 0;
@@ -421,11 +488,6 @@ a.sidebar-link:hover {
 }
 
 
-.redN{
-    border-radius: 50% !important; 
+.redN {
+    border-radius: 50% !important;
 }
-
-
-
-
-  

@@ -135,5 +135,14 @@ session_start();
         return preg_match($patron, $input) === 1;
     }
 
+    function eliminarSegundoPunto($coordenada) {
+        $primero = strpos($coordenada, "."); 
+        $segundo = strpos($coordenada, ".", $primero + 1);
+        if ($segundo !== false) {
+            $coordenada = substr($coordenada, 0, $segundo) . substr($coordenada, $segundo + 1);
+        }
+        return $coordenada;
+    }
+
 
 ?>

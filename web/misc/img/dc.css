@@ -1,0 +1,172 @@
+/* msCross Styles */
+
+.mscross
+{
+  border: 1px solid #7ea3bf;
+  border-radius: 10px;
+  /* color: #000000; */
+}
+.mapaa{
+  overflow: hidden;
+   width: 530px;
+    height: 500px;
+     -moz-user-select: none; 
+     position: relative;
+      margin-top: 40px; 
+      margin-left: 50px; 
+      display: block;
+}
+
+.mscross_tool:hover{
+  width: 30px;
+ border-right: 2px solid white; 
+}
+.mscross_tool:focus{
+  width: 30px;
+  outline: none;
+ }
+
+.mscross_report_title
+{
+  color: #000000;
+}
+
+.mscross_report_attr_name{
+  color: #000000;
+  font-weight: normal;
+}
+
+.mscross_report_attr_value
+{
+  color: #115aa4;
+  font-weight: bold;
+}
+
+.mscross_reference_zoombox
+{
+  color: #115aa4;
+  background: #000000;
+  font-weight: bold;
+  border: 1px solid #000000;
+}
+
+
+
+
+
+
+
+
+
+
+/*   */
+
+
+
+
+
+.map
+{
+/*  width: 600px;
+  height: 400px;
+  border: 5px solid #dddddd; */
+  padding: 2px;
+  margin: 2px;
+}
+
+
+
+/*
+:first-letter
+{
+  color: red;
+  text-transform: uppercase;
+  font-style: italic;
+}
+*/
+
+/* Input Forms */
+
+
+
+
+
+
+
+
+
+
+#map a
+{
+  display: none;
+}
+
+#dc_map
+{
+/*
+  border: 0;
+  margin: 0;
+  padding: 0;
+  cursor: hand;
+*/
+}
+
+/*my_table
+{
+  border-collapse: collapse;
+  position: relative;
+}
+*/
+
+.leftmenu
+{
+  padding-top: 11px;
+}
+
+
+
+#shift
+{
+  font-size: 8pt;
+  padding-left: 24px;
+}
+
+
+
+.lang_set
+{
+  font-weight: bold;
+}
+
+.maps
+{
+  border: 1px dashed #cccccc;
+  padding: 2px;
+  margin: 6px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+.leg_box
+{
+  position: relative;
+  width:22px;  height: 13px;
+  border: 0;
+  margin-left: 4px;
+  margin-top:  1px;
+  margin-right: 6px;
+}
+*/

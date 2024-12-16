@@ -25,13 +25,13 @@
                 <span class="gradient-text">Solicitudes</span>
             </a>
             <ul id="solicitudes" class="sidebar-dropdown list-unstyled collapse">
-                <li class="sidebar-item">
+                <!-- <li class="sidebar-item">
                     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitud'); ?>"
                         class="sidebar-link gradient-text" title="Realiza solicitudes">
                         <img src="img/realizar.png" style="width: 25px; margin-right: 15px; margin-left: 7px;" alt="" title="Realiza la solicitud que desees">
                         Hacer una solicitud
                     </a>
-                </li>
+                </li> -->
                 <li class="sidebar-item">
                     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitudConsult'); ?>"
                         class="sidebar-link gradient-text" title="Mira tus solicitudes">

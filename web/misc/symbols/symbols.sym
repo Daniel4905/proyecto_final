@@ -1,0 +1,95 @@
+
+SYMBOLSET
+
+SYMBOL
+	NAME 'tent'
+		TYPE VECTOR
+		FILLED TRUE
+		Points
+		0 1
+		.5 0
+		1 1
+		.75 1
+		.5 .5
+		.25 1
+		0 1
+	END
+END 
+
+SYMBOL
+	NAME 'star'
+		TYPE VECTOR
+		FILLED TRUE
+		Points
+		0 .375
+		.35 .375
+		.5 0
+		.65 .375
+		1 .375
+		.75 .625
+		.875 1
+		.5 .75
+		.125 1
+		.25 .625
+	END
+END 
+
+
+
+SYMBOL
+	NAME 'plus'
+		TYPE VECTOR
+		Points
+		.5 0
+		.5 1
+		-99 -99
+		0 .5
+		1 .5
+	END
+END 
+
+SYMBOL
+	NAME 'cross'
+		TYPE VECTOR
+		Points
+		0 0
+		1 1
+		-99 -99
+		0 1
+		1 0
+	END
+END
+
+  
+SYMBOL
+	NAME 'pointflag'
+		TYPE TRUETYPE
+		FONT esri-130 
+		FILLED true
+		ANTIALIAS true
+	CHARACTER 'h'
+END
+
+SYMBOL
+	NAME 'rosavientos'
+	TYPE PIXMAP
+	IMAGE 'norte.gif'
+END
+
+
+SYMBOL
+    NAME 'puntoAccidente'
+    TYPE PIXMAP
+    IMAGE 'choque-de-autos.gif'
+END
+
+SYMBOL
+    NAME 'puntoVia'
+    TYPE PIXMAP
+    IMAGE 'la-carretera.gif'
+END
+
+END
+
+
+
