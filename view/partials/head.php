@@ -1,3 +1,6 @@
+<?php
+ob_start();  // Inicia el buffer de salida
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,23 +47,11 @@
         #layer2 {
             margin-top: 100px;
             background-color: rgb(32, 36, 52);
-            color: #c2bfbf;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             font-size: 14px;
             padding: 20px;
             border-radius: 5px;
         }
 
-        .img-container {
-            max-width: 100%;
-            overflow: hidden;
-        }
-
-        .img-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
     </style>
 
 

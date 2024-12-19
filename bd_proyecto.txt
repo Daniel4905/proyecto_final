@@ -14,7 +14,7 @@ INSERT INTO estados (est_id, est_nombre) VALUES (7, 'Completada');
 CREATE TABLE tipo_estado(
     id_tipo_estado INTEGER NOT NULL,
     id_estado INTEGER,
-    id_perteneciente,
+    id_perteneciente INTEGER,
 );
 
 INSERT INTO tipo_estado (id_tipo_estado, id_estado, id_perteneciente) VALUES (1, 1, 1);

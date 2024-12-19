@@ -365,7 +365,19 @@ class UsuariosController
 
 
 
-        $doc_id = $_POST['doc_id'];
+        if(isset($_POST['doc_id'])){
+            $doc_id = $_POST['doc_id'];
+        }else{
+            $sqldoc = "SELECT doc_id FROM usuarios WHERE usu_id = $usu_id";
+            $resultadoDoc = $obj->consult($sqldoc);
+            if($resultadoDoc && isset($resultadoDoc[0])){
+                $doc_id = $resultadoDoc[0]['doc_id'];
+            }else{
+                echo "No se encontraron resultados";
+            }
+        }
+
+
 
         $sqlcontra = "SELECT usu_clave FROM usuarios WHERE usu_id = $usu_id";
         $resultado = $obj->consult($sqlcontra);

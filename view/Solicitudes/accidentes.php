@@ -185,7 +185,7 @@
                             <label class="image-upload">
                                 <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenes[]">
                                 <div class="upload-placeholder">
-                                    +
+                                    <i class="fa-solid fa-image"></i>
                                 </div>
                                 <img class="preview-image" style="display: none;" alt="Preview">
                                 <button type="button" class="remove-image-btn" onclick="removeImage(this)"
@@ -198,7 +198,7 @@
                             <label class="image-upload">
                                 <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenes[]">
                                 <div class="upload-placeholder">
-                                    +
+                                    <i class="fa-solid fa-image"></i>
                                 </div>
                                 <img class="preview-image" style="display: none;" alt="Preview">
                                 <button type="button" class="remove-image-btn" onclick="removeImage(this)"
@@ -211,7 +211,7 @@
                             <label class="image-upload">
                                 <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenes[]">
                                 <div class="upload-placeholder">
-                                    +
+                                    <i class="fa-solid fa-image"></i>
                                 </div>
                                 <img class="preview-image" style="display: none;" alt="Preview">
                                 <button type="button" class="remove-image-btn" onclick="removeImage(this)"

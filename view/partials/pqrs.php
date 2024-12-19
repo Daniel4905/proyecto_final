@@ -3,10 +3,10 @@
         aria-haspopup="true" aria-expanded="false" 
         style="background-color: #202434; color: #c2bfbf; size: 50px;" 
         title="Haga sus peticiones, quejas, reclamos y sugerencias">
-        <i class="fas fa-question"></i>
+        <i class="fa-solid fa-comment"></i>
     </button>
     <div class="dropdown-menu">
-        <a href="<?php echo getUrl('PQRS', 'PQRS', 'getPQRS'); ?>" class="dropdown-item">Seguir PQRS</a>
+        <a href="<?php echo getUrl('PQRS', 'PQRS', 'getPQRS'); ?>" class="dropdown-item">Ver mis PQRS</a>
         <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#pqrsModal">Enviar PQRS</a>
     </div>
 </div>

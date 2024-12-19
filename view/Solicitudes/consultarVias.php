@@ -53,6 +53,12 @@
         </div>
     </div>
 </div>
+<div class="container mt-4">
+    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 2), 'ajax'); ?>" class="btn btn-secondary">    
+    <i class="fas fa-file-excel"></i>
+      Descargar reporte completo en formato XLSX
+    </a>
+</div>
 <div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

@@ -45,18 +45,18 @@
                       <h4><?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h4>
                       <p class="text-muted"><?php echo $_SESSION['correo']; ?></p>
                       <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'viewProfile', array("usu_id" => $_SESSION['id'])); ?>"
-                        class="btn btn-xs btn-secondary btn-sm">Ver perfil</a>
+                        class="btn btn-xs btn-secondary btn-sm"> <i class="fa-regular fa-eye"></i> Ver perfil</a>
                     </div>
                   </div>
                 </li>
                 <li>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item"
-                    href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUpdateUsu', array("usu_id" => $_SESSION['id'])); ?>">Configuracion
-                    de la cuenta</a>
+                    href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUpdateUsu', array("usu_id" => $_SESSION['id'])); ?>">
+                    <i class="fa-solid fa-gear"></i> Configuracion de la cuenta</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
-                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');" style="color: red; font-weight: bold;">Cerrar sesion</a>
+                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');" style="color: red; font-weight: bold;"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesion</a>
                 </li>
               </div>
             </ul>

@@ -47,17 +47,17 @@ $(document).ready(function () {
 
         const pqrs = $('#pqrsId').val().trim();
         if (pqrs === '' || pqrs === null) {
-            agregarError($('#pqrsId'), "Por favor ingrese el tipo de daño");
+            agregarError($('#pqrsId'), "Por favor seleccione el tipo de PQRS");
             valido = false;
         }
 
         const observaciones = $('#observaciones').val().trim();
         if (observaciones === ! '' && !patronTexto.test(observaciones) || observaciones.length > 300) {
-            agregarError($('#observaciones'), "El campo observaciones solo admite letras (máx. 300)");
+            agregarError($('#observaciones'), "Este campo solo admite letras (máx. 300)");
             valido = false;
         }
         if (observaciones === '') {
-            agregarError($('#observaciones'), "El campo observaciones es requerido (máx. 300)");
+            agregarError($('#observaciones'), "Debe enviar un mensaje(máx. 300)");
             valido = false;
         }
 

@@ -3,6 +3,11 @@
         <h3 class="display-4">Actualizar Usuarios</h3>
     </div>
     <?php
+    if($_SESSION['rol']==1 || $_SESSION['rol']==3){
+        $readonly = '';
+    }else{
+        $readonly = 'readonly';
+    }
     $rol_final = 0;
     foreach ($usuarios as $usu) {
         ?>
@@ -41,7 +46,7 @@
                 </div>
                 <div class="col-md-4 mt-3">
                     <label for="doc_id">Tipo de documento*</label>
-                    <select name="doc_id" id="doc" class="form-control">
+                    <select name="doc_id" id="doc" class="form-control" <?php echo $readonly; ?>>
                         <option value="">Seleccione...</option>
                         <?php
                         foreach ($docs as $doc) {
@@ -59,7 +64,7 @@
                 <div class="col-md-2 mt-3">
                     <label for="usu_tel">Nro Documento*</label>
                     <input type="text" name="usu_documento" id="documento" class="form-control validar-num"
-                        placeholder="Documento" value="<?php echo $usu['usu_documento']; ?>">
+                        placeholder="Documento" value="<?php echo $usu['usu_documento']; ?>"  <?php echo $readonly; ?>>
                 </div>
                 <div class="col-md-2 mt-3">
                     <label for="sex_id">Sexo biologico*</label>
@@ -163,13 +168,13 @@
                     <label for="rol_id">Rol*</label>
                     <?php
                     if ($usu['rol_id'] == 1) {
-                        $disabled = "disabled";
+                        $readonly = "readonly";
                     } else {
-                        $disabled = "";
+                        $readonly = "";
                     }
 
                     ?>
-                    <select name="rol_id" id="rol" class="form-control" <?php echo $disabled; ?>>
+                    <select name="rol_id" id="rol" class="form-control" <?php echo $readonly; ?>>
                         <option value="">Seleccione...</option>
                         <?php
                         foreach ($roles as $rol) {
@@ -179,7 +184,7 @@
                                 $selected = "";
                             }
 
-                            if (!empty($disabled)) {
+                            if (!empty($readonly)) {
                                 $rol_final = 1;
                                 echo "<option value='" . $rol_final . "' $selected>" . $rol['rol_nombre'] . "</option>";
                             } else {

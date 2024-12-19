@@ -15,16 +15,16 @@
                     foreach ($accidentes as $acc) {
                         echo "<tr>";
                         echo "<td>" . $acc['reg_acc_id'] . "</td>";
-                        echo "<td>" . $acc['tipo_choque']." - ".$acc['detalles_accidente']  . "</td>";
+                        echo "<td>" . $acc['tipo_choque'] . " - " . $acc['detalles_accidente'] . "</td>";
                         echo "<td>" . $acc['reg_acc_fecha_hora'] . "</td>";
                         echo "<td>";
-                        if ($acc['reg_acc_lesionados']  === 't') {
+                        if ($acc['reg_acc_lesionados'] === 't') {
                             echo "Sí";
                         } else {
                             echo "No";
                         }
                         echo "</td>";
-                        echo "<td>" . $acc['usuario_nombre'] .  "</td>";
+                        echo "<td>" . $acc['usuario_nombre'] . "</td>";
                         echo "<td>" .
                             "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $acc['reg_acc_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesAccidente", false, "ajax") . "'>Ver detalles
                               </button>" .
@@ -39,6 +39,14 @@
             </div>
         </div>
     </div>
+
+
+</div>
+<div class="container mt-4">
+    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 1), 'ajax'); ?>" class="btn btn-secondary">
+    <i class="fas fa-file-excel"></i>
+        Descargar reporte completo en formato XLSX
+    </a>
 </div>
 <div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

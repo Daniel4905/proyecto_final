@@ -3,7 +3,7 @@ include_once '../model/Solicitudes/SolicitudesModel.php';
 class SolicitudesController
 {
     //Metodo que incluye el select-option que trae el tipo de solicitud que se desea hacer
-   public function getSolicitud()
+    public function getSolicitud()
     {
         $obj = new SolicitudesModel();
 
@@ -73,7 +73,7 @@ class SolicitudesController
     {
         $obj = new SolicitudesModel();
 
-       include_once '../view/Solicitudes/reductoresNuevo.php';
+        include_once '../view/Solicitudes/reductoresNuevo.php';
     }
 
 
@@ -110,7 +110,7 @@ class SolicitudesController
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
 
-        
+
 
         $punto1Procesado = eliminarSegundoPunto($punto1);
         $punto2rocesado = eliminarSegundoPunto($punto2);
@@ -133,7 +133,7 @@ class SolicitudesController
         if ($ejecutar) {
             $sqlPuntos = "INSERT INTO punto_accidente (id_accidente, geom) VALUES ($idAcc, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
             $punto = $obj->insert($sqlPuntos);
-            if(!$punto){
+            if (!$punto) {
                 return;
             }
             foreach ($_FILES['imagenes']['name'] as $index => $nombreArchivo) {
@@ -368,7 +368,7 @@ class SolicitudesController
         if ($ejecutar) {
             $sqlPuntos = "INSERT INTO punto_via (id_via, geom) VALUES ($id, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
             $punto = $obj->insert($sqlPuntos);
-            if(!$punto){
+            if (!$punto) {
                 return;
             }
             foreach ($_FILES['imagenes']['name'] as $index => $nombreArchivo) {
@@ -395,22 +395,24 @@ class SolicitudesController
             redirect("index.php");
         }
     }
-    public function getSolicitudConsult(){
+    public function getSolicitudConsult()
+    {
         include_once '../view/Solicitudes/consultarSolicitudes.php';
     }
-    public function updateEstadoVias(){
+    public function updateEstadoVias()
+    {
         $obj = new SolicitudesModel();
 
         $sol_id = $_POST['solicitud'];
         $est_id = $_POST['id'];
 
 
-       
+
         if ($est_id !== null) {
             $sql = "UPDATE solicitud_via_dan SET est_sol_id = $est_id WHERE sol_via_dan_id = $sol_id";
             $ejecutar = $obj->update($sql);
 
-            if($ejecutar){
+            if ($ejecutar) {
                 $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
                 STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre
                 FROM solicitud_via_dan svd
@@ -418,19 +420,147 @@ class SolicitudesController
                 LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
                 LEFT JOIN estados est ON svd.est_sol_id = est.est_id
                 LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1";
-        
+
                 $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
                            JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
                 $vias = $obj->consult($sql);
                 $estados = $obj->consult($sqlEst);
-        
+
                 include_once "../view/solicitudes/buscarVias.php";
             }
         }
 
     }
 
+    public function descargarExcel()
+    {
+        $solicitud = $_GET['solicitud'];
+        require_once 'PHPExcel-1.8/Classes/PHPExcel.php';
 
-    
+        //var_dump($solicitud);
+
+        $obj = new SolicitudesModel();
+        if ($solicitud == 1) {
+            $sql = "SELECT ra.*, 
+            STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, 
+            STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, 
+            STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, 
+            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+            STRING_AGG(DISTINCT tc.tipo_choque_desc, ', ') AS tipo_choque FROM registro_accidente ra
+            LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
+            LEFT JOIN reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
+            LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
+            LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
+            LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
+            LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
+            LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
+            GROUP BY ra.reg_acc_id";
+
+            $accidentes = $obj->consult($sql);
+
+            if (!empty($accidentes)) {
+                $excel = new PHPExcel();
+                $excel->setActiveSheetIndex(0);
+                $sheet = $excel->getActiveSheet();
+                $sheet->setCellValue('A1', 'ID');
+                $sheet->setCellValue('B1', 'Tipo de Choque');
+                $sheet->setCellValue('C1', 'Fecha y hora');
+                $sheet->setCellValue('D1', 'Lesionados');
+                $sheet->setCellValue('E1', 'Solicitante');
+                $sheet->setCellValue('F1', 'Vehiculos');
+
+                $sheet->getStyle('A1:I1')->getFont()->setBold(true);
+
+                $row = 2;
+                foreach ($accidentes as $acc) {
+                    $lesionados = ($acc['reg_acc_lesionados'] === 't') ? 'Sí' : 'No';
+                    $tipo_choque = isset($acc['tipo_choque']) ? $acc['tipo_choque'] : 'Desconocido';
+                    $detalles_accidente = isset($acc['detalles_accidente']) ? $acc['detalles_accidente'] : 'No disponible';
+                    $fecha_accidente = isset($acc['reg_acc_fecha_hora']) ? date('d-m-Y H:i:s', strtotime($acc['reg_acc_fecha_hora'])) : 'Fecha no disponible';
+                    $usuario_nombre = isset($acc['usuario_nombre']) ? $acc['usuario_nombre'] : 'Usuario desconocido';
+                    $imagenes = isset($acc['img_rutas']) ? $acc['img_rutas'] : 'No disponibles';
+                    $vehiculos = isset($acc['vehiculos']) ? $acc['vehiculos'] : 'No disponibles';
+
+                    $sheet->setCellValue("A{$row}", $acc['reg_acc_id']);
+                    $sheet->setCellValue("B{$row}", $tipo_choque . ' - ' . $detalles_accidente);
+                    $sheet->setCellValue("C{$row}", $fecha_accidente);
+                    $sheet->setCellValue("D{$row}", $lesionados);
+                    $sheet->setCellValue("E{$row}", $usuario_nombre);
+                    $sheet->setCellValue("F{$row}", $vehiculos);
+                    $row++;
+                }
+                $filename = 'Accidentes_' . date('Ymd_His') . '.xlsx';
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="' . $filename . '"');
+                header('Cache-Control: max-age=0');
+
+                $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+                $writer->save('php://output');
+                exit;
+            } else {
+                echo "No se encontraron datos para generar el archivo Excel.";
+            }
+        } else if ($solicitud == 2) {
+
+            $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
+            FROM solicitud_via_dan svd
+            LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+            LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+            LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+            LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre";
+
+            $vias = $obj->consult($sql);
+
+            if (!empty($vias)) {
+                $excel = new PHPExcel();
+                $excel->setActiveSheetIndex(0);
+                $sheet = $excel->getActiveSheet();
+                $sheet->setCellValue('A1', 'ID');
+                $sheet->setCellValue('B1', 'Tipo de daño');
+                $sheet->setCellValue('C1', 'Fecha y hora');
+                $sheet->setCellValue('D1', 'Solicitante');
+                $sheet->setCellValue('E1', 'Estado');
+
+
+                $sheet->getStyle('A1:I1')->getFont()->setBold(true);
+
+                $row = 2;
+                foreach ($vias as $via) {
+
+                    $sheet->setCellValue("A{$row}", $via['sol_via_dan_id']);
+                    $sheet->setCellValue("B{$row}", $via['tipo_danio']);
+                    $sheet->setCellValue("C{$row}", $via['fecha_hora']);
+                    $sheet->setCellValue("D{$row}", $via['usuario_nombre']);
+                    $sheet->setCellValue("E{$row}", $via['est_nombre']);
+                    $row++;
+                }
+                $filename = 'Daños_via_' . date('Ymd_His') . '.xlsx';
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="' . $filename . '"');
+                header('Cache-Control: max-age=0');
+
+                $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+                $writer->save('php://output');
+                exit;
+            } else {
+                echo "No se encontraron datos para generar el archivo Excel.";
+            }
+        }
+
+    }
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
 ?>

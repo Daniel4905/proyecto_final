@@ -35,7 +35,8 @@
                 <li class="sidebar-item">
                     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'getSolicitudConsult'); ?>"
                         class="sidebar-link gradient-text" title="Mira tus solicitudes">
-                        <img src="img/consulta.png" style="width: 25px;  margin-right: 15px; margin-left: 7px;" alt="" title="Realiza la solicitud que desees">
+                        <img src="img/consulta.png" style="width: 25px;  margin-right: 15px; margin-left: 7px;" alt=""
+                            title="Realiza la solicitud que desees">
                         Consultar solicitudes
                     </a>
                 </li>
@@ -74,38 +75,45 @@
             </a>
             <ul id="reportes" class="sidebar-dropdown list-unstyled collapse">
                 <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'acConsult'); ?>" class="sidebar-link gradient-text" title="Reporte de accidentes">Accidentes</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'acConsult'); ?>"
+                        class="sidebar-link gradient-text" title="Reporte de accidentes">Accidentes</a>
                 </li>
                 <li class="sidebar-item">
                     <a href="" class="sidebar-link gradient-text" title="Reporte de señales">Señales</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'viaConsult'); ?>" class="sidebar-link gradient-text" title="Reporte de vias">Via</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'viaConsult'); ?>"
+                        class="sidebar-link gradient-text" title="Reporte de vias">Via</a>
                 </li>
                 <li class="sidebar-item">
                     <a href="" class="sidebar-link gradient-text" title="Reporte de reductores">Reductores</a>
                 </li>
             </ul>
         </li>
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#gestionUsuarios" aria-expanded="false" aria-controls="gestionUsuarios"
-                title="Gestion de usuarios">
-                <img src="img/gestion-usu.png" style="width: 30px;" alt="">
-                <span class="gradient-text">Gestión de usuarios</span>
-            </a>
-            <ul id="gestionUsuarios" class="sidebar-dropdown list-unstyled collapse">
-                <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'getCreate'); ?>"
-                        class="sidebar-link gradient-text" title="Registrar usuarios">Registrar usuarios</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUsuarios'); ?>"
-                        class="sidebar-link gradient-text " title="Consultar usuarios">Consultar usuarios</a>
-                </li>
-            </ul>
-        </li>
-
+        <?php 
+            if ($_SESSION['rol'] == 1) {
+        ?>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                    data-bs-target="#gestionUsuarios" aria-expanded="false" aria-controls="gestionUsuarios"
+                    title="Gestion de usuarios">
+                    <img src="img/gestion-usu.png" style="width: 30px;" alt="">
+                    <span class="gradient-text">Gestión de usuarios</span>
+                </a>
+                <ul id="gestionUsuarios" class="sidebar-dropdown list-unstyled collapse">
+                    <li class="sidebar-item">
+                        <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'getCreate'); ?>"
+                            class="sidebar-link gradient-text" title="Registrar usuarios">Registrar usuarios</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUsuarios'); ?>"
+                            class="sidebar-link gradient-text " title="Consultar usuarios">Consultar usuarios</a>
+                    </li>
+                </ul>
+            </li>
+        <?php 
+            } 
+        ?>
     </ul>
     <li class="sidebar-footer">
         <a href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
