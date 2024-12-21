@@ -5,7 +5,6 @@ class SolicitudesController
     //Metodo que incluye el select-option que trae el tipo de solicitud que se desea hacer
     public function getSolicitud()
     {
-        $obj = new SolicitudesModel();
 
         include_once '../view/Solicitudes/solicitudes.php';
     }
@@ -27,6 +26,84 @@ class SolicitudesController
             $this->getReductoresDaño();
         } else if ($tipoSolicitud == 6) {
             $this->getVias();
+        }
+
+    }
+
+    public function getInfo()
+    {
+        $obj = new SolicitudesModel();
+
+        $punto1 = $_GET['x'];
+        $punto2 = $_GET['y'];
+
+        //La función ST_DWithin verifica si los dos puntos estan dentro de una distancia 
+        //La función ST_MakePoint combina las coordenadas (longitud, latitud) para crear un punto geo.
+        // grados = 20 metros/ 111,132 metros por grado = 0.0001798 grados
+        // 0.0001798 es la distancia dada en grados de latitud
+        // Son aproximadamente 50 metros de distancia
+        // Cada grado de latitud equivale a 111,132 metros
+
+
+        $sql = "SELECT ra.*, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas,  STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, 
+                STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                STRING_AGG(DISTINCT tc.tipo_choque_desc, ', ') AS tipo_choque,pa.geom AS punto_geom FROM registro_accidente ra
+                LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
+                LEFT JOIN reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
+                LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
+                LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
+                LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
+                LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
+                LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
+                LEFT JOIN punto_accidente pa ON ra.reg_acc_id = pa.id_accidente
+                WHERE 
+                    ST_DWithin(pa.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+                GROUP BY 
+                    ra.reg_acc_id, pa.geom
+                ORDER BY 
+                    ST_Distance(pa.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
+                    LIMIT 1";
+
+        $accidentes = $obj->consult($sql);
+        if (!empty($accidentes)) {
+            include_once '../view/Solicitudes/consultarAcc.php';
+            return;
+        }
+
+        $sql2 = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+                STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, pv.geom AS punto_geom, est.est_nombre
+                FROM solicitud_via_dan svd
+                LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+                LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+                LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+                LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
+                LEFT JOIN punto_via pv ON svd.sol_via_dan_id = pv.id_via
+                WHERE ST_DWithin(pv.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+                GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, pv.geom, est.est_nombre
+                ORDER BY ST_Distance(pv.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
+                LIMIT 1";
+
+        $vias = $obj->consult($sql2);
+        if (!empty($vias)) {
+            include_once '../view/Solicitudes/consultarV.php';
+            return;
+        }
+
+        $sql3 ="SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+               ps.geom AS punto_geom, est.est_nombre FROM solicitud_seniales_new snew
+               LEFT JOIN estados est ON snew.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
+               LEFT JOIN punto_senialnew ps ON snew.sol_sen_new_id = ps.id_senialnew
+               LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
+               WHERE ST_DWithin(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+               GROUP BY snew.sol_sen_new_id,  tp.tipo_sen_desc, ps.geom, est.est_nombre
+               ORDER BY ST_Distance(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
+               LIMIT 1 ";
+
+        $senialNew = $obj->consult($sql3);  
+        if(!empty($senialNew)){
+            include_once '../view/Solicitudes/consultarSenNew.php';
+            return;
         }
 
     }
@@ -55,44 +132,45 @@ class SolicitudesController
     {
         $obj = new SolicitudesModel();
         $sql = 'SELECT * FROM categoria_seniales';
-        $senCate= $obj->consult($sql);
+        $senCate = $obj->consult($sql);
 
         $sql2 = 'SELECT * FROM orientacion_seniales';
-        $senOrientacion= $obj->consult($sql2);
+        $senOrientacion = $obj->consult($sql2);
 
         $sql3 = 'SELECT * FROM tipo_seniales';
-        $senTipo= $obj->consult($sql3);
+        $senTipo = $obj->consult($sql3);
 
         include_once '../view/Solicitudes/senalesNuevo.php';
     }
 
 
-    public function senialNew()  {
+    public function senialNew()
+    {
         $obj = new SolicitudesModel();
-        
-        $cateSen= $_POST['sen_cate'];
-        $tipoSen= $_POST['tipoSen'];
-        $orienSen= $_POST['orienSen'];
 
-        $descSen= $_POST['sen_desc'];
+        $cateSen = $_POST['sen_cate'];
+        $tipoSen = $_POST['tipoSen'];
+        $orienSen = $_POST['orienSen'];
+
+        $descSen = $_POST['sen_desc'];
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
-        $usu_id= $_POST['usu_id'];
+        $usu_id = $_POST['usu_id'];
 
         $punto1Procesado = eliminarSegundoPunto($punto1);
         $punto2rocesado = eliminarSegundoPunto($punto2);
         $idSen = $obj->autoIncrement("solicitud_seniales_new", "sol_sen_new_id");
 
-        $sql1= "INSERT INTO solicitud_seniales_new VALUES($idSen,$tipoSen,'$descSen', date_trunc('second', NOW()),3,$usu_id)";
-        $ejecutar=$obj->insert($sql1);
+        $sql1 = "INSERT INTO solicitud_seniales_new VALUES($idSen,$tipoSen,'$descSen', date_trunc('second', NOW()),3,$usu_id)";
+        $ejecutar = $obj->insert($sql1);
         if ($ejecutar) {
 
-            $sql2="INSERT INTO punto_senialNew (id_senialNew, geom) VALUES ($idSen, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
-            $punto= $obj->insert($sql2);
+            $sql2 = "INSERT INTO punto_senialNew (id_senialNew, geom) VALUES ($idSen, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+            $punto = $obj->insert($sql2);
             if ($punto) {
-                $_SESSION['senNewM']= "Registro Exitoso";
+                $_SESSION['senNewM'] = "Registro Exitoso";
                 redirect("index.php");
-                
+
             }
         }
 
@@ -594,10 +672,11 @@ class SolicitudesController
 
     }
 
-    function consultSen(){
-        $obj=  new SolicitudesModel();
-        $sql= "SELECT sn.sol_sen_new_id, ts.tipo_sen_desc FROM solicitud_seniales_new sn JOIN tipo_seniales ts ON sn.tipo_sen_id=ts.tipo_senial_id";
-        $senial= $obj->consult($sql);
+    function consultSen()
+    {
+        $obj = new SolicitudesModel();
+        $sql = "SELECT sn.sol_sen_new_id, ts.tipo_sen_desc FROM solicitud_seniales_new sn JOIN tipo_seniales ts ON sn.tipo_sen_id=ts.tipo_senial_id";
+        $senial = $obj->consult($sql);
 
         include_once '../view/Solicitudes/consultarSeniales.php';
     }

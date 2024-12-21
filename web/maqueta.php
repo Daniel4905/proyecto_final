@@ -1,6 +1,6 @@
 <div class="container-scrollMap" style="display: flex;">
     <div class="container-scrollMap mapaa"
-        style="overflow: hidden; width: 400px; height: 400px; -moz-user-select: none; position: relative; margin-top: 40px; margin-left: 50px;"
+        style="overflow: hidden; width: 600px; height: 530px; -moz-user-select: none; position: relative; margin-top: 40px; margin-left: 50px;"
         id="dc_main">
 
     </div>
@@ -14,27 +14,27 @@
         </div>
         <div id="layer2" class="container mt-4">
             <form name="select_layers">
-                <div class="form-check">
+                <div class="form-check d-none">
                     <input class="form-check-input" type="checkbox" name="layer[0]" value="Comunas" id="layerComunas"
                         checked onclick="chgLayers()">
                     <label class="form-check-label text-light" for="layerComunas">
-                     Comunas
+                        Comunas
                     </label>
                 </div>
-                <div class="form-check">
+                <div class="form-check d-none">
                     <input class="form-check-input" type="checkbox" name="layer[1]" value="Barrios" id="layerBarrios"
                         checked onclick="chgLayers()">
                     <label class="form-check-label text-light" for="layerBarrios">
                         Barrios
                 </div>
-                <div class="form-check">
+                <div class="form-check d-none">
                     <input class="form-check-input" type="checkbox" name="layer[2]" value="Vias" id="layerVias" checked
                         onclick="chgLayers()">
                     <label class="form-check-label text-light" for="layerVias">
-                       Malla vial
+                        Malla vial
                     </label>
                 </div>
-                <div class="form-check">
+                <div class="form-check d-none">
                     <input class="form-check-input" type="checkbox" name="layer[3]" value="Cali" id="layerCali" checked
                         onclick="chgLayers()">
                     <label class="form-check-label text-light" for="layerCali">
@@ -45,7 +45,7 @@
                     <input class="form-check-input" type="checkbox" name="layer[4]" value="Accidentes"
                         id="layerAccidentes" checked onclick="chgLayers()">
                     <label class="form-check-label text-light" for="layerAccidentes">
-                       Accidentes
+                        Accidentes
                     </label>
                 </div>
                 <div class="form-check">
@@ -89,6 +89,138 @@
 
     chgLayers();
 
+    var botonUbicacion = new msTool('Ubicacion', cursor, 'misc/img/ubicacion.png', ubiCar);
+    myMap1.getToolbar(0).addMapTool(botonUbicacion);
+
+    var botonInfo = new msTool('Ver detalles de accidente', cursor2, 'misc/img/accidente.png', verInfo);
+    myMap1.getToolbar(0).addMapTool(botonInfo);
+
+    var seleccionado = false;
+    var seleccionado2 = false;
+
+
+    function cursor() {
+        myMap1.getTagMap().style.cursor = 'url("misc/img/pasador-de-ubicacion.png"), auto';
+        seleccionado = true;
+    }
+    function cursor2() {
+        myMap1.getTagMap().style.cursor = 'pointer';
+        seleccionado2 = true;
+    }
+
+    function click2map(click_x, click_y) {
+
+        const extent = myMap1.getExtent();
+        const coor = extent.split(",");
+
+        const xmin = parseFloat(coor[0]);
+        const xmax = parseFloat(coor[1]);
+        const ymin = parseFloat(coor[2]);
+        const ymax = parseFloat(coor[3]);
+
+
+        const mapWidth = myMap1.width();
+        const mapHeight = myMap1.height();
+
+
+        const x_pct = click_x / mapWidth;
+        const y_pct = click_y / mapHeight;
+
+
+        const x_map = xmin + (xmax - xmin) * x_pct;
+        const y_map = ymax - (ymax - ymin) * y_pct;
+
+        return [x_map, y_map];
+    }
+
+    var mapa = myMap1.getTagMap();
+
+    function objectAjax() {
+        var xmlhttp = false;
+
+        try {
+            xmlhttp = new ActiveXObject("Msxm2.XMLHttpRequest");
+        } catch (e) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (E) {
+                xmlhttp = false;
+
+            }
+        }
+        if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
+            xmlhttp = new XMLHttpRequest();
+            return xmlhttp;
+        }
+
+    }
+
+    function ubiCar() {
+        var x = myMap1.getClick_X(event);
+        var y = myMap1.getClick_Y(event);
+
+        if (seleccionado) {
+            let coordenadas = click2map(x, y);
+            c1 = coordenadas[0];
+            c2 = coordenadas[1];
+
+            consultar1 = new objectAjax();
+            consultar1.open("GET", `ajax.php?modulo=Solicitudes&controlador=Solicitudes&funcion=getSolicitud`, true);
+
+            consultar1.onreadystatechange = function () {
+                if (consultar1.readyState === 4) {
+                    document.getElementById('modal-container').innerHTML = consultar1.responseText;
+
+                    let modal = new bootstrap.Modal(document.getElementById('modalSolicitud'));
+                    modal.show();
+
+                    let punto1 = document.getElementById("punto1");
+                    let punto2 = document.getElementById("punto2");
+
+                    if (punto1) {
+                        punto1.value = c1;
+                    } else {
+                        console.error("No existe");
+                    }
+                    if (punto2) {
+                        punto2.value = c2;
+                    } else {
+                        console.error("No existe2");
+                    }
+
+                }
+            };
+            consultar1.send(null);
+            seleccionado = false;
+            myMap1.getTagMap().style.cursor = "default";
+        }
+    }
+    function verInfo() {
+        var x = myMap1.getClick_X(event);
+        var y = myMap1.getClick_Y(event);
+
+        if (seleccionado2) {
+            let coordenadas = click2map(x, y);
+            c1 = coordenadas[0];
+            c2 = coordenadas[1];
+
+            consultar1 = new objectAjax();
+            consultar1.open("GET", "ajax.php?modulo=Solicitudes&controlador=Solicitudes&funcion=getInfo&x=" + c1 + "&y=" + c2, true);
+
+            consultar1.onreadystatechange = function () {
+                if (consultar1.readyState === 4) {
+                    document.getElementById('modal-detalles').innerHTML = consultar1.responseText;
+
+                    let modal = new bootstrap.Modal(document.getElementById('detallesModal'));
+                    modal.show();
+                }
+            };
+            consultar1.send(null);
+            seleccionado2 = false;
+            myMap1.getTagMap().style.cursor = "default";
+        }
+    }
+
     var selecLayer = -1;
     var lyactive = false;
     var lejendactive = false;
@@ -109,13 +241,5 @@
 
     //]]>
 </script>
-<?php
-include_once '../model/Solicitudes/SolicitudesModel.php';
-
-
-$obj = new SolicitudesModel();
-// $sqlT = "SELECT * FROM tipo_choque";
-// $tipoAc = $obj->consult($sqlT);
-include_once '../view/Solicitudes/solicitudes.php';
-
-?>
+<div id="modal-container"></div>
+<div id="modal-detalles"></div>

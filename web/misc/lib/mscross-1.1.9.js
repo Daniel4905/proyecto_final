@@ -1873,7 +1873,7 @@ function msToolbar(p_msMap, _control, _default) {
     this.addMapTool(t_zoom);
     this.addMapTool(t_zoomin);
     this.addMapTool(t_zoomout);
-    this.addMapTool(t_ubicacion);
+    //this.addMapTool(t_ubicacion);
   }
 
   this.redraw();
