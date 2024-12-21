@@ -79,7 +79,7 @@
                         class="sidebar-link gradient-text" title="Reporte de accidentes">Accidentes</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link gradient-text" title="Reporte de señales">Señales</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'consultSen'); ?>" class="sidebar-link gradient-text" title="Reporte de señales">Señales</a>
                 </li>
                 <li class="sidebar-item">
                     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'viaConsult'); ?>"

@@ -1,10 +1,10 @@
 <div class="container-scrollMap" style="display: flex;">
     <div class="container-scrollMap mapaa"
-        style="overflow: hidden; width: 600px; height: 600px; -moz-user-select: none; position: relative; margin-top: 40px; margin-left: 50px;"
+        style="overflow: hidden; width: 400px; height: 400px; -moz-user-select: none; position: relative; margin-top: 40px; margin-left: 50px;"
         id="dc_main">
 
     </div>
-    <div style="margin-left: 200px; margin-top: 50px;">
+    <div style="margin-left: 200px; margin-top: 10px;">
 
         <div id="layer1" class="container">
             <div style="overflow: auto; width: 150px; height:150px; -moz-user-select: none; position: relative; z-index: 100 margin-top: 30px;"
@@ -55,6 +55,13 @@
                         Daños en la vía
                     </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="layer[6]" value="Senial" id="layerSenNew"
+                        checked onclick="chgLayers()">
+                    <label class="form-check-label text-light" for="layerSenNew">
+                        Nuevas señales
+                    </label>
+                </div>
             </form>
         </div>
 
@@ -67,14 +74,14 @@
     myMap1.setMapFile('/ms4w/Apache/htdocs/proyecto_final/web/Cali.map');
     //myMap1.setFullExtent(-76.62, -76.40, 3.31, 3.90);
     myMap1.setFullExtent(-76.50, -76.48, 3.42, 3.45);
-    myMap1.setLayers('Barrios Comunas Vias Cali Accidentes Viadano');
+    myMap1.setLayers('Barrios Comunas Vias Cali Accidentes Viadano Senial');
 
     myMap2 = new msMap(document.getElementById('dc_main2'), 'standardRight');
     myMap2.setActionNone();
     //myMap2.setFullExtent(-76.62, -76.40, 3.31, 3.90);
     myMap2.setFullExtent(-76.50, -76.48, 3.42, 3.45);
     myMap2.setMapFile('/ms4w/Apache/htdocs/proyecto_final/web/Cali.map');
-    myMap2.setLayers('Barrios Comunas Vias Cali Accidentes Viadano');
+    myMap2.setLayers('Barrios Comunas Vias Cali Accidentes Viadano Senial');
     myMap1.setReferenceMap(myMap2);
 
     myMap1.redraw();

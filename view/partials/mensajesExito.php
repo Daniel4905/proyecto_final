@@ -38,4 +38,18 @@ if (isset($_SESSION['regVia'])) {
     </script>";
     unset($_SESSION['regVia']);
 }
+
+if (isset($_SESSION['senNewM'])) {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Solicitud registrada con exito',
+                confirmButtonText: 'Ok'
+            });
+        });
+    </script>";
+    unset($_SESSION['senNewM']);
+}
 ?>

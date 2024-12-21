@@ -54,9 +54,51 @@ class SolicitudesController
     public function getSenalesNuevo()
     {
         $obj = new SolicitudesModel();
+        $sql = 'SELECT * FROM categoria_seniales';
+        $senCate= $obj->consult($sql);
+
+        $sql2 = 'SELECT * FROM orientacion_seniales';
+        $senOrientacion= $obj->consult($sql2);
+
+        $sql3 = 'SELECT * FROM tipo_seniales';
+        $senTipo= $obj->consult($sql3);
 
         include_once '../view/Solicitudes/senalesNuevo.php';
     }
+
+
+    public function senialNew()  {
+        $obj = new SolicitudesModel();
+        
+        $cateSen= $_POST['sen_cate'];
+        $tipoSen= $_POST['tipoSen'];
+        $orienSen= $_POST['orienSen'];
+
+        $descSen= $_POST['sen_desc'];
+        $punto1 = $_POST['punto1'];
+        $punto2 = $_POST['punto2'];
+        $usu_id= $_POST['usu_id'];
+
+        $punto1Procesado = eliminarSegundoPunto($punto1);
+        $punto2rocesado = eliminarSegundoPunto($punto2);
+        $idSen = $obj->autoIncrement("solicitud_seniales_new", "sol_sen_new_id");
+
+        $sql1= "INSERT INTO solicitud_seniales_new VALUES($idSen,$tipoSen,'$descSen', date_trunc('second', NOW()),3,$usu_id)";
+        $ejecutar=$obj->insert($sql1);
+        if ($ejecutar) {
+
+            $sql2="INSERT INTO punto_senialNew (id_senialNew, geom) VALUES ($idSen, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+            $punto= $obj->insert($sql2);
+            if ($punto) {
+                $_SESSION['senNewM']= "Registro Exitoso";
+                redirect("index.php");
+                
+            }
+        }
+
+    }
+
+
     public function getSenalesDaño()
     {
         $obj = new SolicitudesModel();
@@ -66,6 +108,7 @@ class SolicitudesController
     public function getReductoresNuevo()
     {
         $obj = new SolicitudesModel();
+
 
         include_once '../view/Solicitudes/reductoresDanos.php';
     }
@@ -94,6 +137,7 @@ class SolicitudesController
             foreach ($tip as $t) {
                 echo "<option value='" . $t['choq_detal_id'] . "'>" . $t['descripcion'] . "</option>";
             }
+
         } else {
             echo "<option value=''>No se recibieron datos válidos...</option>";
         }
@@ -550,9 +594,13 @@ class SolicitudesController
 
     }
 
+    function consultSen(){
+        $obj=  new SolicitudesModel();
+        $sql= "SELECT sn.sol_sen_new_id, ts.tipo_sen_desc FROM solicitud_seniales_new sn JOIN tipo_seniales ts ON sn.tipo_sen_id=ts.tipo_senial_id";
+        $senial= $obj->consult($sql);
 
-
-
+        include_once '../view/Solicitudes/consultarSeniales.php';
+    }
 
 
 }

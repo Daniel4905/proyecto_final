@@ -89,6 +89,12 @@ SYMBOL
     IMAGE 'la-carretera.gif'
 END
 
+SYMBOL
+    NAME 'puntoSenNew'
+    TYPE PIXMAP
+    IMAGE 'stop.gif'
+END
+
 END
 
 
