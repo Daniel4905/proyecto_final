@@ -675,7 +675,8 @@ class SolicitudesController
     function consultSen()
     {
         $obj = new SolicitudesModel();
-        $sql = "SELECT sn.sol_sen_new_id, ts.tipo_sen_desc FROM solicitud_seniales_new sn JOIN tipo_seniales ts ON sn.tipo_sen_id=ts.tipo_senial_id";
+        $sql = "SELECT sn.sol_sen_new_id, ts.tipo_sen_desc FROM solicitud_seniales_new sn
+                JOIN tipo_seniales ts ON sn.tipo_sen_id=ts.tipo_senial_id";
         $senial = $obj->consult($sql);
 
         include_once '../view/Solicitudes/consultarSeniales.php';

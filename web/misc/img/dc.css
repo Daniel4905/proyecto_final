@@ -96,10 +96,10 @@
 
 
 
-#map a
+/* #map a
 {
   display: none;
-}
+} */
 
 #dc_map
 {
@@ -118,32 +118,32 @@
 }
 */
 
-.leftmenu
+/* .leftmenu
 {
   padding-top: 11px;
-}
+} */
 
 
 
-#shift
+/* #shift
 {
   font-size: 8pt;
   padding-left: 24px;
-}
+} */
 
 
 
-.lang_set
+/* .lang_set
 {
   font-weight: bold;
-}
+} */
 
-.maps
+/* .maps
 {
   border: 1px dashed #cccccc;
   padding: 2px;
   margin: 6px;
-}
+} */
 
 
 

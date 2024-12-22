@@ -216,8 +216,8 @@
                 }
             };
             consultar1.send(null);
-            seleccionado2 = false;
-            myMap1.getTagMap().style.cursor = "default";
+            // seleccionado2 = false;
+            // myMap1.getTagMap().style.cursor = "default";
         }
     }
 

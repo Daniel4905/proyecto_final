@@ -148,9 +148,13 @@ class UsuariosController
         $obj = new UsuariosModel();
         $buscar = $_POST['buscar'];
 
-        $buscar = strtolower($_POST['buscar']); // Convertir el término a minúsculas en PHP
+        $buscar = strtolower($_POST['buscar']); 
         $sql = "SELECT u.*, r.rol_nombre FROM usuarios u
-        JOIN rol r ON u.rol_id = r.rol_id WHERE LOWER(u.usu_nombre1) LIKE '%$buscar%' 
+        JOIN rol r ON u.rol_id = r.rol_id
+        JOIN sexo s ON u.sex_id = s.sex_id 
+        JOIN tipo_documento td ON u.doc_id = td.doc_id
+        JOIN estados est ON u.est_id = est.est_id
+        WHERE LOWER(u.usu_nombre1) LIKE '%$buscar%' 
         OR LOWER(u.usu_nombre2) LIKE '%$buscar%' 
         OR LOWER(u.usu_apellido1) LIKE '%$buscar%' 
         OR LOWER(u.usu_apellido2) LIKE '%$buscar%' 
@@ -290,9 +294,11 @@ class UsuariosController
 
         if ($ejecutar) {
             $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
-                 JOIN rol r ON u.rol_id = r.rol_id
-                 JOIN estados est ON u.est_id = est.est_id
-                 ORDER BY u.usu_id ASC";
+                    JOIN rol r ON u.rol_id = r.rol_id
+                    JOIN sexo s ON u.sex_id = s.sex_id 
+                    JOIN tipo_documento td ON u.doc_id = td.doc_id
+                    JOIN estados est ON u.est_id = est.est_id
+                    ORDER BY u.usu_id ASC";
             $usuario = $obj->consult($sql);
 
             include_once "../view//usuarios/buscar.php";
@@ -451,6 +457,30 @@ class UsuariosController
         } else {
             echo "Usuario no encontrado."; 
         }
+    }
+    
+    public function ordenarAlf(){
+        $obj = new UsuariosModel();
+
+        $criterio = $_POST['criterio'];
+        $sql = "";
+        if($criterio == 1){
+            $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
+                    JOIN rol r ON u.rol_id = r.rol_id
+                    JOIN sexo s ON u.sex_id = s.sex_id 
+                    JOIN tipo_documento td ON u.doc_id = td.doc_id
+                    JOIN estados est ON u.est_id = est.est_id
+                    ORDER BY u.usu_nombre1 ASC";
+        }else if ($criterio == 2){
+            $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
+                    JOIN rol r ON u.rol_id = r.rol_id
+                    JOIN sexo s ON u.sex_id = s.sex_id 
+                    JOIN tipo_documento td ON u.doc_id = td.doc_id
+                    JOIN estados est ON u.est_id = est.est_id
+                    ORDER BY u.usu_nombre1 DESC";
+        }
+        $usuario = $obj->consult($sql);
+        include_once '../view/usuarios/buscar.php';
     }
 
 

@@ -262,26 +262,28 @@ $(document).ready(function () {
     });
 
     $(document).on('keyup', "#buscar", function () {
-
-        let buscar = $(this).val();
-        let url = $(this).attr('data-url');
+        let buscar = $(this).val();  
+        let url = $(this).data('url'); 
 
         $.ajax({
             url: url,
             type: 'POST',
             data: { 'buscar': buscar },
             success: function (data) {
-                $('tbody').html(data);
-                if (data.trim() === '' || $('tbody').children().length === 0) {
+                $('#userList').html(data);
+                if (data.trim() === '' || $('#userList').children().length === 0) {
                     $('#datError').removeClass('d-none');
                 } else {
                     $('#datError').addClass('d-none');
                 }
+            },
+            error: function () {
+                console.log("Error en la solicitud AJAX.");
             }
-
         });
-
     });
+    
+    
     $(document).on('change', "#tipo-solicitud", function () { 
         let tipoSolicitud = $(this).val();
         let url = $(this).attr('data-url');
@@ -395,11 +397,27 @@ $(document).ready(function () {
             data: { id, user },
             type: "POST",
             success: function (data) {
-                $("tbody").html(data);
+                $("#userList").html(data);
             }
 
         });
     });
+
+    $(document).on("change", "#orden", function () {
+        let url = $(this).attr('data-url');
+        let criterio = $(this).val();
+
+        $.ajax({
+            url: url,
+            data: { criterio },
+            type: "POST",
+            success: function (data) {
+                $("#userList").html(data);
+            }
+
+        });
+    });
+    
     $(document).on('keyup', "#documento", function () {
         const $campo = $(this);
         const valor = $campo.val().trim();

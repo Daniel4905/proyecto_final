@@ -1,19 +1,19 @@
 
-html, body {
+/* html, body {
     margin: 0;
     background: #FFFFFF;
     font-family: Lucida Grande, Tahoma, sans-serif;
     font-size: 11px;
     overflow: hidden;
-}
+} */
 
-a {
+/* a {
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
-}
+} */
 
 .toolbar {
     height: 14px;

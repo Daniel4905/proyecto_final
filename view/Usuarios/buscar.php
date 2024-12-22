@@ -1,43 +1,51 @@
 <?php
-if (isset($usuario) && is_array($usuario) && count($usuario) > 0) {
+if (!empty($usuario)) {
     foreach ($usuario as $usu) {
-        $clase = "";
-        $text = "";
-        $disabled = "";
-        echo "<tr>";
-        echo "<td>" . $usu['doc_abrev'] . ' ' . $usu['usu_documento'] . "</td>";
-        echo "<td>" . $usu['usu_nombre1'] . " " . $usu['usu_nombre2'] . "</td>";
-        echo "<td>" . $usu['usu_apellido1'] . " " . $usu['usu_apellido2'] . "</td>";
-        echo "<td>" . $usu['usu_correo'] . "</td>";
-        echo "<td>" . $usu['usu_tel'] . "</td>";
-
-        if ($_SESSION['id'] == $usu['usu_id'] || stristr($usu['rol_nombre'], "Admin")) {
+        if ($_SESSION['id'] == $usu['usu_id']) {
             $disabled = "disabled";
+        } else {
+            $disabled = "";
         }
 
         if ($usu['est_id'] == 1) {
+            $estadoClass = "text-success";
             $class = "btn btn-danger";
-            $text = "Inhabilitar";
-        } else if ($usu['est_id'] == 2) {
+            $buttonText = "Inhabilitar";
+            $estadoText = "Habilitado";
+        } else {
+            $estadoClass = "text-danger";
             $class = "btn btn-success";
-            $text = "Habilitar";
+            $buttonText = "Habilitar";
+            $estadoText = "Inhabilitado";
         }
-        echo "<td>";
-        if (!empty($class)) {
-            echo "<button class='" . $class . "' id='cambiar_estado' data-url='" . getUrl("Usuarios", "Usuarios", "postUpdateStatus", false, "ajax") . "' data-id = '" . $usu['est_id'] . "' data-user='" . $usu['usu_id'] . "' $disabled>" . $text . "</button>";
-        }
-        echo "</td>";
-        echo "<td>" .
-            "<a href='" . getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu['usu_id'])) . "'>" .
-            "<button class='btn btn-primary'>Editar</button>" .
-            "</a>";
-        echo "</td>";
-        echo "<td>" .
-            "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $usu['usu_id'] . "' data-url='" . getUrl("Usuarios", "Usuarios", "detallesUsuario", false, "ajax") . "'>Ver detalles</button>" .
-            "</td>";
-        echo "</tr>";
+
+        echo "<li class='list-group-item d-flex justify-content-between align-items-center'>".
+            "<div>".
+                "<h5 class='mb-1'>" . $usu['usu_nombre1'] . " " . $usu['usu_nombre2']. " ". $usu['usu_apellido1']. " ". $usu['usu_apellido2']."</h5>".
+                "<p class='mb-1'>".
+                    "<strong>Documento:</strong>". " " . $usu['usu_documento'] . "<br>".
+                    "<strong>Correo:</strong>". " " . $usu['usu_correo'] . "<br>".
+                    "<strong>Teléfono:</strong>". " " . $usu['usu_tel'] . "<br>".
+                    "<span class='$estadoClass fw-bold' style = 'font-size: 12px;'>" . $estadoText . "</span>".
+                "</p>".
+            "</div>".
+            "<div class='row'>".
+                "<div class='col-12 col-md-5 mb-2'>".
+                    "<button class='$class btn-sm w-100' id='cambiar_estado' data-url='" . getUrl('Usuarios', 'Usuarios', 'postUpdateStatus', false, 'ajax') . "' data-id='" . $usu['est_id'] . "' data-user='" . $usu['usu_id'] . "' $disabled>".
+                        $buttonText.
+                    "</button>".
+                "</div>".
+                "<div class='col-12 col-md-5 mb-2'>".
+                    "<a href='" . getUrl("Usuarios", "Usuarios", "getUpdate", array("usu_id" => $usu['usu_id'])) . "' class='btn btn-primary btn-sm w-100'>Editar</a>".
+                "</div>".
+                "<div class='col-12 col-md-10 mb-2'>".
+                    "<button class='btn btn-outline-secondary btn-sm w-100 btn-detalles' data-id='" . $usu['usu_id'] . "' data-url='" . getUrl("Usuarios", "Usuarios", "detallesUsuario", false, "ajax") . "'>Ver detalles</button>".
+                "</div>".
+            "</div>".
+        "</li>";
+
     }
 } else {
-    echo "<tr><td colspan='8' class='text-center text-danger'>No se encontraron resultados en la búsqueda</td></tr>";
+    echo "<li class='list-group-item text-center fw-bold' style= 'color: #dc3545;'>No se encontraron usuarios que coincidan con la búsqueda.</li>";
 }
 ?>
