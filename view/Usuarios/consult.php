@@ -23,14 +23,14 @@ if (isset($_SESSION['RegEx'])) {
                 class="form-control mt-3 mb-3"
                 data-url='<?php echo getUrl("Usuarios", "Usuarios", "buscar", false, "ajax") ?>'>
         </div>
-        <!-- <div class="col-md-2">
+        <div class="col-md-2">
             Filtrar por orden alfabetico
             <select name="" id="orden" class="form-select" data-url='<?php echo getUrl("Usuarios", "Usuarios", "ordenarAlf", false, "ajax") ?>'>
                 <option value="">Seleccione</option>
                 <option value="1" class="form-option">A-Z</option>
                 <option value="2" class="form-option">Z-A</option>
             </select>
-        </div> -->
+        </div>
     </div>
 </div>
 
@@ -58,8 +58,8 @@ if (isset($_SESSION['RegEx'])) {
 
             echo "<li class='list-group-item d-flex justify-content-between align-items-center'>" .
                 "<div>" .
-                "<h5 class='mb-1'>" . $usu['usu_nombre1'] . " " . $usu['usu_nombre2'] ." ". $usu['usu_apellido1'] . " " . $usu['usu_apellido2'] . "</h5>" .
-                "<p class='mb-1'>" .
+                "<h6 class='mb-1 fw-bold'>" . $usu['usu_nombre1'] . " " . $usu['usu_nombre2'] ." ". $usu['usu_apellido1'] . " " . $usu['usu_apellido2'] . "</h6>" .
+                "<p class='mb-1 fs-6'>" .
                 "<strong>Documento:</strong>" . " " . $usu['usu_documento'] . "<br>" .
                 "<strong>Correo:</strong>" . " " . $usu['usu_correo'] . "<br>" .
                 "<strong>Teléfono:</strong>" . " " . $usu['usu_tel'] . "<br>" .

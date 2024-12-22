@@ -23,7 +23,6 @@
                             echo "<select id='' name='estado' class='form-select estado_solicitud' 
                         data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoVias", false, "ajax") . "' 
                         data-soli='" . $via['sol_via_dan_id'] . "'>";
-                            echo "<option value=''>Seleccione...</option>";
                             foreach ($estados as $est) {
                                 $selected = "";
                                 if ($est['est_id'] == $via['est_sol_id']) {

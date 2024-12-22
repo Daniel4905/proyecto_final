@@ -89,7 +89,7 @@ class SolicitudesController
             return;
         }
 
-        $sql3 ="SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+        $sql3 = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
                ps.geom AS punto_geom, est.est_nombre FROM solicitud_seniales_new snew
                LEFT JOIN estados est ON snew.est_sol_id = est.est_id
                LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
@@ -100,8 +100,8 @@ class SolicitudesController
                ORDER BY ST_Distance(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                LIMIT 1 ";
 
-        $senialNew = $obj->consult($sql3);  
-        if(!empty($senialNew)){
+        $senialNew = $obj->consult($sql3);
+        if (!empty($senialNew)) {
             include_once '../view/Solicitudes/consultarSenNew.php';
             return;
         }
@@ -554,6 +554,8 @@ class SolicitudesController
 
     }
 
+
+
     public function descargarExcel()
     {
         $solicitud = $_GET['solicitud'];
@@ -675,11 +677,70 @@ class SolicitudesController
     function consultSen()
     {
         $obj = new SolicitudesModel();
-        $sql = "SELECT sn.sol_sen_new_id, ts.tipo_sen_desc FROM solicitud_seniales_new sn
-                JOIN tipo_seniales ts ON sn.tipo_sen_id=ts.tipo_senial_id";
+        $sql = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+               est.est_nombre FROM solicitud_seniales_new snew
+               LEFT JOIN estados est ON snew.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
+               LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
+               GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
         $senial = $obj->consult($sql);
 
+        $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+                   JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+        $estados = $obj->consult($sqlEst);
+
         include_once '../view/Solicitudes/consultarSeniales.php';
+    }
+
+    public function updateEstadoSenNew()
+    {
+        $obj = new SolicitudesModel();
+
+        $sol_id = $_POST['solicitud'];
+        $est_id = $_POST['id'];
+
+
+
+        if ($est_id !== null) {
+            $sql = "UPDATE solicitud_seniales_new SET est_sol_id = $est_id WHERE sol_sen_new_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+                $sql = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                est.est_nombre FROM solicitud_seniales_new snew
+                LEFT JOIN estados est ON snew.est_sol_id = est.est_id
+                LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
+                LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
+                GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
+                $senial = $obj->consult($sql);
+
+                $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+                    JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+                $estados = $obj->consult($sqlEst);
+
+                include_once "../view/solicitudes/buscarSen.php";
+            }
+        }
+
+    }
+
+    function getSenialF()
+    {
+        $categoria = $_POST['categoria_id'];
+        $orientacion = $_POST['orientacion_id'];
+        $obj = new SolicitudesModel();
+
+        $sql = "SELECT tp.* FROM tipo_seniales tp WHERE orientacion_id = $orientacion AND cat_id = $categoria";
+        $tipoSen = $obj->consult($sql);
+
+        if (!empty($tipoSen)) {
+            foreach ($tipoSen as $ts) {
+                echo '<option value="' . $ts['tipo_senial_id'] . '">' . $ts['tipo_sen_desc'] . '</option>';
+            }
+        } else {
+            echo '<option value="">No hay señales con ese criterio</option>';
+        }
+
     }
 
 

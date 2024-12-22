@@ -8,7 +8,7 @@
             $result = pg_query($this->getConnect(), $sql);
             return $result;
         }
-        public function consult($sql){
+        public function consult($sql){  
             $result = pg_query($this->getConnect(), $sql);
 
             return pg_fetch_all($result);

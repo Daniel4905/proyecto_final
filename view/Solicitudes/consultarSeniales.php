@@ -7,6 +7,7 @@
                     <th>Tipo</th>
                     <th>Fecha</th>
                     <th>Solicitante</th>
+                    <th>Estado</th>
                     <th>Detalles</th>
                 </thead>
                 <tbody>
@@ -14,16 +15,24 @@
                     foreach ($senial as $sen) {
                         echo "<tr>";
                         echo "<td>" . $sen['sol_sen_new_id'] . "</td>";
-                        echo "<td>" . $sen['tipo_sen_desc'] .  "</td>";
-                     //   echo "<td>" . $sen['reg_acc_fecha_hora'] . "</td>";
-                        echo "<td>";
-                        if ($acc['reg_acc_lesionados'] === 't') {
-                            echo "Sí";
-                        } else {
-                            echo "No";
-                        }
+                        echo "<td>" . $sen['senal'] .  "</td>";
+                        echo "<td>".
+                        $sen['sol_sen_new_fecha'];
                         echo "</td>";
                         echo "<td>" . $sen['usuario_nombre'] . "</td>";
+                        echo "<td>";
+                        echo "<select id='' name='estado' class='form-select estado_solicitud' 
+                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoSenNew", false, "ajax") . "' 
+                        data-soli='" . $sen['sol_sen_new_id'] . "'>";
+                            foreach ($estados as $est) {
+                                $selected = "";
+                                if ($est['est_id'] == $sen['est_sol_id']) {
+                                    $selected = "selected";
+                                }
+                                echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
+                            }
+                        echo "</select>";
+                        echo "</td>";
                         echo "<td>" .
                             "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $sen['reg_acc_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesAccidente", false, "ajax") . "'>Ver detalles
                               </button>" .
@@ -42,7 +51,7 @@
 
 </div>
 <div class="container mt-4">
-    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 1), 'ajax'); ?>" class="btn btn-secondary">
+    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 3), 'ajax'); ?>" class="btn btn-secondary">
     <i class="fas fa-file-excel"></i>
         Descargar reporte completo en formato XLSX
     </a>

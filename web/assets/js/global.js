@@ -115,14 +115,14 @@ $(document).ready(function () {
             agregarError($('#clavenew'), 'La confirmación de la contraseña no coincide con la contraseña ingresada.');
             valido = false;
         }
-        if(!docValido && documento !== ''){
+        if (!docValido && documento !== '') {
             agregarError($('#documentoRegistro'), 'El documento ya existe.');
             valido = false;
         }
         if (valido) {
             this.submit();
         }
-        
+
     });
 
     $('#formUpdate').submit(function (event) {
@@ -227,7 +227,7 @@ $(document).ready(function () {
         }
 
         const checkbox2 = $('#cambiarCont').is(':checked');
-        if(checkbox2){
+        if (checkbox2) {
             if (!validarCampo($('#clavenewUp'), patronClave, 'la nueva contraseña', 'La nueva contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial.')) {
                 valido = false;
             }
@@ -237,10 +237,10 @@ $(document).ready(function () {
                 valido = false;
             }
         }
-            // if (!claveValida) {
-            //     agregarError('#clave', 'La contraseña no ha sido validada correctamente.');
-            //     valido = false;
-            // }
+        // if (!claveValida) {
+        //     agregarError('#clave', 'La contraseña no ha sido validada correctamente.');
+        //     valido = false;
+        // }
 
         if (valido) {
             Swal.fire({
@@ -254,7 +254,7 @@ $(document).ready(function () {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.submit(); 
+                    this.submit();
                 }
             });
         }
@@ -262,8 +262,8 @@ $(document).ready(function () {
     });
 
     $(document).on('keyup', "#buscar", function () {
-        let buscar = $(this).val();  
-        let url = $(this).data('url'); 
+        let buscar = $(this).val();
+        let url = $(this).data('url');
 
         $.ajax({
             url: url,
@@ -282,12 +282,12 @@ $(document).ready(function () {
             }
         });
     });
-    
-    
-    $(document).on('change', "#tipo-solicitud", function () { 
+
+
+    $(document).on('change', "#tipo-solicitud", function () {
         let tipoSolicitud = $(this).val();
         let url = $(this).attr('data-url');
-    
+
         if (tipoSolicitud) {
             $.ajax({
                 url: url,
@@ -301,7 +301,7 @@ $(document).ready(function () {
                 }
             });
         } else {
-            $('#form-dinamico').empty(); 
+            $('#form-dinamico').empty();
         }
     });
 
@@ -391,17 +391,41 @@ $(document).ready(function () {
         let url = $(this).attr('data-url');
         let user = $(this).attr('data-user');
 
-
-        $.ajax({
-            url: url,
-            data: { id, user },
-            type: "POST",
-            success: function (data) {
-                $("#userList").html(data);
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Se actualizará el estado del usuario.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    data: { id, user },
+                    type: "POST",
+                    success: function (data) {
+                        Swal.fire(
+                            'Actualizado!',
+                            'El estado del usuario ha sido actualizado.',
+                            'success'
+                        );
+                        $("#userList").html(data);
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error',
+                            'No se pudo actualizar el estado.',
+                            'error'
+                        );
+                    }
+                });
             }
-
         });
     });
+
 
     $(document).on("change", "#orden", function () {
         let url = $(this).attr('data-url');
@@ -417,7 +441,7 @@ $(document).ready(function () {
 
         });
     });
-    
+
     $(document).on('keyup', "#documento", function () {
         const $campo = $(this);
         const valor = $campo.val().trim();
@@ -448,36 +472,69 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on("focus", ".estado_solicitud", function () {
+        $(this).data('prev-value', $(this).val());
+    });
+
     $(document).on("change", ".estado_solicitud", function () {
         let select = $(this);
         let id = select.val();
-        let url = $(this).attr('data-url');
-        let solicitud = $(this).attr('data-soli');
+        let url = select.attr('data-url');
+        let solicitud = select.attr('data-soli');
+        let prevValue = select.data('prev-value');
 
-
-        $.ajax({
-            url: url,
-            data: { id, solicitud},
-            type: "POST",
-            success: function (data) {
-                $("tbody").html(data);
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Se actualizará el estado de la solicitud.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    data: { id, solicitud },
+                    type: "POST",
+                    success: function (data) {
+                        Swal.fire(
+                            'Actualizado!',
+                            'El estado de la solicitud ha sido actualizado.',
+                            'success'
+                        );
+                        $("tbody").html(data);
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error',
+                            'Ocurrió un problema al actualizar el estado.',
+                            'error'
+                        );
+                        select.val(prevValue); 
+                    }
+                });
+            } else {
+                select.val(prevValue);
             }
-
         });
     });
+    
+
 
     $('#documentoRegistro').on('blur', function () {
         let input = $(this);
         let doc = input.val();
         let url = $(this).attr('data-url');
-        console.log(url);  
-        
+        console.log(url);
+
         $.ajax({
             url: url,
             data: { doc },
             type: "POST",
             success: function (response) {
-                console.log(response); 
+                console.log(response);
                 if (response.trim() === "Documento valido") {
                     docValido = true;
                     console.log("Documento válido");
@@ -492,7 +549,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
 
 
 

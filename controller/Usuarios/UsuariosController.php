@@ -98,7 +98,7 @@ class UsuariosController
             $ejecutar = $obj->insert($sql);
 
             if ($ejecutar) {
-                $_SESSION['regEx'][]='Registro exitoso';
+                $_SESSION['regEx'][] = 'Registro exitoso';
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
             } else {
                 redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
@@ -112,7 +112,7 @@ class UsuariosController
     public function getUsuarios()
     {
         $obj = new UsuariosModel();
-    
+
         $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id 
         FROM usuarios u
         LEFT JOIN rol r ON u.rol_id = r.rol_id 
@@ -120,7 +120,7 @@ class UsuariosController
         LEFT JOIN tipo_documento td ON u.doc_id = td.doc_id
         LEFT JOIN estados est ON u.est_id = est.est_id
         ORDER BY u.usu_id ASC;";
-    
+
         $usuario = $obj->consult($sql);
         include_once '../view/usuarios/consult.php';
     }
@@ -148,7 +148,7 @@ class UsuariosController
         $obj = new UsuariosModel();
         $buscar = $_POST['buscar'];
 
-        $buscar = strtolower($_POST['buscar']); 
+        $buscar = strtolower($_POST['buscar']);
         $sql = "SELECT u.*, r.rol_nombre FROM usuarios u
         JOIN rol r ON u.rol_id = r.rol_id
         JOIN sexo s ON u.sex_id = s.sex_id 
@@ -239,17 +239,17 @@ class UsuariosController
             echo "No se encontraron resultados";
         }
         $hash1 = hash('sha256', $usu_clave);
-        
-        if ($hash1 !=$contraBase) {
+
+        if ($hash1 != $contraBase) {
             $_SESSION['errores'][] = "La contraseña actual ingresada no es correcta";
             $validacion = false;
         }
-        
 
-        if (isset($_POST['cambiarCont'])){
+
+        if (isset($_POST['cambiarCont'])) {
             $usu_clavenew = $_POST['usu_clavenew'];
-            $hash = hash('sha256',$usu_clavenew );
-        }else{
+            $hash = hash('sha256', $usu_clavenew);
+        } else {
             $hash = $contraBase;
         }
         $sql = "";
@@ -299,12 +299,13 @@ class UsuariosController
                     JOIN tipo_documento td ON u.doc_id = td.doc_id
                     JOIN estados est ON u.est_id = est.est_id
                     ORDER BY u.usu_id ASC";
+
             $usuario = $obj->consult($sql);
 
             include_once "../view//usuarios/buscar.php";
         } else {
             echo "No se puede actualizar el estado";
-            
+
         }
     }
 
@@ -342,9 +343,9 @@ class UsuariosController
         $usu_apellido2 = $_POST['usu_apellido2'];
         $usu_correo = $_POST['usu_correo'];
         $usu_clave = $_POST['usu_clave'];
-        
+
         $usu_tel = $_POST['usu_tel'];
-      
+
         if (isset($_POST['cambiarDir'])) {
             $tipoV = $_POST['tipoVia'];
             $numeroPr = $_POST['numeroPrincipal'];
@@ -371,14 +372,14 @@ class UsuariosController
 
 
 
-        if(isset($_POST['doc_id'])){
+        if (isset($_POST['doc_id'])) {
             $doc_id = $_POST['doc_id'];
-        }else{
+        } else {
             $sqldoc = "SELECT doc_id FROM usuarios WHERE usu_id = $usu_id";
             $resultadoDoc = $obj->consult($sqldoc);
-            if($resultadoDoc && isset($resultadoDoc[0])){
+            if ($resultadoDoc && isset($resultadoDoc[0])) {
                 $doc_id = $resultadoDoc[0]['doc_id'];
-            }else{
+            } else {
                 echo "No se encontraron resultados";
             }
         }
@@ -396,17 +397,17 @@ class UsuariosController
         $validacion = true;
 
         $hash1 = hash('sha256', $usu_clave);
-        
-        if ($hash1 !=$contraBase) {
+
+        if ($hash1 != $contraBase) {
             $_SESSION['errores'][] = "La contraseña actual ingresada no es correcta";
             $validacion = false;
         }
-        
 
-        if (isset($_POST['cambiarCont'])){
+
+        if (isset($_POST['cambiarCont'])) {
             $usu_clavenew = $_POST['usu_clavenew'];
-            $hash = hash('sha256',$usu_clavenew );
-        }else{
+            $hash = hash('sha256', $usu_clavenew);
+        } else {
             $hash = $contraBase;
         }
 
@@ -437,9 +438,10 @@ class UsuariosController
         }
     }
 
-    public function validarCont() {
+    public function validarCont()
+    {
         $obj = new UsuariosModel();
-    
+
         $usu_id = $_POST['id'];
         $usu_clave = $_POST['clave'];
 
@@ -448,42 +450,50 @@ class UsuariosController
         $hash = hash('sha256', $usu_clave);
         if ($resultado && isset($resultado[0])) {
             $contraBase = $resultado[0]['usu_clave'];
-    
+
             if ($contraBase === $hash) {
-                echo "Contraseña válida";  
+                echo "Contraseña válida";
             } else {
-                echo "La contraseña ingresada no es correcta.";  
+                echo "La contraseña ingresada no es correcta.";
             }
         } else {
-            echo "Usuario no encontrado."; 
+            echo "Usuario no encontrado.";
         }
     }
-    
-    public function ordenarAlf(){
+
+    public function ordenarAlf()
+    {
         $obj = new UsuariosModel();
 
         $criterio = $_POST['criterio'];
         $sql = "";
-        if($criterio == 1){
+        if ($criterio == 1) {
             $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
                     JOIN rol r ON u.rol_id = r.rol_id
                     JOIN sexo s ON u.sex_id = s.sex_id 
                     JOIN tipo_documento td ON u.doc_id = td.doc_id
                     JOIN estados est ON u.est_id = est.est_id
                     ORDER BY u.usu_nombre1 ASC";
-        }else if ($criterio == 2){
+        } else if ($criterio == 2) {
             $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
                     JOIN rol r ON u.rol_id = r.rol_id
                     JOIN sexo s ON u.sex_id = s.sex_id 
                     JOIN tipo_documento td ON u.doc_id = td.doc_id
                     JOIN estados est ON u.est_id = est.est_id
                     ORDER BY u.usu_nombre1 DESC";
+        } else {
+            $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id 
+                    FROM usuarios u
+                    LEFT JOIN rol r ON u.rol_id = r.rol_id 
+                    LEFT JOIN sexo s ON u.sex_id = s.sex_id 
+                    LEFT JOIN tipo_documento td ON u.doc_id = td.doc_id
+                    LEFT JOIN estados est ON u.est_id = est.est_id
+                    ORDER BY u.usu_id ASC";
         }
+
         $usuario = $obj->consult($sql);
         include_once '../view/usuarios/buscar.php';
     }
-
-
 
 
     public function detallesUsuario()
