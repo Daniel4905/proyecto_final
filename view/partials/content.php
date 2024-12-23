@@ -1,46 +1,71 @@
-<!DOCTYPE html>
-<html lang="es">
+<style>
+    .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        height: 400px;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleccionar Coordenadas</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>
-        #map {
-            height: 400px;
-            width: 100%;
-            z-index: 100;
-        }
-    </style>
-</head>
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+</style>
+<div class="container row d-flex justify-content-center mt-5">
+    <h1 class="text-center mb-2">Grafico de reportes hechos</h1>
+    <div class="chart-container">
+        <canvas id="mychart"></canvas>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
 
-<body>
-    <h1>Seleccionar Coordenadas</h1>
-    <div id="map"></div>
-    <p>Latitud: <span id="latitude"></span></p>
-    <p>Longitud: <span id="longitude"></span></p>
+    consultar1 = new objectAjax();
+    consultar1.open("GET", `ajax.php?modulo=Solicitudes&controlador=Solicitudes&funcion=getNumReportes`, true);
 
-    <script>
-        const map = L.map('map').setView([3.430318, -76.491551], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+    consultar1.onreadystatechange = function () {
+        if (consultar1.readyState === 4) {
+
+            const reportes = ['Reporte de accidentes', 'Reporte de vías en mal estado', 'Reporte de señales nuevas'];
+            const respuesta = consultar1.responseText.split(',').map(Number);
+
+            const ctx = document.getElementById('mychart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'pie', // Gráfico tipo pie
+                data: {
+                    labels: reportes,
+                    datasets: [{
+                        label: 'Reportes realizados',
+                        data: respuesta,
+                        backgroundColor: [
+                            'rgba(42, 47, 91, 0.52)',
+                            'rgba(91, 147, 191, 0.52)',
+                            'rgba(191, 91, 91, 0.52)'
+                        ],
+                        borderColor: [
+                            'rgb(42, 47, 91)',
+                            'rgb(91, 147, 191)',
+                            'rgb(191, 91, 91)'
+                        ],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true 
+                        }
+                    }
+                }
+            });
 
 
-        let marker = null;
-        map.on('click', function (e) {
-            const { lat, lng } = e.latlng;
-            document.getElementById('latitude').textContent = lat.toFixed(6);
-            document.getElementById('longitude').textContent = lng.toFixed(6);
+        };
 
-            if (marker) {
-                map.removeLayer(marker);
-            }
-            marker = L.marker([lat, lng]).addTo(map);
-        });
-    </script>
-</body>
+    }
+    consultar1.send(null);
 
-</html>
+
+</script>

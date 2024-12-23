@@ -696,8 +696,8 @@ class SolicitudesController
                 foreach ($senial as $sen) {
 
                     $sheet->setCellValue("A{$row}", $sen['sol_sen_new_id']);
-                    $sheet->setCellValue("B{$row}",  $sen['senal']);
-                    $sheet->setCellValue("C{$row}",  $sen['sol_sen_new_fecha']);
+                    $sheet->setCellValue("B{$row}", $sen['senal']);
+                    $sheet->setCellValue("C{$row}", $sen['sol_sen_new_fecha']);
                     $sheet->setCellValue("D{$row}", $sen['usuario_nombre']);
                     $sheet->setCellValue("E{$row}", $sen['est_nombre']);
                     $row++;
@@ -785,6 +785,44 @@ class SolicitudesController
         }
 
     }
+
+    function getNumReportes()
+    {
+        $obj = new SolicitudesModel();
+
+        $sql = "SELECT
+                    (SELECT COUNT(*) FROM registro_accidente) AS accidentes,
+                    (SELECT COUNT(*) FROM solicitud_via_dan) AS vias,
+                    (SELECT COUNT(*) FROM solicitud_seniales_new) AS sennew";
+
+        $reportes = $obj->consult($sql);
+
+        if (!$reportes || empty($reportes[0])) {
+            echo "0,0,0";
+        } else {
+            $accidentes = 0;
+            $vias = 0;
+            $sennew = 0;
+
+            if (isset($reportes[0]['accidentes'])) {
+                $accidentes = $reportes[0]['accidentes'];
+            }
+
+            if (isset($reportes[0]['vias'])) {
+                $vias = $reportes[0]['vias'];
+            }
+
+            if (isset($reportes[0]['sennew'])) {
+                $sennew = $reportes[0]['sennew'];
+            }
+
+            echo "$accidentes,$vias,$sennew";
+        }
+    }
+
+
+
+
 
 
 }

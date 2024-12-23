@@ -1,6 +1,6 @@
 <div class="container-scrollMap" style="display: flex;">
     <div class="container-scrollMap mapaa"
-        style="overflow: hidden; width: 600px; height: 530px; -moz-user-select: none; position: relative; margin-top: 40px; margin-left: 50px;"
+        style="overflow:  auto; width: 600px; height: 530px; -moz-user-select: none; position: relative; margin-top: 40px; margin-left: 50px;"
         id="dc_main">
 
     </div>
