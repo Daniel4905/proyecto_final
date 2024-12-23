@@ -120,6 +120,8 @@ class UsuariosController
         LEFT JOIN tipo_documento td ON u.doc_id = td.doc_id
         LEFT JOIN estados est ON u.est_id = est.est_id
         ORDER BY u.usu_id ASC;";
+        $_SESSION['sql'] = $sql;
+
 
         $usuario = $obj->consult($sql);
         include_once '../view/usuarios/consult.php';
@@ -160,6 +162,7 @@ class UsuariosController
         OR LOWER(u.usu_apellido2) LIKE '%$buscar%' 
         OR LOWER(u.usu_documento) LIKE '%$buscar%' ORDER BY u.usu_id ASC";
 
+        $_SESSION['sql'] = $sql;
         $usuario = $obj->consult($sql);
         include_once '../view/usuarios/buscar.php';
     }
@@ -293,12 +296,10 @@ class UsuariosController
         $ejecutar = $obj->update($sql);
 
         if ($ejecutar) {
-            $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
-                    JOIN rol r ON u.rol_id = r.rol_id
-                    JOIN sexo s ON u.sex_id = s.sex_id 
-                    JOIN tipo_documento td ON u.doc_id = td.doc_id
-                    JOIN estados est ON u.est_id = est.est_id
-                    ORDER BY u.usu_id ASC";
+
+            if(!empty($_SESSION['sql'])){
+                $sql = $_SESSION['sql'];
+            }
 
             $usuario = $obj->consult($sql);
 
@@ -481,15 +482,10 @@ class UsuariosController
                     JOIN tipo_documento td ON u.doc_id = td.doc_id
                     JOIN estados est ON u.est_id = est.est_id
                     ORDER BY u.usu_nombre1 DESC";
-        } else {
-            $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id 
-                    FROM usuarios u
-                    LEFT JOIN rol r ON u.rol_id = r.rol_id 
-                    LEFT JOIN sexo s ON u.sex_id = s.sex_id 
-                    LEFT JOIN tipo_documento td ON u.doc_id = td.doc_id
-                    LEFT JOIN estados est ON u.est_id = est.est_id
-                    ORDER BY u.usu_id ASC";
+        } else{
+            $sql = $_SESSION['sql'];
         }
+        $_SESSION['sql'] = $sql;
 
         $usuario = $obj->consult($sql);
         include_once '../view/usuarios/buscar.php';

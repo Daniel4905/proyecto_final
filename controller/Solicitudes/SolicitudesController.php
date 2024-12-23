@@ -670,6 +670,49 @@ class SolicitudesController
             } else {
                 echo "No se encontraron datos para generar el archivo Excel.";
             }
+        } else if ($solicitud = 3) {
+            $sql = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+            est.est_nombre FROM solicitud_seniales_new snew
+            LEFT JOIN estados est ON snew.est_sol_id = est.est_id
+            LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
+            LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
+            GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
+            $senial = $obj->consult($sql);
+
+            if (!empty($senial)) {
+                $excel = new PHPExcel();
+                $excel->setActiveSheetIndex(0);
+                $sheet = $excel->getActiveSheet();
+                $sheet->setCellValue('A1', 'ID');
+                $sheet->setCellValue('B1', 'Señal');
+                $sheet->setCellValue('C1', 'Fecha y hora');
+                $sheet->setCellValue('D1', 'Solicitante');
+                $sheet->setCellValue('E1', 'Estado');
+
+
+                $sheet->getStyle('A1:I1')->getFont()->setBold(true);
+
+                $row = 2;
+                foreach ($senial as $sen) {
+
+                    $sheet->setCellValue("A{$row}", $sen['sol_sen_new_id']);
+                    $sheet->setCellValue("B{$row}",  $sen['senal']);
+                    $sheet->setCellValue("C{$row}",  $sen['sol_sen_new_fecha']);
+                    $sheet->setCellValue("D{$row}", $sen['usuario_nombre']);
+                    $sheet->setCellValue("E{$row}", $sen['est_nombre']);
+                    $row++;
+                }
+                $filename = 'Señales_new_' . date('Ymd_His') . '.xlsx';
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="' . $filename . '"');
+                header('Cache-Control: max-age=0');
+
+                $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+                $writer->save('php://output');
+                exit;
+            } else {
+                echo "No se encontraron datos para generar el archivo Excel.";
+            }
         }
 
     }

@@ -23,7 +23,7 @@ if (isset($_SESSION['RegEx'])) {
                 class="form-control mt-3 mb-3"
                 data-url='<?php echo getUrl("Usuarios", "Usuarios", "buscar", false, "ajax") ?>'>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 ">
             Filtrar por orden alfabetico
             <select name="" id="orden" class="form-select" data-url='<?php echo getUrl("Usuarios", "Usuarios", "ordenarAlf", false, "ajax") ?>'>
                 <option value="">Seleccione</option>
