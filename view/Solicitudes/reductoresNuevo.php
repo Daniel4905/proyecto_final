@@ -1,51 +1,54 @@
+
 <div class="container">
     <div class="row align-items-stretch mt-4">
-        <div class="col">
-            <h2>Info reductor seleccionado</h2>
-            <!-- AJAX -->
-            <div class="row">
-                <div class="" id="tipoReductor">
+            <h2>Registro para reductor de velocidad nuevo</h2>
+            
+            <?php
+            if (isset($_SESSION['errores'])) {
+                echo "<div class='alert alert-danger' role='alert'>";
+                foreach ($_SESSION['errores'] as $error) {
+                    echo $error . "<br>";
+                }
+                echo "</div>";
+                unset($_SESSION['errores']);
+            }
 
-                </div>
-                <div id="reductor">
-
-                </div>
-            </div>
-        </div>
+            ?>
 
         <div class="col container-scroll ">
             
-        
-            <form id="formReductores" action="">
+            <form id="formReductorNew" action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'reductorNew2');?>"  method="post">
+                <input type="hidden" name="usu_id" value="<?php echo $_SESSION['id']; ?>">
+                <input type="hidden" name="" id="coordenad  as" class="form-control">
+                <input type="hidden" name="punto1" id="Coord1">
+                <input type="hidden" name="punto2" id="Coord2">
                 <div class="row">
-
                     <div class="col-md-6">
                         <div class="mb-2">
-                            <label for="" class="form-label">Categoria</label>
-                            <select name="" id="" class="form-select">
+                            <label for="categoria" class="form-label">Categoria</label>
+                            <select name="categoria" id="categoria" class="form-select" data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getTipoReduc", false, "ajax") ?>'>
                                 <option value="" class="form-option">Seleccione...</option>
+                                <?php
+                                foreach ($redCate as $cate) {
+                                    echo '<option value="' . $cate['categoria_red_id'] . '" class="form-option"> ' .  $cate['nombre_red_categoria'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-2">
-                            <label for="" class="form-label">Reductor</label>
-                            <select name="" id="" class="form-select">
+                            <label for="tipoRedu" class="form-label">Tipo Reductor</label>
+                            <select name="tipoRedu" id="tipoRedu" class="form-select">
                                 <option value="" class="form-option">Seleccione...</option>
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="" id="imagenSenal">
-                    <!-- Reporte de daño se crea el input para la imagen -->
-                    <!-- AJAX -->
-                    <label for="" class="form-label">Adjunte la foto</label>
-                    <input type="file" name="" id="" class="form-control mb-2 ">
                 </div>
                 <div class="row">
                     <div class="mb-2">
                         <label for="" class="form-label">Descripcion de la solicitud</label>
-                        <textarea name="" id="" placeholder="Detalle su solicitud...." class="form-control"
+                        <textarea name="desc_red" id="desc_red" placeholder="Detalle su solicitud...." class="form-control"
                             style="height: 100px;"></textarea>
                     </div>
                 </div>
@@ -57,3 +60,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    var valorPunto1 = document.getElementById("punto1").value;
+    var valorPunto2 = document.getElementById("punto2").value;
+
+    document.getElementById("Coord1").value = valorPunto1;
+    document.getElementById("Coord2").value = valorPunto2;
+</script>
+
+<script src="assets/js/validacionesReductorNew.js"></script>

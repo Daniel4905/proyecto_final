@@ -401,3 +401,117 @@ CREATE TABLE punto_senialNew
   geom geometry(Point,4326)
 );
 
+
+CREATE TABLE solicitud_seniales_dan (
+    sol_sen_dan_id SERIAL PRIMARY KEY,
+    tipo_sen_id INTEGER NOT NULL, 
+    desc_sen_dan VARCHAR(500) NOT NULL,
+    danio_id INTEGER NOT NULL, 
+    sol_sen_dan_fecha TIMESTAMP,
+    img_sen_dan TEXT,
+    est_sol_id INTEGER NOT NULL, 
+    usu_id INTEGER NOT NULL, 
+    CONSTRAINT fk_tipo_sen FOREIGN KEY (tipo_sen_id) REFERENCES tipo_seniales (tipo_senial_id),
+    CONSTRAINT fk_est_sol FOREIGN KEY (est_id) REFERENCES Estados (est_id),
+    CONSTRAINT fk_usu FOREIGN KEY (usu_id) REFERENCES usuarios (usu_id),
+    CONSTRAINT fk_usu FOREIGN KEY (danio_id) REFERENCES danio(danio_id)
+);
+
+CREATE TABLE punto_senialDan
+(
+  id serial NOT NULL,
+  id_senialDan integer NOT NULL,
+  geom geometry(Point,4326)
+);
+
+
+
+
+
+
+
+
+CREATE TABLE categorias_reductores (
+    categoria_red_id SERIAL PRIMARY KEY,
+    nombre_red_categoria VARCHAR(50) NOT NULL,
+    descripcion_cate_red TEXT
+);
+
+    INSERT INTO categorias_reductores (nombre_red_categoria, descripcion_cate_red)
+VALUES 
+    ('Reductores estructurales', 'Reductores diseñados para modificar la estructura de la vía y obligar a los vehículos a reducir su velocidad mediante cambios en el pavimento, desniveles o rotondas.'),
+    ('Reductores modulares', 'Reductores de velocidad que incluyen sistemas flexibles y adaptables, como sistemas hidráulicos o electromagnéticos, que se ajustan a diferentes necesidades de la vía.'),
+    ('Reductores de señalización', 'Reductores diseñados principalmente para alertar a los conductores sobre la necesidad de reducir su velocidad mediante señales luminosas, bandas rugosas, o sistemas de aviso sonoro.');
+
+
+CREATE TABLE tipos_reductores (
+    tipo_red_id SERIAL PRIMARY KEY,
+    categoria_red_id INTEGER NOT NULL,
+    nombre_tipo_red VARCHAR(100) NOT NULL,
+    descripcion_tipo_red TEXT,
+    FOREIGN KEY (categoria_red_id) REFERENCES categorias_reductores(categoria_red_id) 
+);
+
+
+INSERT INTO tipos_reductores (categoria_red_id, nombre_tipo_red, descripcion_tipo_red)
+VALUES 
+    (1, 'Reductor de velocidad por pavimento (baches controlados)', 'Reductores que utilizan pavimentos irregulares o elevados, forzando a los vehículos a reducir la velocidad para evitar daños mecánicos.'),
+    (1, 'Rampa de velocidad (speed bumps)', 'Elevaciones en la calzada que causan un cambio brusco en la altura del pavimento, lo que obliga a los vehículos a reducir la velocidad.'),
+    (1, 'Reductor de velocidad en rotondas', 'Rotondas diseñadas para reducir la velocidad de los vehículos obligándolos a tomar una curva cerrada, reduciendo la velocidad en intersecciones y zonas de alto tráfico.'),
+
+    (2, 'Reductor de velocidad tipo "tobogán" (desnivel)', 'Sistemas modulares que crean desniveles o rampas para reducir gradualmente la velocidad de los vehículos.'),
+    (2, 'Reductor modulado con sistemas hidráulicos o electromagnéticos', 'Sistemas adaptables que modifican la calzada de manera controlada para forzar la reducción de velocidad en zonas específicas.'),
+
+    (3, 'Resaltos o lomadas', 'Dispositivos horizontales instalados transversalmente en la vía que obligan a los vehículos a reducir la velocidad al pasar sobre ellos.'),
+    (3, 'Bandas rugosas (bandas sonoras)', 'Franja de material rugoso que genera un sonido cuando los vehículos pasan por encima, alertando a los conductores de la necesidad de reducir la velocidad.'),
+    (3, 'Reductor de velocidad con señales luminosas (luminiscentes)', 'Reductores equipados con señales luminosas que alertan a los conductores de la necesidad de reducir la velocidad en zonas específicas.'),
+    (3, 'Reductor de velocidad con sensores de velocidad', 'Reductores que activan luces o señales de alerta cuando los sensores detectan que los vehículos están excediendo la velocidad límite.'),
+    (3, 'Reductor de velocidad con paneles dinámicos', 'Reductores que incluyen paneles electrónicos que muestran la velocidad del vehículo o el límite de velocidad, forzando a los conductores a reducir la velocidad.'),
+    (3, 'Reductor de velocidad en zonas escolares', 'Dispositivos instalados cerca de escuelas que obligan a los conductores a reducir su velocidad para garantizar la seguridad de los peatones.'),
+    (3, 'Reductor de velocidad en pasos de peatones', 'Áreas elevadas para pasos de peatones que obligan a los vehículos a reducir la velocidad para garantizar la seguridad de los peatones.'),
+    (3, 'Rumble strips (bandas sonoras largas)', 'Bandas largas de pavimento que generan ruido y vibración, alertando a los conductores de la necesidad de reducir la velocidad, comúnmente utilizadas en carreteras de alta velocidad.');
+
+
+
+
+CREATE TABLE solicitud_reductores_dan (
+    sol_red_dan_id SERIAL PRIMARY KEY, 
+    tipo_red_id INTEGER NOT NULL,   
+    cate_red_dan INTEGER NOT NULL,   
+    danio_id INTEGER NOT NULL,         
+    desc_red TEXT,
+    sol_red_dan_fecha TIMESTAMP,
+    img_red_dan TEXT,                     
+    est_sol_id INTEGER NOT NULL,       
+    usu_id INTEGER NOT NULL
+);
+
+CREATE TABLE punto_reductorDan
+(
+  id_red_dan serial NOT NULL,
+  id_reductorDan integer NOT NULL,
+  geom geometry(Point,4326)
+);
+
+
+
+
+CREATE TABLE solicitud_reductores_new (
+    sol_red_new_id SERIAL PRIMARY KEY, 
+    tipo_red_id INTEGER NOT NULL,   
+    cate_red_dan INTEGER NOT NULL,   
+    desc_red_new TEXT,
+    sol_red_new_fecha TIMESTAMP,                    
+    est_sol_id INTEGER NOT NULL,       
+    usu_id INTEGER NOT NULL
+);
+
+CREATE TABLE punto_reductorNew
+(
+  id_red_new serial NOT NULL,
+  id_reductorNew integer NOT NULL,
+  geom geometry(Point,4326)
+);
+
+
+

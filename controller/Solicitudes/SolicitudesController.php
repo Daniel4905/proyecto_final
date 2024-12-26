@@ -21,9 +21,9 @@ class SolicitudesController
         } elseif ($tipoSolicitud == 3) {
             $this->getSenalesDaño();
         } elseif ($tipoSolicitud == 4) {
-            $this->getReductoresNuevo();
-        } elseif ($tipoSolicitud == 5) {
             $this->getReductoresDaño();
+        } elseif ($tipoSolicitud == 5) {
+            $this->getReductoresNuevo();
         } else if ($tipoSolicitud == 6) {
             $this->getVias();
         }
@@ -179,22 +179,185 @@ class SolicitudesController
 
     public function getSenalesDaño()
     {
+        
         $obj = new SolicitudesModel();
+
+        $sql = "SELECT td.tipo_danio_id, td.tipo_danio_desc FROM  danio cd  
+        JOIN tipo_danio td ON td.tipo_danio_id = cd.danio_id
+        WHERE cd.solicitud_id = 2";
+
+        $danio = $obj->consult($sql);
+        $sql1 = 'SELECT * FROM categoria_seniales';
+        $senCate = $obj->consult($sql1);
+
+        $sql2 = 'SELECT * FROM orientacion_seniales';
+        $senOrientacion = $obj->consult($sql2);
+
+        $sql3 = 'SELECT * FROM tipo_seniales';
+        $senTipo = $obj->consult($sql3);
+
 
         include_once '../view/Solicitudes/senalesDanos.php';
     }
+
+    public function senialDanio()  {
+        $obj = new SolicitudesModel();
+
+        $cateSen = $_POST['sen_cate'];
+        $tipoSen = $_POST['tipoSenDan'];
+        $orienSen = $_POST['orienSen'];
+        $desc_dan= $_POST['desc_sen_dan'];
+        $img= false;
+
+        $punto1 = $_POST['punto1'];
+        $punto2 = $_POST['punto2'];
+        $usu_id = $_POST['usu_id'];
+        $tipoDanio=$_POST['tipoDanio'] ;
+        $punto1Procesado = eliminarSegundoPunto($punto1);
+        $punto2rocesado = eliminarSegundoPunto($punto2);
+
+        $idSen = $obj->autoIncrement("solicitud_seniales_dan", "sol_sen_dan_id");
+        $imagen = $_FILES['imagen']['name'];
+
+            $nombreArchivoSinEspacios = str_replace(' ', '', $imagen);
+
+            $rutaDestino = "img/$nombreArchivoSinEspacios";
+
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+                $sql1 = "INSERT INTO solicitud_seniales_dan VALUES($idSen,$tipoSen,'$desc_dan',$tipoDanio, date_trunc('second', NOW()),'$nombreArchivoSinEspacios',3,$usu_id)";
+                $ejecutar = $obj->insert($sql1);
+                if ($ejecutar) {
+        
+                    $sql2 = "INSERT INTO punto_senialDan (id_senialDan, geom) VALUES ($idSen, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+                    $punto = $obj->insert($sql2);
+                    if ($punto) {
+                        $_SESSION['senDan'] = "Registro Exitoso";
+                        redirect("index.php");
+                    }
+                }
+
+            } else {
+                echo "No se movio el archivo";
+            }
+        
+        
+    }
+    
     public function getReductoresNuevo()
     {
         $obj = new SolicitudesModel();
 
-
-        include_once '../view/Solicitudes/reductoresDanos.php';
+        $sql1= "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
+        $redCate = $obj->consult($sql1);
+        include_once '../view/Solicitudes/reductoresNuevo.php';
     }
+
+    public function getTipoReduc() {
+        
+        $obj = new SolicitudesModel();
+
+        $idCate= $_POST['id_cate_red'];
+
+        $sql="SELECT t.tipo_red_id, t.nombre_tipo_red FROM tipos_reductores t WHERE categoria_red_id=$idCate";
+
+        $tipoRed= $obj->consult($sql);
+
+        foreach ($tipoRed as $tr) {
+            echo "<option value='" . $tr['tipo_red_id'] . "'>" . $tr['nombre_tipo_red'] . "</option>";
+        }
+    }
+    
+    public function reductorNew2()  {
+        $obj= new SolicitudesModel();
+        $usu_id = $_POST['usu_id'];
+        $punto1 = $_POST['punto1'];
+        $punto2 = $_POST['punto2'];
+
+        $cate= $_POST['categoria'];
+        $tipo = $_POST['tipoRedu'];
+        $desc = $_POST['desc_red'];
+
+        $punto1Procesado = eliminarSegundoPunto($punto1);
+        $punto2rocesado = eliminarSegundoPunto($punto2);
+
+        $idRedNew = $obj->autoIncrement("solicitud_reductores_new", "sol_red_new_id");
+            $sql1 = "INSERT INTO solicitud_reductores_new VALUES($idRedNew,$tipo,$cate,'$desc', date_trunc('second', NOW()),3,$usu_id)";
+            $ejecutar = $obj->insert($sql1);
+            if ($ejecutar) {
+                $sql2 = "INSERT INTO punto_reductorNew (id_reductorNew, geom) VALUES ($idRedNew, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+                $punto = $obj->insert($sql2);
+                if ($punto) {
+                    $_SESSION['redNew'] = "Registro Exitoso";
+                    redirect("index.php");
+                }
+                else{
+                    echo "no se registro el punto ";
+                }
+            }else{
+                echo "No se pudo registrar la solicitud";
+            }
+
+    }
+
+
+
+    //REDUCTOR DE VELOCIDAD DAÑADO 
+
     public function getReductoresDaño()
     {
         $obj = new SolicitudesModel();
 
-        include_once '../view/Solicitudes/reductoresNuevo.php';
+        $sql1= "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
+        $redCate = $obj->consult($sql1);
+
+        $sql = "SELECT td.tipo_danio_id, td.tipo_danio_desc FROM  danio cd  
+        JOIN tipo_danio td ON td.tipo_danio_id = cd.danio_id
+        WHERE cd.solicitud_id = 3";
+
+        $danio = $obj->consult($sql);
+        
+
+        include_once '../view/Solicitudes/reductoresDanos.php';
+    }
+
+    public function reductorDan2()  {
+        $obj= new SolicitudesModel();
+        $usu_id = $_POST['usu_id'];
+        $punto1 = $_POST['punto1'];
+        $punto2 = $_POST['punto2'];
+
+        $cate= $_POST['categoria'];
+        $tipo = $_POST['tipoRedu'];
+        $desc = $_POST['desc_red'];
+        $tipoDanio=$_POST['tipoRedDanio'];
+        $punto1Procesado = eliminarSegundoPunto($punto1);
+        $punto2rocesado = eliminarSegundoPunto($punto2);
+
+        $idRedDan = $obj->autoIncrement("solicitud_reductores_dan", "sol_red_dan_id");
+        $imagen = $_FILES['imagenRD']['name'];
+
+        $nombreArchivoSinEspacios = str_replace(' ', '', $imagen);
+
+        $rutaDestino = "img/$nombreArchivoSinEspacios";
+
+        if (move_uploaded_file($_FILES['imagenRD']['tmp_name'], $rutaDestino)) {
+            $sql1 = "INSERT INTO solicitud_reductores_dan VALUES($idRedDan,$tipo,$cate,$tipoDanio,'$desc', date_trunc('second', NOW()),'$nombreArchivoSinEspacios',3,$usu_id)";
+            $ejecutar = $obj->insert($sql1);
+            if ($ejecutar) {
+                $sql2 = "INSERT INTO punto_reductorDan (id_reductorDan, geom) VALUES ($idRedDan, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+                $punto = $obj->insert($sql2);
+                if ($punto) {
+                    $_SESSION['redDan'] = "Registro Exitoso";
+                    redirect("index.php");
+                }
+            }else{
+                echo "No se pudo registrar la solicitud";
+            }
+
+        } else {
+            echo "No se movio el archivo";
+        }
+
     }
 
 
@@ -786,6 +949,25 @@ class SolicitudesController
 
     }
 
+    function getSenialDaña()
+    {
+        $categoria = $_POST['categoria_id'];
+        $orientacion = $_POST['orientacion_id'];
+        $obj = new SolicitudesModel();
+
+        $sql = "SELECT tp.* FROM tipo_seniales tp WHERE orientacion_id = $orientacion AND cat_id = $categoria";
+        $tipoSen = $obj->consult($sql);
+
+        if (!empty($tipoSen)) {
+            foreach ($tipoSen as $ts) {
+                echo '<option value="' . $ts['tipo_senial_id'] . '">' . $ts['tipo_sen_desc'] . '</option>';
+            }
+        } else {
+            echo '<option value="">No hay señales con ese criterio</option>';
+        }
+
+    }
+
     function getNumReportes()
     {
         $obj = new SolicitudesModel();
@@ -819,10 +1001,6 @@ class SolicitudesController
             echo "$accidentes,$vias,$sennew";
         }
     }
-
-
-
-
 
 
 }

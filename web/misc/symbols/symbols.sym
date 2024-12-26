@@ -95,6 +95,18 @@ SYMBOL
     IMAGE 'stop.gif'
 END
 
+SYMBOL
+    NAME 'puntoSenDan'
+    TYPE PIXMAP
+    IMAGE 'dano.gif'
+END
+
+SYMBOL
+    NAME 'puntoReduDan'
+    TYPE PIXMAP
+    IMAGE 'velento.gif'
+END
+
 END
 
 
