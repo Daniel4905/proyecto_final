@@ -7,15 +7,15 @@
             </div>
             <div class="modal-body" id="contenidoDetalles">
                 <?php
-                if (!empty($senialNew)) {
-                    foreach ($senialNew as $sen) {
-                        if ($sen) {
-                            echo "<p><strong>ID:</strong> " . $sen['sol_sen_new_id'] . "</p>" .
-                                "<p><strong>Fecha y hora:</strong> " . $sen['sol_sen_new_fecha'] . "</p>" .
-                                "<p><strong>Solicitante:</strong> " .  $sen['usuario_nombre'] . "</p>" .
-                                "<p><strong>Tipo de señal:</strong> " . $sen['senal'] . "</p>" .
-                                "<p><strong>Descripcion:</strong> " . $sen['desc_sen'] . "</p>" .
-                                "<p><strong>Estado:</strong> " . $sen['est_nombre'] . "</p>";
+                if (!empty($redDan)) {
+                    foreach ($redDan as $red) {
+                        if ($red) {
+                            echo "<p><strong>ID:</strong> " . $red['sol_red_dan_id'] . "</p>" .
+                                "<p><strong>Fecha y hora:</strong> " . $red['sol_red_dan_fecha'] . "</p>" .
+                                "<p><strong>Solicitante:</strong> " .  $red['usuario_nombre'] . "</p>" .
+                                "<p><strong>Tipo de señal:</strong> " . $red['reductor'] . "</p>" .
+                                "<p><strong>Descripcion:</strong> " . $red['desc_red'] . "</p>" .
+                                "<p><strong>Estado:</strong> " . $red['est_nombre'] . "</p>";
 
                         } else {
                             echo "<p class='text-danger'>No se encontraron detalles para este accidente.</p>";

@@ -85,7 +85,7 @@ MAP
         NAME "Accidentes"
         STATUS ON
         DATA "geom FROM (SELECT * FROM punto_accidente) AS puntosAccidente USING UNIQUE id SRID=4326"
-        CONNECTION "user=postgres password=12345 dbname=proyecto_final host=localhost port=5434"
+        CONNECTION "user=postgres password=123 dbname=proyecto_final host=localhost port=5434"
         TYPE POINT
         CLASS
             STYLE
@@ -100,7 +100,7 @@ MAP
         NAME "Viadano"
         STATUS ON
         DATA "geom FROM (SELECT * FROM punto_via) AS puntosVia USING UNIQUE id SRID=4326"
-        CONNECTION "user=postgres password=12345 dbname=proyecto_final host=localhost port=5434"
+        CONNECTION "user=postgres password=123 dbname=proyecto_final host=localhost port=5434"
         TYPE POINT
         CLASS
            STYLE
@@ -115,7 +115,7 @@ MAP
         NAME "Senial"
         STATUS ON
         DATA "geom FROM (select * from punto_senialnew) AS puntosSen USING UNIQUE id SRID=4326"
-        CONNECTION "user=postgres password=12345 dbname=proyecto_final host=localhost port=5434"
+        CONNECTION "user=postgres password=123 dbname=proyecto_final host=localhost port=5434"
         TYPE POINT
         CLASS
             STYLE
@@ -130,7 +130,7 @@ MAP
         NAME "SenialDan"
         STATUS ON
         DATA "geom FROM (select * from punto_senialdan) AS puntosSen USING UNIQUE id SRID=4326"
-        CONNECTION "user=postgres password=12345 dbname=proyecto_final host=localhost port=5434"
+        CONNECTION "user=postgres password=123 dbname=proyecto_final host=localhost port=5434"
         TYPE POINT
         CLASS
             STYLE
@@ -144,8 +144,8 @@ MAP
         CONNECTIONTYPE postgis
         NAME "ReductorDan"
         STATUS ON
-        DATA "geom FROM (select * from punto_reductordan) AS puntosRedDan USING UNIQUE id SRID=4326"
-        CONNECTION "user=postgres password=12345 dbname=proyecto_final host=localhost port=5434"
+        DATA "geom FROM (select * from punto_reductordan) AS puntosRedDan USING UNIQUE id_red_dan SRID=4326"
+        CONNECTION "user=postgres password=123 dbname=proyecto_final host=localhost port=5434"
         TYPE POINT
         CLASS
             STYLE

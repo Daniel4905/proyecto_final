@@ -48,7 +48,7 @@ ob_start();  // Inicia el buffer de salida
             margin-top: 100px;
             background-color: rgb(32, 36, 52);
             font-size: 14px;
-            padding: 20px;
+            padding: 10px;
             border-radius: 5px;
         }
 

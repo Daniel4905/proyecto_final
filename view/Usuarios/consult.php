@@ -12,6 +12,20 @@ if (isset($_SESSION['RegEx'])) {
           </script>";
     unset($_SESSION['RegEx']);
 }
+
+if (isset($_SESSION['ActEx'])) {
+    echo "<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'Usuario actualizado exitosamente',
+                    confirmButtonText: 'Ok'
+                });
+            });
+          </script>";
+    unset($_SESSION['ActEx']);
+}
 ?>
 <div class="container">
     <div class="mt-3">

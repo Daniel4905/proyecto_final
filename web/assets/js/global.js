@@ -305,6 +305,31 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on('change', "#tipo_solicitud", function () {
+        let tipoSolicitud = $(this).val();
+        let url = $(this).attr('data-url');
+        console.log("aqui");
+
+        if (tipoSolicitud) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { tipoSolicitud: tipoSolicitud },
+                success: function (data) {
+                    $('#div_dinamico').html(data);
+                    console.log('sisaz');
+
+                },
+                error: function () {
+                    $('#div_dinamico').html('<div class="alert alert-danger">Error al cargar el formulario.</div>');
+                }
+            });
+        } else {
+            $('#div_dinamico').empty();
+            console.log('nonas');
+        }
+    });
+
     $(document).on('keyup', ".validar-nombre", function () {
         const $campo = $(this);
         const valor = $campo.val().trim();

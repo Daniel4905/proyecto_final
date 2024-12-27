@@ -66,7 +66,7 @@
                     <span class="gradient-text">Reportar daño en la via</span>
                 </a>
             </li> -->
-        <h4 class="text-section d-none" id="rep">REPORTES</h4>
+        <!-- <h4 class="text-section d-none" id="rep">REPORTES</h4>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#reportes"
                 aria-expanded="false" aria-controls="reportes">
@@ -79,17 +79,17 @@
                         class="sidebar-link gradient-text" title="Reporte de accidentes">Accidentes</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'consultSen'); ?>" class="sidebar-link gradient-text" title="Reporte de señales">Señales</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'consultSenDan'); ?>" class="sidebar-link gradient-text" title="Reporte de señales">Señales</a>
                 </li>
                 <li class="sidebar-item">
                     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'viaConsult'); ?>"
                         class="sidebar-link gradient-text" title="Reporte de vias">Via</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link gradient-text" title="Reporte de reductores">Reductores</a>
+                    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'consultRedDan'); ?>" class="sidebar-link gradient-text" title="Reporte de reductores">Reductores</a>
                 </li>
             </ul>
-        </li>
+        </li> -->
         <?php 
             if ($_SESSION['rol'] == 1) {
         ?>

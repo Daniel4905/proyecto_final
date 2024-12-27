@@ -3,9 +3,9 @@
         <h3 class="display-4">Actualizar Usuarios</h3>
     </div>
     <?php
-    if($_SESSION['rol']==1 || $_SESSION['rol']==3){
+    if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 3) {
         $readonly = '';
-    }else{
+    } else {
         $readonly = 'readonly';
     }
     $rol_final = 0;
@@ -13,15 +13,22 @@
         ?>
         <form action="<?php echo getUrl("Usuarios", "Usuarios", "postUpdate"); ?> " method="post" id="formUpdate">
             <input type="hidden" name="usu_id" value="<?php echo $usu['usu_id']; ?>">
+            <input type="hidden" name="usu_idAd" value="<?php echo $_SESSION['id']; ?>">
+
             <div class="row mt-5">
                 <?php
-                if (isset($_SESSION['error'])) {
-                    echo "<div class='alert alert-danger' role='alert'>";
-                    foreach ($_SESSION['error'] as $error) {
-                        echo $error . "<br>";
-                    }
-                    echo "</div>";
-                    unset($_SESSION['error']);
+                if (isset($_SESSION['errores'])) {
+                    echo "<script>
+                         document.addEventListener('DOMContentLoaded', function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'La contraseña no es la correcta',
+                                confirmButtonText: 'Ok'
+                            });
+                        });
+                        </script>";
+                    unset($_SESSION['errores']);
                 }
                 ?>
                 <div class="col-md-3">
@@ -64,7 +71,7 @@
                 <div class="col-md-2 mt-3">
                     <label for="usu_tel">Nro Documento*</label>
                     <input type="text" name="usu_documento" id="documento" class="form-control validar-num"
-                        placeholder="Documento" value="<?php echo $usu['usu_documento']; ?>"  <?php echo $readonly; ?>>
+                        placeholder="Documento" value="<?php echo $usu['usu_documento']; ?>" <?php echo $readonly; ?>>
                 </div>
                 <div class="col-md-2 mt-3">
                     <label for="sex_id">Sexo biologico*</label>
@@ -157,14 +164,8 @@
                     <input type="text" name="usu_correo" id="correo" class="form-control" placeholder="usuario@dominio.com"
                         value="<?php echo $usu['usu_correo']; ?>">
                 </div>
-                <div class="col-md-3 mt-2">
-                    <label for="usu_claveAnt">Contraseña</label>
-                    <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave"
-                        data-id="<?php echo $_SESSION['id']; ?>"
-                        data-url="<?php echo getUrl('Usuarios', 'Usuarios', "ValidarCont", false, "ajax"); ?>">
-                    <small class="form-text text-muted">Para actualizar sus datos debe igresar su contraseña.</small>
-                </div>
-                <div class="col-md-4 mt-3">
+
+                <div class="col-md-4 mt-2">
                     <label for="rol_id">Rol*</label>
                     <?php
                     if ($usu['rol_id'] == 1) {
@@ -195,8 +196,14 @@
                         ?>
                     </select>
                 </div>
+                <div class="col-md-3 mt-2">
+                    <label for="usu_claveAnt">Contraseña del administrador</label>
+                    <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave"
+                        data-id="<?php echo $_SESSION['id']; ?>"
+                        data-url="<?php echo getUrl('Usuarios', 'Usuarios', "ValidarCont", false, "ajax"); ?>">
+                    <small class="form-text text-muted">Para actualizar los datos de un usuario debe ingresar su contraseña.</small>
+                </div>
                 <div class="col-md-12 mt-2">
-
                     <input type="checkbox" name="cambiarCont" id="cambiarCont">
                     <label for="cambiarCont">Cambiar contraseña</label>
                 </div>
@@ -225,4 +232,3 @@
     <?php
     }
     ?>
-

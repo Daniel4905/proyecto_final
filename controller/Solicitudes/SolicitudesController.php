@@ -30,6 +30,26 @@ class SolicitudesController
 
     }
 
+    public function getSolEscogida()
+    {
+        $tipoSolicitud = $_POST['tipoSolicitud'];
+
+        if ($tipoSolicitud == 1) {
+            $this->acConsult();
+        } elseif ($tipoSolicitud == 2) {
+            $this->consultSenNew();
+        } elseif ($tipoSolicitud == 3) {
+            $this->consultSenDan();
+        } elseif ($tipoSolicitud == 4) {
+            $this->consultRedDan();
+        } elseif ($tipoSolicitud == 5) {
+            //consult   
+        } else if ($tipoSolicitud == 6) {
+            $this->viaConsult();
+        }
+
+    }
+
     public function getInfo()
     {
         $obj = new SolicitudesModel();
@@ -106,6 +126,38 @@ class SolicitudesController
             return;
         }
 
+        $sql4 = "SELECT sdan.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                est.est_nombre FROM solicitud_seniales_dan sdan
+               LEFT JOIN estados est ON sdan.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON sdan.usu_id = u.usu_id
+               LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
+               LEFT JOIN punto_senialdan ps ON sdan.sol_sen_dan_id = ps.id_senialdan
+               WHERE ST_DWithin(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+               GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, ps.geom, est.est_nombre
+               ORDER BY ST_Distance(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
+               LIMIT 1 ";
+        $senialDan = $obj->consult($sql4);
+        if (!empty($senialDan)) {
+            include_once '../view/Solicitudes/consultarSenDan.php';
+            return;
+        }
+
+        $sql5 = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+               est.est_nombre FROM solicitud_reductores_dan redDan
+               LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
+               LEFT JOIN tipos_reductores tr ON redDan.sol_red_dan_id = tr.tipo_red_id
+               LEFT JOIN punto_reductordan pr ON redDan.sol_red_dan_id = pr.id_reductordan
+               WHERE ST_DWithin(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+               GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, pr.geom, est.est_nombre
+               ORDER BY ST_Distance(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
+               LIMIT 1 ";
+        $redDan = $obj->consult($sql5);
+        if (!empty($redDan)) {
+            include_once '../view/Solicitudes/consultarRedDan.php';
+            return;
+        }
+
     }
     //VISTAS-FORMULARIOS
     public function getVias()
@@ -179,7 +231,7 @@ class SolicitudesController
 
     public function getSenalesDaño()
     {
-        
+
         $obj = new SolicitudesModel();
 
         $sql = "SELECT td.tipo_danio_id, td.tipo_danio_desc FROM  danio cd  
@@ -200,80 +252,83 @@ class SolicitudesController
         include_once '../view/Solicitudes/senalesDanos.php';
     }
 
-    public function senialDanio()  {
+    public function senialDanio()
+    {
         $obj = new SolicitudesModel();
 
         $cateSen = $_POST['sen_cate'];
         $tipoSen = $_POST['tipoSenDan'];
         $orienSen = $_POST['orienSen'];
-        $desc_dan= $_POST['desc_sen_dan'];
-        $img= false;
+        $desc_dan = $_POST['desc_sen_dan'];
+        $img = false;
 
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
         $usu_id = $_POST['usu_id'];
-        $tipoDanio=$_POST['tipoDanio'] ;
+        $tipoDanio = $_POST['tipoDanio'];
         $punto1Procesado = eliminarSegundoPunto($punto1);
         $punto2rocesado = eliminarSegundoPunto($punto2);
 
         $idSen = $obj->autoIncrement("solicitud_seniales_dan", "sol_sen_dan_id");
         $imagen = $_FILES['imagen']['name'];
 
-            $nombreArchivoSinEspacios = str_replace(' ', '', $imagen);
+        $nombreArchivoSinEspacios = str_replace(' ', '', $imagen);
 
-            $rutaDestino = "img/$nombreArchivoSinEspacios";
+        $rutaDestino = "img/$nombreArchivoSinEspacios";
 
-            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-                $sql1 = "INSERT INTO solicitud_seniales_dan VALUES($idSen,$tipoSen,'$desc_dan',$tipoDanio, date_trunc('second', NOW()),'$nombreArchivoSinEspacios',3,$usu_id)";
-                $ejecutar = $obj->insert($sql1);
-                if ($ejecutar) {
-        
-                    $sql2 = "INSERT INTO punto_senialDan (id_senialDan, geom) VALUES ($idSen, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
-                    $punto = $obj->insert($sql2);
-                    if ($punto) {
-                        $_SESSION['senDan'] = "Registro Exitoso";
-                        redirect("index.php");
-                    }
+        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+            $sql1 = "INSERT INTO solicitud_seniales_dan VALUES($idSen,$tipoSen,'$desc_dan',$tipoDanio, date_trunc('second', NOW()),'$nombreArchivoSinEspacios',3,$usu_id)";
+            $ejecutar = $obj->insert($sql1);
+            if ($ejecutar) {
+
+                $sql2 = "INSERT INTO punto_senialDan (id_senialDan, geom) VALUES ($idSen, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+                $punto = $obj->insert($sql2);
+                if ($punto) {
+                    $_SESSION['senDan'] = "Registro Exitoso";
+                    redirect("index.php");
                 }
-
-            } else {
-                echo "No se movio el archivo";
             }
-        
-        
+
+        } else {
+            echo "No se movio el archivo";
+        }
+
+
     }
-    
+
     public function getReductoresNuevo()
     {
         $obj = new SolicitudesModel();
 
-        $sql1= "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
+        $sql1 = "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
         $redCate = $obj->consult($sql1);
         include_once '../view/Solicitudes/reductoresNuevo.php';
     }
 
-    public function getTipoReduc() {
-        
+    public function getTipoReduc()
+    {
+
         $obj = new SolicitudesModel();
 
-        $idCate= $_POST['id_cate_red'];
+        $idCate = $_POST['id_cate_red'];
 
-        $sql="SELECT t.tipo_red_id, t.nombre_tipo_red FROM tipos_reductores t WHERE categoria_red_id=$idCate";
+        $sql = "SELECT t.tipo_red_id, t.nombre_tipo_red FROM tipos_reductores t WHERE categoria_red_id=$idCate";
 
-        $tipoRed= $obj->consult($sql);
+        $tipoRed = $obj->consult($sql);
 
         foreach ($tipoRed as $tr) {
             echo "<option value='" . $tr['tipo_red_id'] . "'>" . $tr['nombre_tipo_red'] . "</option>";
         }
     }
-    
-    public function reductorNew2()  {
-        $obj= new SolicitudesModel();
+
+    public function reductorNew2()
+    {
+        $obj = new SolicitudesModel();
         $usu_id = $_POST['usu_id'];
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
 
-        $cate= $_POST['categoria'];
+        $cate = $_POST['categoria'];
         $tipo = $_POST['tipoRedu'];
         $desc = $_POST['desc_red'];
 
@@ -281,21 +336,20 @@ class SolicitudesController
         $punto2rocesado = eliminarSegundoPunto($punto2);
 
         $idRedNew = $obj->autoIncrement("solicitud_reductores_new", "sol_red_new_id");
-            $sql1 = "INSERT INTO solicitud_reductores_new VALUES($idRedNew,$tipo,$cate,'$desc', date_trunc('second', NOW()),3,$usu_id)";
-            $ejecutar = $obj->insert($sql1);
-            if ($ejecutar) {
-                $sql2 = "INSERT INTO punto_reductorNew (id_reductorNew, geom) VALUES ($idRedNew, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
-                $punto = $obj->insert($sql2);
-                if ($punto) {
-                    $_SESSION['redNew'] = "Registro Exitoso";
-                    redirect("index.php");
-                }
-                else{
-                    echo "no se registro el punto ";
-                }
-            }else{
-                echo "No se pudo registrar la solicitud";
+        $sql1 = "INSERT INTO solicitud_reductores_new VALUES($idRedNew,$tipo,$cate,'$desc', date_trunc('second', NOW()),3,$usu_id)";
+        $ejecutar = $obj->insert($sql1);
+        if ($ejecutar) {
+            $sql2 = "INSERT INTO punto_reductorNew (id_reductorNew, geom) VALUES ($idRedNew, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+            $punto = $obj->insert($sql2);
+            if ($punto) {
+                $_SESSION['redNew'] = "Registro Exitoso";
+                redirect("index.php");
+            } else {
+                echo "no se registro el punto ";
             }
+        } else {
+            echo "No se pudo registrar la solicitud";
+        }
 
     }
 
@@ -307,7 +361,7 @@ class SolicitudesController
     {
         $obj = new SolicitudesModel();
 
-        $sql1= "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
+        $sql1 = "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
         $redCate = $obj->consult($sql1);
 
         $sql = "SELECT td.tipo_danio_id, td.tipo_danio_desc FROM  danio cd  
@@ -315,21 +369,22 @@ class SolicitudesController
         WHERE cd.solicitud_id = 3";
 
         $danio = $obj->consult($sql);
-        
+
 
         include_once '../view/Solicitudes/reductoresDanos.php';
     }
 
-    public function reductorDan2()  {
-        $obj= new SolicitudesModel();
+    public function reductorDan2()
+    {
+        $obj = new SolicitudesModel();
         $usu_id = $_POST['usu_id'];
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
 
-        $cate= $_POST['categoria'];
+        $cate = $_POST['categoria'];
         $tipo = $_POST['tipoRedu'];
         $desc = $_POST['desc_red'];
-        $tipoDanio=$_POST['tipoRedDanio'];
+        $tipoDanio = $_POST['tipoRedDanio'];
         $punto1Procesado = eliminarSegundoPunto($punto1);
         $punto2rocesado = eliminarSegundoPunto($punto2);
 
@@ -350,7 +405,7 @@ class SolicitudesController
                     $_SESSION['redDan'] = "Registro Exitoso";
                     redirect("index.php");
                 }
-            }else{
+            } else {
                 echo "No se pudo registrar la solicitud";
             }
 
@@ -480,16 +535,9 @@ class SolicitudesController
             LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
             GROUP BY  ra.reg_acc_id";
 
-
-
-
-
         $accidentes = $obj->consult($sql);
 
-
-
         include_once "../view/solicitudes/consultarAccidentes.php";
-
 
     }
     public function viaConsult()
@@ -505,18 +553,12 @@ class SolicitudesController
         LEFT JOIN estados est ON svd.est_sol_id = est.est_id
         LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1";
 
-
-
         $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
                    JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
         $vias = $obj->consult($sql);
         $estados = $obj->consult($sqlEst);
 
-
-
-
         include_once "../view/solicitudes/consultarVias.php";
-
 
     }
 
@@ -833,7 +875,7 @@ class SolicitudesController
             } else {
                 echo "No se encontraron datos para generar el archivo Excel.";
             }
-        } else if ($solicitud = 3) {
+        } else if ($solicitud == 3) {
             $sql = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
             est.est_nombre FROM solicitud_seniales_new snew
             LEFT JOIN estados est ON snew.est_sol_id = est.est_id
@@ -876,11 +918,100 @@ class SolicitudesController
             } else {
                 echo "No se encontraron datos para generar el archivo Excel.";
             }
+        } else if ($solicitud == 4) {
+            $sql = "SELECT sdan.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                est.est_nombre FROM solicitud_seniales_dan sdan
+               LEFT JOIN estados est ON sdan.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON sdan.usu_id = u.usu_id
+               LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
+               GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, est.est_nombre";
+            $senal = $obj->consult($sql);
+
+            if (!empty($senal)) {
+                $excel = new PHPExcel();
+                $excel->setActiveSheetIndex(0);
+                $sheet = $excel->getActiveSheet();
+                $sheet->setCellValue('A1', 'ID');
+                $sheet->setCellValue('B1', 'Señal');
+                $sheet->setCellValue('C1', 'Fecha y hora');
+                $sheet->setCellValue('D1', 'Solicitante');
+                $sheet->setCellValue('E1', 'Estado');
+
+
+                $sheet->getStyle('A1:I1')->getFont()->setBold(true);
+
+                $row = 2;
+                foreach ($senal as $sen) {
+
+                    $sheet->setCellValue("A{$row}", $sen['sol_sen_dan_id']);
+                    $sheet->setCellValue("B{$row}", $sen['senal']);
+                    $sheet->setCellValue("C{$row}", $sen['sol_sen_dan_fecha']);
+                    $sheet->setCellValue("D{$row}", $sen['usuario_nombre']);
+                    $sheet->setCellValue("E{$row}", $sen['est_nombre']);
+                    $row++;
+                }
+                $filename = 'Señales_dan_' . date('Ymd_His') . '.xlsx';
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="' . $filename . '"');
+                header('Cache-Control: max-age=0');
+
+                $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+                $writer->save('php://output');
+                exit;
+            } else {
+                echo "No se encontraron datos para generar el archivo Excel.";
+            }
+        } else if ($solicitud == 5) {
+            $sql = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+               est.est_nombre FROM solicitud_reductores_dan redDan
+               LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
+               LEFT JOIN tipos_reductores tr ON redDan.sol_red_dan_id = tr.tipo_red_id
+               GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre";
+            $reductores = $obj->consult($sql);
+
+            if (!empty($reductores)) {
+                $excel = new PHPExcel();
+                $excel->setActiveSheetIndex(0);
+                $sheet = $excel->getActiveSheet();
+                $sheet->setCellValue('A1', 'ID');
+                $sheet->setCellValue('B1', 'Reductor');
+                $sheet->setCellValue('C1', 'Fecha y hora');
+                $sheet->setCellValue('D1', 'Solicitante');
+                $sheet->setCellValue('E1', 'Estado');
+                $sheet->setCellValue('F1', 'Descripcion de la solicitud');
+
+
+
+                $sheet->getStyle('A1:I1')->getFont()->setBold(true);
+
+                $row = 2;
+                foreach ($reductores as $red) {
+
+                    $sheet->setCellValue("A{$row}", $red['sol_red_dan_id']);
+                    $sheet->setCellValue("B{$row}", $red['reductor']);
+                    $sheet->setCellValue("C{$row}", $red['sol_red_dan_fecha']);
+                    $sheet->setCellValue("D{$row}", $red['usuario_nombre']);
+                    $sheet->setCellValue("E{$row}", $red['est_nombre']);
+                    $sheet->setCellValue("F{$row}", $red['desc_red']);
+                    $row++;
+                }
+                $filename = 'Reductores_dan_' . date('Ymd_His') . '.xlsx';
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="' . $filename . '"');
+                header('Cache-Control: max-age=0');
+
+                $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+                $writer->save('php://output');
+                exit;
+            } else {
+                echo "No se encontraron datos para generar el archivo Excel.";
+            }
         }
 
     }
 
-    function consultSen()
+    function consultSenNew()
     {
         $obj = new SolicitudesModel();
         $sql = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
@@ -895,8 +1026,48 @@ class SolicitudesController
                    JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
         $estados = $obj->consult($sqlEst);
 
-        include_once '../view/Solicitudes/consultarSeniales.php';
+        include_once '../view/Solicitudes/consultarSenialesNuevas.php';
     }
+    public function consultSenDan()
+    {
+        $obj = new SolicitudesModel();
+        $sql = "SELECT sdan.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+               est.est_nombre FROM solicitud_seniales_dan sdan
+               LEFT JOIN estados est ON sdan.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON sdan.usu_id = u.usu_id
+               LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
+               GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, est.est_nombre";
+        $senial = $obj->consult($sql);
+
+        $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+                   JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+        $estados = $obj->consult($sqlEst);
+
+        include_once '../view/Solicitudes/consultarSenialesDan.php';
+    }
+
+    public function consultRedDan()
+    {
+        $obj = new SolicitudesModel();
+
+        $sql = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+               est.est_nombre FROM solicitud_reductores_dan redDan
+               LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
+               LEFT JOIN tipos_reductores tr ON redDan.sol_red_dan_id = tr.tipo_red_id
+               GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre";
+
+        $reductores = $obj->consult($sql);
+
+        $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+                   JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+        $estados = $obj->consult($sqlEst);
+
+        include_once '../view/Solicitudes/consultarReductoresDan.php';
+
+    }
+
+
 
     public function updateEstadoSenNew()
     {
@@ -904,8 +1075,6 @@ class SolicitudesController
 
         $sol_id = $_POST['solicitud'];
         $est_id = $_POST['id'];
-
-
 
         if ($est_id !== null) {
             $sql = "UPDATE solicitud_seniales_new SET est_sol_id = $est_id WHERE sol_sen_new_id = $sol_id";
@@ -920,11 +1089,73 @@ class SolicitudesController
                 GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
                 $senial = $obj->consult($sql);
 
+
                 $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
                     JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
                 $estados = $obj->consult($sqlEst);
 
-                include_once "../view/solicitudes/buscarSen.php";
+                include_once "../view/solicitudes/buscarSenNew.php";
+            }
+        }
+
+    }
+    public function updateEstadoSenDan()
+    {
+        $obj = new SolicitudesModel();
+
+        $sol_id = $_POST['solicitud'];
+        $est_id = $_POST['id'];
+
+
+        if ($est_id !== null) {
+            $sql = "UPDATE solicitud_seniales_dan SET est_sol_id = $est_id WHERE sol_sen_dan_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+                $sql = "SELECT sdan.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+               est.est_nombre FROM solicitud_seniales_dan sdan
+               LEFT JOIN estados est ON sdan.est_sol_id = est.est_id
+               LEFT JOIN usuarios u ON sdan.usu_id = u.usu_id
+               LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
+               GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, est.est_nombre";
+                $senial = $obj->consult($sql);
+
+                $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+                    JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+                $estados = $obj->consult($sqlEst);
+
+                include_once "../view/solicitudes/buscarSenDan.php";
+            }
+        }
+
+    }
+
+    public function updateEstadoRedDan()
+    {
+        $obj = new SolicitudesModel();
+
+        $sol_id = $_POST['solicitud'];
+        $est_id = $_POST['id'];
+
+        if ($est_id !== null) {
+            $sql = "UPDATE solicitud_reductores_dan SET est_sol_id = $est_id WHERE sol_red_dan_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+
+                $sql = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                        est.est_nombre FROM solicitud_reductores_dan redDan
+                        LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
+                        LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
+                        LEFT JOIN tipos_reductores tr ON redDan.sol_red_dan_id = tr.tipo_red_id
+                        GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre";
+                $reductores = $obj->consult($sql);
+
+                $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+            JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+                $estados = $obj->consult($sqlEst);
+
+                include_once "../view/solicitudes/buscarRedDan.php";
             }
         }
 
@@ -975,7 +1206,10 @@ class SolicitudesController
         $sql = "SELECT
                     (SELECT COUNT(*) FROM registro_accidente) AS accidentes,
                     (SELECT COUNT(*) FROM solicitud_via_dan) AS vias,
-                    (SELECT COUNT(*) FROM solicitud_seniales_new) AS sennew";
+                    (SELECT COUNT(*) FROM solicitud_seniales_new) AS sennew,
+                    (SELECT COUNT(*) FROM solicitud_reductores_dan) AS srd,
+                    (SELECT COUNT(*) FROM solicitud_seniales_dan) AS sendan";
+
 
         $reportes = $obj->consult($sql);
 
@@ -985,6 +1219,8 @@ class SolicitudesController
             $accidentes = 0;
             $vias = 0;
             $sennew = 0;
+            $srd = 0;
+            $sendan = 0;
 
             if (isset($reportes[0]['accidentes'])) {
                 $accidentes = $reportes[0]['accidentes'];
@@ -998,9 +1234,61 @@ class SolicitudesController
                 $sennew = $reportes[0]['sennew'];
             }
 
-            echo "$accidentes,$vias,$sennew";
+            if (isset($reportes[0]['srd'])) {
+                $srd = $reportes[0]['srd'];
+            }
+
+            if (isset($reportes[0]['sendan'])) {
+                $sendan = $reportes[0]['sendan'];
+            }
+
+
+            echo "$accidentes,$vias,$sennew,$sendan,$srd";
         }
     }
+    public function getDatosCards()
+    {
+        $obj = new SolicitudesModel();
+
+        $sql = "SELECT
+                    (SELECT COUNT(*) FROM registro_accidente) AS accidentes,
+                    (SELECT COUNT(*) FROM solicitud_via_dan) AS vias,
+                    (SELECT COUNT(*) FROM solicitud_seniales_new) AS sennew,
+                    (SELECT COUNT(*) FROM solicitud_reductores_dan) AS srd,
+                    (SELECT COUNT(*) FROM solicitud_seniales_dan) AS sendan";
+
+        $reportes = $obj->consult($sql);
+
+        if (!empty($reportes)) {
+            $mayor = 0;
+            $nombreMayor = '';
+            $menor = PHP_INT_MAX;
+            $nombreMenor = '';
+
+            $valores = array(
+                'Accidentes' => $reportes[0]['accidentes'],
+                'Vías' => $reportes[0]['vias'],
+                'Señales Nuevas' => $reportes[0]['sennew'],
+                'Reductores' => $reportes[0]['srd'],
+                'Señales Dañadas' => $reportes[0]['sendan'],
+            );
+
+            foreach ($valores as $nombre => $valor) {
+                if ($valor > $mayor) {
+                    $mayor = $valor;
+                    $nombreMayor = $nombre;
+                }
+                if ($valor < $menor) {
+                    $menor = $valor;
+                    $nombreMenor = $nombre;
+                }
+            }
+            echo "$nombreMayor ($mayor), $nombreMenor ($menor)";
+        }
+    }
+
+
+
 
 
 }

@@ -113,7 +113,8 @@ html {
     .container-scroll-index{
         max-height: 530px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -136,7 +137,8 @@ html {
     .container-scroll-index{
         max-height: 400px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -158,7 +160,8 @@ html {
     .container-scroll-index{
         max-height: 550px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -180,7 +183,8 @@ html {
     .container-scroll-index{
         max-height: 550px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -202,7 +206,8 @@ html {
     .container-scroll-index{
         max-height: 600px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -211,20 +216,22 @@ html {
 
     /* Ejemplo: iPad Mini, iPad en modo vertical */
     .container-scroll {
-        max-height: 650px;
+        max-height: 550px;
         overflow-y: auto;
         overflow-x: auto;
     }
 
     .container-scrollMap {
         max-height: 650px;
+        max-width: 300px;
         overflow-y: auto;
         overflow-x: auto;
     }
     .container-scroll-index{
-        max-height: 800px;
+        max-height: 700px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -232,20 +239,22 @@ html {
 
     /* Ejemplo: iPad Mini, iPad en modo vertical */
     .container-scroll {
-        max-height: 5%;
+        max-height: 450px;
         overflow-y: auto;
         overflow-x: auto;
     }
 
     .container-scrollMap {
-        max-height: 5%;
+        max-height: 450px;
+        max-width: 450px;
         overflow-y: auto;
         overflow-x: auto;
     }
     .container-scroll-index{
-        max-height: 5%;
+        max-height: 450px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -253,20 +262,22 @@ html {
 
     /* Ejemplo: iPad en modo horizontal */
     .container-scroll {
-        max-height: 300px;
+        max-height: 500px;
         overflow-y: auto;
         overflow-x: auto;
     }
 
     .container-scrollMap {
-        max-height: 300px;
+        max-height: 500px;
+        max-width: 650px;
         overflow-y: auto;
         overflow-x: auto;
     }
     .container-scroll-index{
-        max-height: 300px;
+        max-height: 700px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -279,10 +290,17 @@ html {
         overflow-y: auto;
         overflow-x: auto;
     }
-    .container-scroll-index{
-        max-height: 800px;
+    .container-scrollMap {
+        max-height: 700px;
+        max-width: 700px;
         overflow-y: auto;
         overflow-x: auto;
+    }
+    .container-scroll-index{
+        max-height: 650px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -303,7 +321,8 @@ html {
     .container-scroll-index{
         max-height: 700px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -315,14 +334,16 @@ html {
     }
 
     .container-scrollMap {
-        max-height: 400px;
+        max-height: 600px;
+        max-width: 1150px;
         overflow-y: auto;
         overflow-x: auto;
     }
     .container-scroll-index{
-        max-height: 800px;
+        max-height: 600px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -341,7 +362,8 @@ html {
     .container-scroll-index{
         max-height: 300px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+
     }
 }
 
@@ -358,9 +380,9 @@ html {
         overflow-x: auto;
     }
     .container-scroll-index{
-        max-height: 750px;
+        max-height: 700px;
         overflow-y: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
     }
 }
 
