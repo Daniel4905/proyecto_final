@@ -85,7 +85,7 @@
     consultar1.onreadystatechange = function () {
         if (consultar1.readyState === 4) {
 
-            const reportes = ['Reporte de accidentes', 'Reporte de vías en mal estado', 'Reporte de señales nuevas', 'Reporte de señales dañadas', 'Reporte de reductores dañados'];
+            const reportes = ['Reporte de accidentes', 'Reporte de vías en mal estado', 'Reporte de señales nuevas', 'Reporte de señales dañadas', 'Reporte de reductores dañados','Reporte de reductores Nuevos'];
             const respuesta = consultar1.responseText.split(',').map(Number);
 
             const ctx = document.getElementById('mychart').getContext('2d');
@@ -101,12 +101,14 @@
                          'rgba(91, 147, 191, 0.52)', 
                          'rgba(191, 91, 91, 0.52)', 
                          'rgba(91, 191, 91, 0.52)', 
+                         'rgba(53, 75, 199, 0.52)',
                          'rgba(147, 91, 191, 0.52)'],
                         borderColor: 
                         ['rgb(42, 47, 91)',
                          'rgb(91, 147, 191)', 
                          'rgb(191, 91, 91)', 
                          'rgb(91, 191, 91)', 
+                         'rgb(30, 45, 133)',
                          'rgb(147, 91, 191)'],
                         borderWidth: 1.5
                     }]

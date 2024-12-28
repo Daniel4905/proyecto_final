@@ -76,6 +76,13 @@
                         Reductores dañados
                     </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="layer[9]" value="ReductorNew" id="layerRedNew"
+                        checked onclick="chgLayers()">
+                    <label class="form-check-label text-light" for="layerRedDan">
+                        Reductores Nuevos
+                    </label>
+                </div>
             </form>
         </div>
 
@@ -88,14 +95,14 @@
     myMap1.setMapFile('/ms4w/Apache/htdocs/proyecto_final/web/Cali.map');
     //myMap1.setFullExtent(-76.62, -76.40, 3.31, 3.90);
     myMap1.setFullExtent(-76.50, -76.48, 3.42, 3.45);
-    myMap1.setLayers('Barrios Comunas Vias Cali Accidentes Viadano Senial SenialDan ReductorDan');
+    myMap1.setLayers('Barrios Comunas Vias Cali Accidentes Viadano Senial SenialDan ReductorDan ReductorNew');
 
     myMap2 = new msMap(document.getElementById('dc_main2'), 'standardRight');
     myMap2.setActionNone();
     //myMap2.setFullExtent(-76.62, -76.40, 3.31, 3.90);
     myMap2.setFullExtent(-76.50, -76.48, 3.42, 3.45);
     myMap2.setMapFile('/ms4w/Apache/htdocs/proyecto_final/web/Cali.map');
-    myMap2.setLayers('Barrios Comunas Vias Cali Accidentes Viadano Senial SenialDan ReductorDan');
+    myMap2.setLayers('Barrios Comunas Vias Cali Accidentes Viadano Senial SenialDan ReductorDan ReductorNew');
     myMap1.setReferenceMap(myMap2);
 
     myMap1.redraw();

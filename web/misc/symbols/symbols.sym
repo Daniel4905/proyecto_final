@@ -104,6 +104,12 @@ END
 SYMBOL
     NAME 'puntoReduDan'
     TYPE PIXMAP
+    IMAGE 'redDan.gif'
+END
+
+SYMBOL
+    NAME 'puntoReduNew'
+    TYPE PIXMAP
     IMAGE 'velento.gif'
 END
 

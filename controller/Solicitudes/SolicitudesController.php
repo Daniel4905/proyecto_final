@@ -1208,8 +1208,9 @@ class SolicitudesController
                     (SELECT COUNT(*) FROM solicitud_via_dan) AS vias,
                     (SELECT COUNT(*) FROM solicitud_seniales_new) AS sennew,
                     (SELECT COUNT(*) FROM solicitud_reductores_dan) AS srd,
-                    (SELECT COUNT(*) FROM solicitud_seniales_dan) AS sendan";
-
+                    (SELECT COUNT(*) FROM solicitud_seniales_dan) AS sendan,
+                    (SELECT COUNT(*) FROM solicitud_reductores_new) AS srn";
+                    
 
         $reportes = $obj->consult($sql);
 
@@ -1221,6 +1222,7 @@ class SolicitudesController
             $sennew = 0;
             $srd = 0;
             $sendan = 0;
+            $srn=0;
 
             if (isset($reportes[0]['accidentes'])) {
                 $accidentes = $reportes[0]['accidentes'];
@@ -1241,9 +1243,12 @@ class SolicitudesController
             if (isset($reportes[0]['sendan'])) {
                 $sendan = $reportes[0]['sendan'];
             }
+            if (isset($reportes[0]['srn'])) {
+                $srn = $reportes[0]['srn'];
+            }
 
 
-            echo "$accidentes,$vias,$sennew,$sendan,$srd";
+            echo "$accidentes,$vias,$sennew,$sendan,$srd,$srn";
         }
     }
     public function getDatosCards()
@@ -1255,7 +1260,8 @@ class SolicitudesController
                     (SELECT COUNT(*) FROM solicitud_via_dan) AS vias,
                     (SELECT COUNT(*) FROM solicitud_seniales_new) AS sennew,
                     (SELECT COUNT(*) FROM solicitud_reductores_dan) AS srd,
-                    (SELECT COUNT(*) FROM solicitud_seniales_dan) AS sendan";
+                    (SELECT COUNT(*) FROM solicitud_seniales_dan) AS sendan,
+                    (SELECT COUNT(*) FROM solicitud_reductores_new) AS srn";
 
         $reportes = $obj->consult($sql);
 
@@ -1271,6 +1277,7 @@ class SolicitudesController
                 'Señales Nuevas' => $reportes[0]['sennew'],
                 'Reductores' => $reportes[0]['srd'],
                 'Señales Dañadas' => $reportes[0]['sendan'],
+                'Reductores Dañados' => $reportes[0]['srn'],
             );
 
             foreach ($valores as $nombre => $valor) {
