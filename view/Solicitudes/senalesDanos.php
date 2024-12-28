@@ -109,7 +109,7 @@ if (isset($_SESSION['errores'])) {
             <div class="col-md-4">
                 <div class="mb-2">
                     <label for="" class="form-label">Orientacion</label>
-                    <select name="orienSen" id="" class="form-select fSen">
+                    <select name="orienSen" id="orien" class="form-select fSen">
                         <option value="" class="form-option">Seleccione...</option>
                         <?php
                         foreach ($senOrientacion as $orien) {
@@ -144,7 +144,7 @@ if (isset($_SESSION['errores'])) {
                 <label for="" class="form-label">Adjunte la evidencia</label>
                 <div class="image-upload-wrapper">
                     <label class="image-upload">
-                        <input type="file" accept="image/*" onchange="previewImage(this)" name="imagen">
+                        <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenSD">
                         <div class="upload-placeholder">
                             <i class="fa-solid fa-image"></i>
                         </div>
@@ -171,9 +171,7 @@ if (isset($_SESSION['errores'])) {
     </form>
 
 </div>
-</div>
-</div>
-
+<script src="assets/js/validacionSenDan.js"></script>
 <script>
     var valorPunto1 = document.getElementById("punto1").value;
     var valorPunto2 = document.getElementById("punto2").value;
@@ -181,10 +179,20 @@ if (isset($_SESSION['errores'])) {
     document.getElementById("Coord1").value = valorPunto1;
     document.getElementById("Coord2").value = valorPunto2;
 </script>
-
-<script src="assets/js/validacionSenDan.js"></script>
 <script>
     $(document).ready(function () {
+        const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+        const patronNumero = /^[0-9]+$/;
+
+        function agregarError(campo, mensaje) {
+            const $campo = $(campo);
+            if ($campo.length > 0) {
+                $campo.addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
+            } else {
+                console.error('El campo no se encontró');
+            }
+        }
+
         $('.image-upload input[type="file"]').on('change', function () {
             const input = $(this);
             const file = input[0].files[0];
@@ -216,5 +224,65 @@ if (isset($_SESSION['errores'])) {
             placeholder.show();
             button.hide();
         });
+        
+    $('input, select').on('focus', function () {
+        $(this).removeClass('input-error');
+        $(this).next('.text-danger').remove();
+    });
+    $('input, select').on('click', function () {
+        $(this).removeClass('input-error');
+        $(this).next('.text-danger').remove();
+    });
+
+    $('#formSeñalesDan').submit(function (event) {
+
+            event.preventDefault();
+
+            $('.text-danger').remove();
+            $('input, select').removeClass('input-error');
+        
+            let valido = true;
+        
+            const tipo_sen= $('#tipoSenDan').val().trim();
+        
+            if (tipo_sen === '' || tipo_sen=== null ) {
+                agregarError($('#tipoSenDan'), "Por favor seleccione un tipo de señal");
+                valido = false;
+            }
+        
+            const desc=$('#desc_sen_dan').val().trim();
+            if (desc==='' || desc===null) {
+                agregarError($('#desc_sen_dan'),"Por favor ingrese una descripción");
+                valido = false;
+            }else if ( !patronTexto.test(desc) || desc.length > 300) {
+                agregarError($('#desc_sen_dan'), "El campo observaciones solo admite letras (máx. 300)");
+                valido = false;
+            }
+
+            const orien=$('#orien').val().trim();
+            if (orien==='' || orien===null) {
+                agregarError($('#orien'),"Por seleccion la orientacion de la señal");
+                valido = false;
+            }
+
+            const archivos = $('input[name="imagenSD"]')[0].files;
+            if (archivos.length === 0) {
+                agregarError($('input[name="imagenSD"]'), "Por favor seleccione una imagen");
+                valido = false;
+            }
+
+            const tipoDanio= $('#tipoDanio').val().trim();
+
+            if (tipoDanio===''|| tipoDanio===null) {
+                agregarError($('#tipoDanio'), "Por favor seleccione un tipo de daño");
+                valido = false;
+            }
+            
+            if (valido) {
+                this.submit();
+            }
+        
+    });
+        
     });
 </script>

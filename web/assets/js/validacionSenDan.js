@@ -1,14 +1,7 @@
 
 $(document).ready(function () {
 
-    function agregarError(campo, mensaje) {
-        const $campo = $(campo);
-        if ($campo.length > 0) {
-            $campo.addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
-        } else {
-            console.error('El campo no se encontró');
-        }
-    }
+    
     $('.fSen').on('change', function () {
         let categoriaId = $('select[name="sen_cate"]').val();
         let orientacionId = $('select[name="orienSen"]').val();
@@ -31,6 +24,9 @@ $(document).ready(function () {
             console.warn('Por favor seleccione categoría y orientación.');
         }
     });
+
+
+
 
 });
 

@@ -12,21 +12,21 @@
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($senial as $sen) {
+                    foreach ($reductores as $red) {
                         echo "<tr>";
-                        echo "<td>" . $sen['sol_sen_dan_id'] . "</td>";
-                        echo "<td>" . $sen['senal'] .  "</td>";
+                        echo "<td>" . $red['sol_red_new_id'] . "</td>";
+                        echo "<td>" . $red['reductor'] .  "</td>";
                         echo "<td>".
-                        $sen['sol_sen_dan_fecha'];
+                        $red['sol_red_new_fecha'];
                         echo "</td>";
-                        echo "<td>" . $sen['usuario_nombre'] . "</td>";
+                        echo "<td>" . $red['usuario_nombre'] . "</td>";
                         echo "<td>";
                         echo "<select id='' name='estado' class='form-select estado_solicitud' 
-                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoSenDan", false, "ajax") . "' 
-                        data-soli='" . $sen['sol_sen_dan_id'] . "'>";
+                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoRedDan", false, "ajax") . "' 
+                        data-soli='" . $red['sol_red_new_id'] . "'>";
                             foreach ($estados as $est) {
                                 $selected = "";
-                                if ($est['est_id'] == $sen['est_sol_id']) {
+                                if ($est['est_id'] == $red['est_sol_id']) {
                                     $selected = "selected";
                                 }
                                 echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
@@ -34,7 +34,7 @@
                         echo "</select>";
                         echo "</td>";
                         echo "<td>" .
-                            "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenDan", false, "ajax") . "'>Ver detalles
+                            "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $red['sol_red_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesRedNew", false, "ajax") . "'>Ver detalles
                               </button>" .
                             "</td>";
                         echo "</tr>";
@@ -51,7 +51,7 @@
 
 </div>
 <div class="container mt-4">
-    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 4), 'ajax'); ?>" class="btn btn-secondary">
+    <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 6), 'ajax'); ?>" class="btn btn-secondary">
     <i class="fas fa-file-excel"></i>
         Descargar reporte completo en formato XLSX
     </a>

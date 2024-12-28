@@ -17,6 +17,22 @@
                                 "<p><strong>Descripcion:</strong> " . $sen['desc_sen_dan'] . "</p>" .
                                 "<p><strong>Estado:</strong> " . $sen['est_nombre'] . "</p>";
 
+                                if (!empty($sen['img_sen_dan'])) {
+                                    echo "<p><strong>Evidencia adjunta:</strong></p>";
+                                    $rutas = explode(', ',"img/". $sen['img_sen_dan']);
+                                    foreach ($rutas as $ruta) {
+                                        $rutasinEs = trim($ruta);
+                                        if (!empty($rutasinEs) && file_exists($rutasinEs)) {
+                                            echo "<div style='border: 5px solid; max-width: 200px;'>";
+                                            echo "<img src='" . $ruta . "' alt='Evidencia' style='max-width: 150px; margin: 10px;'>";
+                                            echo "</div>";
+                                        } elseif (!empty($rutasinEs)) {
+                                            echo "<p>No se pudo cargar la imagen </p>";
+                                        }
+                                    }
+                                } else {
+                                    echo "<p><strong>Evidencia adjunta:</strong> No hay evidencia disponible.</p>";
+                                }
                         } else {
                             echo "<p class='text-danger'>No se encontraron detalles para este accidente.</p>";
                         }

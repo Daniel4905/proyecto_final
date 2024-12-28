@@ -34,7 +34,7 @@
                         echo "</select>";
                         echo "</td>";
                         echo "<td>" .
-                            "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $sen['reg_acc_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesAccidente", false, "ajax") . "'>Ver detalles
+                            "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenNew", false, "ajax") . "'>Ver detalles
                               </button>" .
                             "</td>";
                         echo "</tr>";
