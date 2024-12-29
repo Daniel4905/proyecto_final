@@ -514,4 +514,14 @@ CREATE TABLE punto_reductorNew
 );
 
 
+CREATE TABLE tokens_contra
+(
+  id_token serial NOT NULL,
+  token character varying(6) NOT NULL,
+  usu_id integer NOT NULL,
+  expiracion timestamp without time zone NOT NULL,
+  CONSTRAINT tokens_contra_pkey PRIMARY KEY (id_token)
+);
+
+
 
