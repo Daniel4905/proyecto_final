@@ -116,6 +116,12 @@ html {
         overflow-x: hidden;
 
     }
+    .container-scroll-sols{
+        max-height: 370px;
+        max-width: 245px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 }
 
 /* Pantallas medianas, móviles grandes */
@@ -123,7 +129,7 @@ html {
 
     /* Ejemplo: iPhone 11, iPhone XR */
     .container-scroll {
-        max-height: 400px;
+        max-height: 440px;
         /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
@@ -138,7 +144,12 @@ html {
         max-height: 400px;
         overflow-y: auto;
         overflow-x: hidden;
-
+    }
+    .container-scroll-sols{
+        max-height: 350px;
+        max-width: 245px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 
@@ -161,7 +172,12 @@ html {
         max-height: 550px;
         overflow-y: auto;
         overflow-x: hidden;
-
+    }
+    .container-scroll-sols{
+        max-height: 370px;
+        max-width: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 
@@ -184,7 +200,12 @@ html {
         max-height: 550px;
         overflow-y: auto;
         overflow-x: hidden;
-
+    }
+    .container-scroll-sols{
+        max-height: 370px;
+        max-width: 275px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 
@@ -207,8 +228,14 @@ html {
         max-height: 600px;
         overflow-y: auto;
         overflow-x: hidden;
-
     }
+    .container-scroll-sols{
+        max-height: 370px;
+        max-width: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
 }
 
 /* Tablets pequeñas */
@@ -231,15 +258,21 @@ html {
         max-height: 700px;
         overflow-y: auto;
         overflow-x: hidden;
-
     }
+    .container-scroll-sols{
+        max-height: 450px;
+        max-width: 320px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
 }
 
 @media (min-width: 539px) and (max-width: 542px) {
 
     /* Ejemplo: iPad Mini, iPad en modo vertical */
     .container-scroll {
-        max-height: 450px;
+        max-height: 550px;
         overflow-y: auto;
         overflow-x: auto;
     }
@@ -255,6 +288,12 @@ html {
         overflow-y: auto;
         overflow-x: hidden;
 
+    }
+    .container-scroll-sols{
+        max-height: 450px;
+        max-width: 420px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 
@@ -302,6 +341,11 @@ html {
         overflow-x: hidden;
 
     }
+    .container-scroll-sols{
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 }
 
 @media (min-width: 819px) and (max-width: 821px) {
@@ -328,14 +372,14 @@ html {
 
 @media (min-width: 1024px) and (max-width: 1367px) {
     .container-scroll {
-        max-height: 400px;
+        max-height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
     }
 
     .container-scrollMap {
         max-height: 600px;
-        max-width: 1150px;
+        max-width: 940px;
         overflow-y: auto;
         overflow-x: auto;
     }
@@ -343,13 +387,17 @@ html {
         max-height: 600px;
         overflow-y: auto;
         overflow-x: hidden;
-
+    }
+    .container-scroll-sols{
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 
 @media (min-width: 1022px) and (max-width: 1024px) {
     .container-scroll {
-        max-height: 300px;
+        max-height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -364,6 +412,11 @@ html {
         overflow-y: auto;
         overflow-x: hidden;
 
+    }
+    .container-scroll-sols{
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
 
@@ -381,6 +434,11 @@ html {
     }
     .container-scroll-index{
         max-height: 700px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .container-scroll-sols{
+        max-height: 550px;
         overflow-y: auto;
         overflow-x: hidden;
     }

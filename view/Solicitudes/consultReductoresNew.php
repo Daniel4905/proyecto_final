@@ -1,4 +1,4 @@
-<div class="container container-scroll">
+<div class="container-scroll-sols">
     <div class="row">
         <div class="table-responsive">
             <table class="table table-hover table-striped">
@@ -22,7 +22,7 @@
                         echo "<td>" . $red['usuario_nombre'] . "</td>";
                         echo "<td>";
                         echo "<select id='' name='estado' class='form-select estado_solicitud' 
-                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoRedDan", false, "ajax") . "' 
+                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoRedNew", false, "ajax") . "' 
                         data-soli='" . $red['sol_red_new_id'] . "'>";
                             foreach ($estados as $est) {
                                 $selected = "";
@@ -50,7 +50,7 @@
 
 
 </div>
-<div class="container mt-4">
+<div class="mt-4">
     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 6), 'ajax'); ?>" class="btn btn-secondary">
     <i class="fas fa-file-excel"></i>
         Descargar reporte completo en formato XLSX

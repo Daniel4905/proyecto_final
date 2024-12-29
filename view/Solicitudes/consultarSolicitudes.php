@@ -1,7 +1,7 @@
-<div class="container">
+<div class="">
     <h3>Filtre segun la solicitud que desee</h3>
     <form>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <label for="tipo-solicitud" class="form-label">Escoja el tipo de solicitud:</label>
             <select class="form-select" id="tipo_solicitud" name="tipoSolicitud"
                 data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getSolEscogida", false, "ajax") ?>'>

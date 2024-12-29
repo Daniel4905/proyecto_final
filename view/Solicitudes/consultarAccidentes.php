@@ -1,4 +1,4 @@
-<div class="container-scroll">
+<div class="container-scroll-sols">
     <div class="row">
         <div class="table-responsive">
             <table class="table table-hover table-striped">
@@ -42,7 +42,7 @@
 
 
 </div>
-<div class="container mt-4">
+<div class="mt-4">
     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 1), 'ajax'); ?>" class="btn btn-secondary">
     <i class="fas fa-file-excel"></i>
         Descargar reporte completo en formato XLSX

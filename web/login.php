@@ -59,11 +59,25 @@ if (isset($_SESSION['error'])) {
                 });
             });
              </script>";
-            unset($_SESSION['RegExitoso']);
+            unset($_SESSION['restC']);
         }
+        if (isset($_SESSION['restC'])) {
+            echo "<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'Contraseña restablecida, ya puedes acceder',
+                    confirmButtonText: 'Acceder'
+                });
+            });
+             </script>";
+            unset($_SESSION['restC']);
+        }
+
         ?>
         <div class="logo">
-            <img src="img/logo_claro.png" alt="Logo geovisor" class="img-fluid"> <!-- Logo de la clínica -->
+            <img src="img/logo_claro.png" alt="Logo geovisor" class="img-fluid">
         </div>
         <div class="division">
             <div class="row">
@@ -75,35 +89,40 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
         </div>
-        <form action="<?php echo getUrl('Acceso', 'Acceso', 'login', false, "ajax"); ?>" method="POST" class="myform">
-            <div class="form-group">
-                <label for="numeroId" class="form-label">Número de Identificación:</label>
-                <input type="text" id="numeroId" name="numeroId" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="password" class="form-label">Contraseña</label>
-                <div class="password-container">
-                    <input type="password" id="password" name="password" class="form-control">
-                    <button type="button" class="toggle-password">
-                        <i class="far fa-eye" id="toggleIcon"></i>
-                    </button>
+        <div id="formDinamico">
+            <form action="<?php echo getUrl('Acceso', 'Acceso', 'login', false, "ajax"); ?>" method="POST"
+                class="myform">
+                <div class="form-group">
+                    <label for="numeroId" class="form-label">Número de Identificación:</label>
+                    <input type="text" id="numeroId" name="numeroId" class="form-control">
                 </div>
-                <span><a href="#">Recuperar contraseña</a></span>
-            </div>
-            <div class="form-group">
-                <?php if ($error_message): ?>
-                    <p class='text-danger'><?= htmlspecialchars($error_message) ?></p>
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" class="form-control">
+                        <button type="button" class="toggle-password">
+                            <i class="far fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    <span><a href="ajax.php?modulo=Acceso&controlador=Acceso&funcion=getRestContra"
+                            id="recuperar">Recuperar contraseña</a></span>
+                </div>
+                <div class="form-group">
+                    <?php if ($error_message): ?>
+                        <p class='text-danger'><?= htmlspecialchars($error_message) ?></p>
 
-                <?php endif; ?>
-            </div>
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-            </div>
-            <div class=" my-3">
-                <span>¿No tienes cuenta? <a
-                        href="<?php echo getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"); ?>">Registrarse</a></span>
-            </div>
-        </form>
+                    <?php endif; ?>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                </div>
+                <div class=" my-3">
+                    <span>¿No tienes cuenta? <a
+                            href="<?php echo getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"); ?>">Registrarse</a></span>
+                </div>
+            </form>
+
+        </div>
     </div>
 
     <script>
@@ -155,8 +174,88 @@ if (isset($_SESSION['error'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-        
+
 
 </body>
+
+<script>
+    function objectAjax() {
+        var xmlhttp = false;
+
+        try {
+            xmlhttp = new ActiveXObject("Msxm2.XMLHttpRequest");
+        } catch (e) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (E) {
+                xmlhttp = false;
+            }
+        }
+        if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
+            xmlhttp = new XMLHttpRequest();
+        }
+        return xmlhttp;
+    }
+
+    var recuperar = document.getElementById('recuperar');
+    if (recuperar) {
+        recuperar.addEventListener('click', function (event) {
+            event.preventDefault();
+            var consultar1 = new objectAjax();
+            consultar1.open("GET", "ajax.php?modulo=Acceso&controlador=Acceso&funcion=getRestContra", true);
+            consultar1.onreadystatechange = function () {
+                if (consultar1.readyState === 4 && consultar1.status === 200) {
+                    document.getElementById('formDinamico').innerHTML = consultar1.responseText;
+                    var enviarCor = document.getElementById('enviarCor');
+                    if (enviarCor) {
+                        enviarCor.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            doc = document.getElementById('numeroId').value;
+                            correo = document.getElementById('correoRest').value;
+                            var consultar2 = new objectAjax();
+                            consultar2.open("GET", "ajax.php?modulo=Acceso&controlador=Acceso&funcion=restContra&usu_doc=" + doc + "&usu_correo=" + correo, true);
+                            consultar2.onreadystatechange = function () {
+                                if (consultar2.readyState === 4 && consultar2.status === 200) {
+                                    var response = consultar2.responseText.trim();
+                                    if (response === "Correo enviado exitosamente") {
+                                        Swal.fire({
+                                            title: 'Éxito!',
+                                            text: 'Fue enviado el paso a paso para restablecer su contraseña a su correo',
+                                            icon: 'success',
+                                            confirmButtonText: 'Ok'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = 'login.php';
+                                            }
+                                        });
+                                    } else if (response === "Credenciales invalidas") {
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'Las credenciales son inválidas.',
+                                            icon: 'error',
+                                            confirmButtonText: 'Intentar de nuevo'
+                                        });
+                                    } else if (response === "No se pudo enviar el correo") {
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'No se pudo enviar el correo. Intenta nuevamente.',
+                                            icon: 'error',
+                                            confirmButtonText: 'Intentar de nuevo'
+                                        });
+                                    }
+                                }
+                            };
+
+                            consultar2.send(null);
+                        });
+                    }
+                    
+                }
+            };
+            consultar1.send(null);
+        });
+    }
+</script>
+
 
 </html>

@@ -1207,10 +1207,10 @@ public function detallesRedNew()
                     $sheet->setCellValue("C{$row}", $red['sol_red_new_fecha']);
                     $sheet->setCellValue("D{$row}", $red['usuario_nombre']);
                     $sheet->setCellValue("E{$row}", $red['est_nombre']);
-                    $sheet->setCellValue("F{$row}", $red['desc_red']);
+                    $sheet->setCellValue("F{$row}", $red['desc_red_new']);
                     $row++;
                 }
-                $filename = 'Reductores_dan_' . date('Ymd_His') . '.xlsx';
+                $filename = 'Reductores_new_' . date('Ymd_His') . '.xlsx';
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 header('Content-Disposition: attachment;filename="' . $filename . '"');
                 header('Cache-Control: max-age=0');
@@ -1398,6 +1398,37 @@ public function detallesRedNew()
 
     }
 
+    public function updateEstadoRedNew()
+    {
+        $obj = new SolicitudesModel();
+
+        $sol_id = $_POST['solicitud'];
+        $est_id = $_POST['id'];
+
+        if ($est_id !== null) {
+            $sql = "UPDATE solicitud_reductores_new SET est_sol_id = $est_id WHERE sol_red_new_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+
+                $sql = "SELECT redNew.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                        est.est_nombre FROM solicitud_reductores_new redNew
+                        LEFT JOIN estados est ON redNew.est_sol_id = est.est_id
+                        LEFT JOIN usuarios u ON redNew.usu_id = u.usu_id
+                        LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id= tr.tipo_red_id
+                        GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre";
+                $reductores = $obj->consult($sql);
+
+                $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
+                           JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+                $estados = $obj->consult($sqlEst);
+
+                include_once "../view/solicitudes/buscarRedNew.php";
+            }
+        }
+
+    }
+
     function getSenialF()
     {
         $categoria = $_POST['categoria_id'];
@@ -1511,10 +1542,10 @@ public function detallesRedNew()
             $valores = array(
                 'Accidentes' => $reportes[0]['accidentes'],
                 'Vías' => $reportes[0]['vias'],
-                'Señales Nuevas' => $reportes[0]['sennew'],
-                'Reductores' => $reportes[0]['srd'],
-                'Señales Dañadas' => $reportes[0]['sendan'],
-                'Reductores Dañados' => $reportes[0]['srn'],
+                'Señales nuevas' => $reportes[0]['sennew'],
+                'Reductores nuevos' => $reportes[0]['srd'],
+                'Señales dañadas' => $reportes[0]['sendan'],
+                'Reductores dañados' => $reportes[0]['srn'],
             );
 
             foreach ($valores as $nombre => $valor) {
