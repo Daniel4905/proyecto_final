@@ -14,6 +14,7 @@
 
                             echo "<p><strong>ID:</strong> " . $via['sol_via_dan_id'] . "</p>" .
                                 "<p><strong>Fecha y hora:</strong> " . $via['fecha_hora'] . "</p>" .
+                                "<p><strong>Tipo via:</strong> " . $via['desc_via'] . "</p>" .
                                 "<p><strong>Solicitante:</strong> " . $via['usuario_nombre'] . "</p>" .
                                 "<p><strong>Descripción:</strong> " . $via['descripcion_via'] . "</p>" .
                                 "<p><strong>Tipo de daño:</strong> " . $via['tipo_danio'] . "</p>" .

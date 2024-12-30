@@ -75,6 +75,20 @@
         <input type="hidden" name="usu_id" value="<?php echo $_SESSION['id']; ?>">
         <input type="hidden" name="punto1" id="Coord1">
         <input type="hidden" name="punto2" id="Coord2">
+        <h3>Via a reparar</h3>
+        <div class="col-md-6">
+            <div class="mb-2">
+                <label for="tipoVia" class="form-label">Tipo de via:</label>
+                <select id="tipoVia" name="tipoVia" class="form-select">
+                    <option value="">Seleccione..</option>
+                    <?php
+                    foreach ($vias as $via) {
+                        echo "<option value='" . $via['id_tipo_via'] . "'>" . $via['desc_via'] . "</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
         <h3>Descripción del Daño</h3>
         <div class="col-md-6">
             <div class="mb-2">

@@ -90,16 +90,17 @@ class SolicitudesController
             return;
         }
 
-        $sql2 = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+        $sql2 = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, tv.desc_via,
                 STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, pv.geom AS punto_geom, est.est_nombre
                 FROM solicitud_via_dan svd
                 LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
                 LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
                 LEFT JOIN estados est ON svd.est_sol_id = est.est_id
                 LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
+                LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
                 LEFT JOIN punto_via pv ON svd.sol_via_dan_id = pv.id_via
                 WHERE ST_DWithin(pv.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
-                GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, pv.geom, est.est_nombre
+                GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, pv.geom, est.est_nombre, tv.desc_via
                 ORDER BY ST_Distance(pv.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                 LIMIT 1";
 
@@ -185,6 +186,8 @@ class SolicitudesController
         JOIN tipo_danio td ON td.tipo_danio_id = cd.danio_id
         WHERE cd.solicitud_id = 1";
 
+        $sql2 = "SELECT * FROM tipo_via";
+        $vias = $obj->consult($sql2);
         $danos = $obj->consult($sql);
 
         include_once '../view/Solicitudes/vias.php';
@@ -562,13 +565,14 @@ class SolicitudesController
         $obj = new SolicitudesModel();
         // $usu_id=$_POST['usu_id'];
 
-        $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+        $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, tv.desc_via, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
         STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre
         FROM solicitud_via_dan svd
         LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
         LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
         LEFT JOIN estados est ON svd.est_sol_id = est.est_id
-        LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1";
+        LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
+        LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, tv.desc_via";
 
         $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t
                    JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
@@ -584,14 +588,15 @@ class SolicitudesController
         $obj = new SolicitudesModel();
         $id = $_POST['id'];
 
-        $sql = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio,  u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+        $sql = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, tv.desc_via, u.usu_nombre1 AS solicitante,  STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
         STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre FROM solicitud_via_dan svd
         LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
         LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
         LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
         LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+        LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
         WHERE svd.sol_via_dan_id = $id 
-        GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre";
+        GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre, tv.desc_via";
 
 
         $vias = $obj->consult($sql);
@@ -602,6 +607,7 @@ class SolicitudesController
 
                 echo "<p><strong>ID:</strong> " . $via['sol_via_dan_id'] . "</p>" .
                     "<p><strong>Fecha y hora:</strong> " . $via['fecha_hora'] . "</p>" .
+                    "<p><strong>Tipo de via:</strong> " . $via['desc_via'] . "</p>" .
                     "<p><strong>Solicitante:</strong> " . $via['usuario_nombre'] . "</p>" .
                     "<p><strong>Descripción:</strong> " . $via['descripcion_via'] . "</p>" .
                     "<p><strong>Tipo de daño:</strong> " . $via['tipo_danio'] . "</p>" .
@@ -851,13 +857,14 @@ public function detallesRedNew()
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
         $detalles = $_POST['detalles'];
+        $via = $_POST['tipoVia'];
         $estado = 3;
         $punto1Procesado = eliminarSegundoPunto($punto1);
         $punto2rocesado = eliminarSegundoPunto($punto2);
 
         $id = $obj->autoIncrement("solicitud_via_dan", "sol_via_dan_id");
 
-        $sql = "INSERT INTO solicitud_via_dan VALUES($id, $tipoDaño, '$detalles', date_trunc('second', NOW()),  $estado, $usu_id)";
+        $sql = "INSERT INTO solicitud_via_dan VALUES($id, $tipoDaño, '$detalles', date_trunc('second', NOW()),  $estado, $usu_id, $via)";
         $ejecutar = $obj->insert($sql);
 
         if ($ejecutar) {

@@ -1,4 +1,4 @@
-<div class="container container-scroll">
+<div class="container-scroll">
     <div class="mt 3">
         <h3 class="display-4">Actualizar Usuarios</h3>
     </div>

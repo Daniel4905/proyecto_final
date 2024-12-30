@@ -49,12 +49,16 @@ $(document).ready(function () {
 
         let valido = true;
 
+        const tipoVia= $('#tipoVia').val().trim();
+        if (tipoVia === '' || tipoVia === null) {
+            agregarError($('#tipoVia'), "Por favor ingrese el tipo de via");
+            valido = false;
+        }
         const tipoDanio = $('#tipoDanio').val().trim();
         if (tipoDanio === '' || tipoDanio === null) {
             agregarError($('#tipoDanio'), "Por favor ingrese el tipo de daño");
             valido = false;
         }
-
         const observaciones = $('#observaciones').val().trim();
         if (observaciones === ! '' && !patronTexto.test(observaciones) || observaciones.length > 300) {
             agregarError($('#observaciones'), "El campo observaciones solo admite letras (máx. 300)");

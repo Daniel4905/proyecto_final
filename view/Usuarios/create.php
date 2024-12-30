@@ -1,21 +1,20 @@
-<div class="container">
-    <div class="mt 3">
-        <h3 class="display-4">Registrar Usuarios</h3>
-    </div>
-    <?php
-    if (isset($_SESSION['errores'])) {
-        echo "<div class='alert alert-danger' role='alert'>";
-        foreach ($_SESSION['errores'] as $error) {
-            echo $error . "<br>";
-        }
-        echo "</div>";
-        unset($_SESSION['errores']);
-    }
-
-    ?>
+<div class="mt 3">
+    <h3 class="display-4">Registrar Usuarios</h3>
 </div>
+<?php
+if (isset($_SESSION['errores'])) {
+    echo "<div class='alert alert-danger' role='alert'>";
+    foreach ($_SESSION['errores'] as $error) {
+        echo $error . "<br>";
+    }
+    echo "</div>";
+    unset($_SESSION['errores']);
+}
 
-<div class="container container-scroll">
+?>
+
+
+<div class="container-scroll">
 
     <form action="<?php echo getUrl("Usuarios", "Usuarios", "postCreate"); ?> " method="post" id="formRegistro">
         <div class="row mt-5">
@@ -58,7 +57,8 @@
             <div class="col-md-2 mt-3">
                 <label for="usu_tel">Nro Documento*</label>
                 <input type="text" name="usu_documento" id="documentoRegistro" class="form-control validar-num"
-                    placeholder="Documento" data-url="<?php echo getUrl("Acceso", "Acceso", "validarDoc", false,"ajax") ?>">
+                    placeholder="Documento"
+                    data-url="<?php echo getUrl("Acceso", "Acceso", "validarDoc", false, "ajax") ?>">
             </div>
             <div class="col-md-2 mt-3">
                 <label for="sex_id">Sexo biologico*</label>
@@ -145,7 +145,7 @@
             </div>
             <div class="col-md-3 mt-2">
                 <label for="usu_clave">Clave*</label>
-                <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave" >
+                <input type="password" name="usu_clave" id="clave" class="form-control claves" placholder="Clave">
             </div>
             <div class="col-md-3 mt-2">
                 <label for="usu_clave">Confirmar clave*</label>

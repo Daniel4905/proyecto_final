@@ -1,57 +1,60 @@
-<div class="container-scroll-sols">
-    <div class="row">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <th>ID</th>
-                    <th>Daño</th>
-                    <th>Fecha</th>
-                    <th>Solicitante</th>
-                    <th>Estado</th>
-                    <th>Detalles</th>
-                </thead>
-                <tbody>
-                    <?php
-                    if (isset($vias) && is_array($vias) && count($vias) > 0) {
-                        foreach ($vias as $via) {
-                            echo "<tr>";
-                            echo "<td>" . $via['sol_via_dan_id'] . "</td>";
-                            echo "<td>" . $via['tipo_danio'] . "</td>";
-                            echo "<td>" . $via['fecha_hora'] . "</td>";
-                            echo "<td>" . $via['usuario_nombre'] . "</td>";
-                            echo "<td>";
-                            echo "<select id='' name='estado' class='form-select estado_solicitud' 
-                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoVias", false, "ajax") . "' 
-                        data-soli='" . $via['sol_via_dan_id'] . "'>";
-                            foreach ($estados as $est) {
-                                $selected = "";
-                                if ($est['est_id'] == $via['est_sol_id']) {
-                                    $selected = "selected";
-                                }
-                                echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
-                            }
-                            echo "</select>";
-
-
-                            echo "</td>";
-                            echo "<td>" .
-                                "<button class='btn btn-outline-secondary btn-detalles' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesVia", false, "ajax") . "'>Ver detalles
-                              </button>" .
-                                "</td>";
-                            echo "</tr>";
-                        }
-                    }else{
-                        echo "<tr><td colspan='8' class='text-center text-danger'>No se encontraron resultados en la búsqueda</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-            <div id="datError" class='alert alert-danger d-none' role='alert'>
-                No se encontraron resultados en la búsqueda.
-            </div>
-        </div>
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <label for="startDate" class="form-label">Fecha de inicio</label>
+        <input type="date" class="form-control" id="startDate" name="startDate">
+    </div>
+    <div class="col-md-3">
+        <label for="endDate" class="form-label">Fecha de fin</label>
+        <input type="date" class="form-control" id="endDate" name="endDate">
     </div>
 </div>
+<div class="container-scroll-sols">
+    <div class="accordion" id="accordionVias">
+        <?php
+        if (isset($vias)) {
+            foreach ($vias as $via) {
+                $viaId = $via['sol_via_dan_id'];
+                echo "<div class='accordion-item'>";
+                echo "<h2 class='accordion-header' id='heading$viaId'>";
+                echo "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse$viaId' aria-expanded='false' aria-controls='collapse$viaId'>";
+                echo "Via ID: " . $via['sol_via_dan_id'] . " - " . $via['fecha_hora']. "&nbsp; <i class='fa-regular fa-calendar'></i>";
+                echo "</button>";
+                echo "</h2>";
+                echo "<div id='collapse$viaId' class='accordion-collapse collapse' aria-labelledby='heading$viaId' data-bs-parent='#accordionVias'>";
+                echo "<div class='accordion-body'>";
+                echo "<p><strong><i class='fas fa-road'></i>Tipo de via:</strong> " . $via['desc_via'] . "</p>";
+                echo "<p><strong><i class='fas fa-exclamation-triangle'></i>Tipo de Daño:</strong> " . $via['tipo_danio'] . "</p>";
+                echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $via['usuario_nombre'] . "</p>";
+                echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
+                echo "<div class='row'>"; 
+                echo "<div class='col-md-2'>";  
+                echo "<select id='' name='estado' class='form-select estado_solicitud' 
+                data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoVias", false, "ajax") . "' 
+                data-soli='" . $via['sol_via_dan_id'] . "'>";
+                foreach ($estados as $est) {
+                    $selected = "";
+                    if ($est['est_id'] == $via['est_sol_id']) {
+                        $selected = "selected";
+                    }
+                    echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
+                }
+                echo "</select>";
+                echo "</div>";
+                echo "</div>";
+                echo "</p>";
+                echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesVia", false, "ajax") . "'>Ver detalles</button>";
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+            }
+        } else {
+            echo "<div class='alert alert-danger text-center' role='alert'>No se encontraron resultados.</div>";
+        }
+        ?>
+    </div>
+</div>
+
+
 <div class="mt-4">
     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 2), 'ajax'); ?>" class="btn btn-secondary">    
     <i class="fas fa-file-excel"></i>

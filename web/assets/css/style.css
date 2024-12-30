@@ -438,7 +438,7 @@ html {
         overflow-x: hidden;
     }
     .container-scroll-sols{
-        max-height: 550px;
+        max-height: 450px;
         overflow-y: auto;
         overflow-x: hidden;
     }

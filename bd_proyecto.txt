@@ -279,6 +279,7 @@ CREATE TABLE solicitud_via_dan
     tipo_dano_via_id integer,
     descripcion_via character varying,
     fecha_hora timestamp without time zone NOT NULL,
+    id_tipo_via integer,
     est_sol_id integer,
     usu_id integer,
     CONSTRAINT solicitud_via_dan_pkey PRIMARY KEY (sol_via_dan_id)
@@ -291,6 +292,21 @@ CREATE TABLE punto_via
   id_via integer NOT NULL,
   geom geometry(Point,4326)
 );
+
+CREATE TABLE tipo_via(
+    id_tipo_via SERIAL PRIMARY KEY NOT NULL,
+    desc_via character varying
+);
+
+
+INSERT INTO tipo_via (desc_via) VALUES ('Calle');
+INSERT INTO tipo_via (desc_via) VALUES ('Carrera');
+INSERT INTO tipo_via (desc_via) VALUES ('Avenida');
+INSERT INTO tipo_via (desc_via) VALUES ('Transversal');
+INSERT INTO tipo_via (desc_via) VALUES ('Diagonal');
+INSERT INTO tipo_via (desc_via) VALUES ('Autopista');
+INSERT INTO tipo_via (desc_via) VALUES ('Vía de circunvalación');
+
 
 
 CREATE TABLE imagenes_vias
