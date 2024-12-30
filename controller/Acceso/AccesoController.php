@@ -201,8 +201,8 @@ class AccesoController
     public function restContra()
     {
         $obj = new AccesoModel();
-        $usu_doc = $_GET['usu_doc'];
-        $usu_correo = $_GET['usu_correo'];
+        $usu_doc = $_POST['numeroId'];
+        $usu_correo = $_POST['correoRest'];
 
         $sql = "SELECT usu_nombre1, usu_apellido1, usu_id FROM usuarios WHERE usu_documento ='$usu_doc' AND usu_correo = '$usu_correo'";
         $usuario = $obj->consult($sql);
@@ -231,9 +231,9 @@ class AccesoController
 
     public function generarToken()
     {
-        $longitud = 5; // Longitud del token
-        $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Caracterés para generar combinación
-        $tokenArray = array(); 
+        $longitud = 5;
+        $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $tokenArray = array();
         for ($i = 0; $i < $longitud; $i++) {
             $indiceAleatorio = mt_rand(0, strlen($caracteres) - 1);
             $tokenArray[] = $caracteres[$indiceAleatorio];
@@ -285,14 +285,9 @@ class AccesoController
 
     }
 
+
     public function enviar($correo, $usuario, $url)
     {
-        //Para usar PHPMailer: 
-        // Habilitar estas dos extensiones en php.ini
-        // extension=php_openssl.dll extension=php_sockets.dll
-        // Habilitar Telnet:
-        // Panel de control > Programas > Progamas y carácteristicas >  Activar o desactivar las características de Windows > Marcar casilla cliente telnet o telnet client
-        // Verificar Telnet:  cmd: telnet smtp.gmail.com 587 o tambien con esto en powershell: Test-NetConnection -ComputerName smtp.gmail.com -Port 587
         require 'PHPMailer-5.2.28/PHPMailerAutoload.php';
 
         $mail = new PHPMailer();
@@ -309,29 +304,81 @@ class AccesoController
         // Configuración del correo
         $mail->setFrom('danielwz0409@gmail.com', 'AccidentEye');  // Remitente
         $mail->addAddress("$correo", "$usuario"); // Destinatario
-        $mail->CharSet = 'UTF-8'; // Caracterés especiales
-        $mail->isHTML(true); // Para que el cliente interprete que se envio un html
-        $imagenRuta = 'C:/ms4w/Apache/htdocs/proyecto_final/web/img/logo_claro.png';
+        $mail->CharSet = 'UTF-8';
+        $mail->isHTML(true);
+        $imagenRuta = 'C:/ms4w/Apache/htdocs/proyect2/web/img/logo_claro.png';
         $mail->AddEmbeddedImage($imagenRuta, 'imagen_id', 'logo_claro.png');
 
         $mail->Subject = 'Restablecer contraseña';
-        $mail->Body = '<div style="width: 80%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: rgb(32, 36, 52); border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-                            <div style="text-align: center;">
-                                <img src="cid:imagen_id" alt="Logo geovisor" style="max-width: 400px; height: auto; margin: 20px auto;">
-                            </div>
-                            <h1 style="color: #bbb8b8; font-size: 24px; text-align: center;">Restablece tu Contraseña</h1>
-                            <p style="font-size: 16px; color: #bbb8b8; line-height: 1.6; margin-bottom: 20px;">Hola, has solicitado restablecer tu contraseña. Para proceder, por favor haz clic en el siguiente enlace:</p>
-                            <p style="text-align: center;">
-                                <a href="' . $url . '" style="display: inline-block; padding: 12px 25px; font-size: 16px; color: #ffffff; background: #739bff; text-decoration: none; border: none; border-radius: 50px;">Restablecer Contraseña</a>
-                            </p>
-                            <p style="font-size: 16px; color: #bbb8b8; line-height: 1.6;">Este enlace será válido por 10 minutos. Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
-                            <div style="text-align: center; font-size: 14px; color: #bbb8b8;">
-                                <p>Si no puedes hacer clic en el botón, copia y pega el siguiente enlace en tu navegador:</p>
-                                <p><a href="' . $url . '" style="color: #bbb8b8; text-decoration: none;">' . $url . '</a></p>
-                            </div>
-                        </div>';
-        
-        $mail->SMTPDebug = 2;
+        $mail->Body = '
+                        <head>
+                            <style>
+                               
+                                .container {
+                                    width: 100%;
+                                    max-width: 600px;
+                                    margin: 0 auto;
+                                    padding: 20px;
+                                    background-color:rgb(32, 36, 52) !important; /* Fondo blanco para el contenido */
+                                    border-radius: 8px;
+                                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                                }
+                                h1 {
+                                    color: #bbb8b8 !important; /* Color de texto gris claro */
+                                    font-size: 24px;
+                                    text-align: center;
+                                }
+                                p {
+                                    font-size: 16px;
+                                    color: #bbb8b8 !important; /* Color de texto gris claro */
+                                    line-height: 1.6;
+                                    margin-bottom: 20px;
+                                }
+                                .button {
+                                    display: inline-block;
+                                    padding: 12px 25px;
+                                    font-size: 16px;
+                                    color: #ffffff;
+                                    background: linear-gradient(135deg, rgb(115, 187, 255) 39%, rgb(149, 95, 224) 101%) !important; /* Botón con gradiente */
+                                    text-decoration: none;
+                                    border: none;
+                                    border-radius: 50px; /* Bordes redondeados */
+                                    text-align: center;
+                                    margin: 20px 0;
+                                }
+                                .footer {
+                                    text-align: center;
+                                    font-size: 14px;
+                                    color: #bbb8b8 !important; /* Color de texto gris claro */
+                                }
+                                .footer a {
+                                    color: #bbb8b8 !important; /* Enlaces de color gris claro */
+                                    text-decoration: none;
+                                }
+                                .image {
+                                    display: block;
+                                    max-width: 400px;
+                                    height: auto;
+                                    margin: 20px auto;
+                                    padding: 15 15 15 15;
+                                }
+                            </style>
+                            <div class="container" style="rgb(32, 36, 52) !important;">
+                                <!-- Logo Embebido -->
+                                <div class="logo">
+                                    <img src="cid:imagen_id" alt="Logo geovisor" class="image">
+                                </div>
+                                <h1>Restablece tu Contraseña</h1>
+                                <p>Hola, has solicitado restablecer tu contraseña. Para proceder, por favor haz clic en el siguiente enlace:</p>
+                                <p style="text-align: center;">
+                                    <a href="' . $url . '" class="button">Restablecer Contraseña</a>
+                                </p>
+                                <p>Este enlace será válido por 10 minutos. Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+                                <div class="footer">
+                                    <p>Si no puedes hacer clic en el botón, copia y pega el siguiente enlace en tu navegador:</p>
+                                    <p><a href="' . $url . '">' . $url . '</a></p>
+                                </div>
+                            </div>';
         // Enviar correo
         if ($mail->send()) {
             return true;

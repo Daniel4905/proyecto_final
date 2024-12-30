@@ -104,7 +104,7 @@ if (isset($_SESSION['error'])) {
                             <i class="far fa-eye" id="toggleIcon"></i>
                         </button>
                     </div>
-                    <span><a href="ajax.php?modulo=Acceso&controlador=Acceso&funcion=getRestContra"
+                    <span><a href="<?php echo getUrl('Acceso', 'Acceso', 'getRestContra', false, "ajax"); ?>"
                             id="recuperar">Recuperar contraseña</a></span>
                 </div>
                 <div class="form-group">
@@ -178,7 +178,7 @@ if (isset($_SESSION['error'])) {
 
 </body>
 
-<script>
+<!-- <script>
     function objectAjax() {
         var xmlhttp = false;
 
@@ -255,7 +255,7 @@ if (isset($_SESSION['error'])) {
             consultar1.send(null);
         });
     }
-</script>
+</script> -->
 
 
 </html>
