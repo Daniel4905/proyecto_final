@@ -37,6 +37,7 @@ ob_start();  // Inicia el buffer de salida
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" type="text/css" href="misc/img/dc.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert"></script>
     <script src="misc/lib/mscross-1.1.9.js" type="text/javascript"></script>
     <style type="text/css">
         #layer1 {

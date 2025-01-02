@@ -1,11 +1,14 @@
 <div class="row g-3 mb-3">
     <div class="col-md-3">
         <label for="startDate" class="form-label">Fecha de inicio</label>
-        <input type="date" class="form-control" id="startDate" name="startDate">
+        <input type="date" class="form-control" id="fecha1" name="startDate">
     </div>
     <div class="col-md-3">
         <label for="endDate" class="form-label">Fecha de fin</label>
-        <input type="date" class="form-control" id="endDate" name="endDate">
+        <input type="date" class="form-control" id="fecha2" name="endDate">
+    </div>
+    <div class="col-md-3 mt-5">
+        <button type="button" class="btn btn-primary" id="consultar" data-url="<?=getUrl("Solicitudes","Solicitudes","filtroFecha",false,"ajax");?>">Buscar</button>
     </div>
 </div>
 <div class="container-scroll-sols">
@@ -57,9 +60,6 @@
         ?>
 
     </div>
-    <div id="datError" class="alert alert-danger d-none" role="alert">
-        No se encontraron resultados en la búsqueda.
-    </div>
 </div>
 <div class="mt-4">
     <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 5), 'ajax'); ?>"
@@ -83,3 +83,36 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $('#consultar').click(function (event) {
+            var fecha1= $('#fecha1').val();
+            var fecha2=$('#fecha2').val();
+            var num=4;
+            
+            if (fecha1 ==="" || fecha2 ==="") {
+                swal({
+                icon: "error",
+                title: "Oops...",
+                text: "Ninguna de las dos fechas pueden estar vacias"
+              });
+            }else{
+                let url = $(this).attr('data-url');
+                $.ajax({
+                url: url,
+                data: "fecha1="+fecha1+"&fecha2="+fecha2+"&num="+num,
+                type: "POST",
+                success:function(resp){
+                    $('#accordionReductores').html(resp);
+
+                },
+                error: function(xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
+                    } 
+            });
+            }
+
+        })
+    });
+</script>

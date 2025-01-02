@@ -1570,13 +1570,38 @@ public function detallesRedNew()
     }
 
 
+    public function filtroFecha()  {
+        $obj= new SolicitudesModel();
+        $fecha1 = $_POST['fecha1'];
+        $fecha2=$_POST['fecha2'];
+        $num=$_POST['num'];
 
+        if ($num==1) {
+            $sql1 = "SELECT ra.*, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, STRING_AGG(DISTINCT tc.tipo_choque_desc, ', ') AS tipo_choque FROM registro_accidente ra LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id LEFT JOIN reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id LEFT JOIN usuarios u ON ra.usu_id = u.usu_id LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id WHERE ra.reg_acc_fecha_hora BETWEEN '$fecha1' AND '$fecha2'GROUP BY  ra.reg_acc_id";
+
+            //echo $sql1;
+            $accidentes = $obj->consult($sql1);
+
+            $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+            $estados = $obj->consult($sqlEst);
+            include_once '../view/Solicitudes/buscarAccidentes.php'; 
+
+        }else if($num==4){
+            $sql4 = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre FROM solicitud_reductores_dan redDan LEFT JOIN estados est ON redDan.est_sol_id = est.est_id LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id  LEFT JOIN tipos_reductores tr ON redDan.tipo_red_id = tr.tipo_red_id  WHERE redDan.sol_red_dan_fecha BETWEEN '$fecha1' AND '$fecha2' GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre;";
+            //echo $sql;
+        
+            $reductores = $obj->consult($sql4);
+            
+                $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";
+                $estados = $obj->consult($sqlEst);
+               include_once '../view/Solicitudes/buscarRedDan.php'; 
+        }  
+       
+    }
+    
 
 
 }
-
-
-
 
 
 

@@ -279,7 +279,7 @@ CREATE TABLE solicitud_via_dan
     tipo_dano_via_id integer,
     descripcion_via character varying,
     fecha_hora timestamp without time zone NOT NULL,
-    id_tipo_via integer,
+    via_id integer,
     est_sol_id integer,
     usu_id integer,
     CONSTRAINT solicitud_via_dan_pkey PRIMARY KEY (sol_via_dan_id)
