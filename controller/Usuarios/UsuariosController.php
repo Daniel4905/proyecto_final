@@ -101,10 +101,10 @@ class UsuariosController
                 $_SESSION['regEx'][] = 'Registro exitoso';
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
             } else {
-                redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
+                //redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
             }
         } else {
-            redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
+            //redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
         }
 
     }
@@ -235,13 +235,13 @@ class UsuariosController
         $doc_id = $_POST['doc_id'];
 
         $validacion = true;
-        
+
 
 
         $sqlAD = "SELECT usu_clave FROM usuarios WHERE usu_id = $usu_idAd";
         $result = $obj->consult($sqlAD);
         if ($result && isset($result[0])) {
-            $contraAdmin= $result[0]['usu_clave'];
+            $contraAdmin = $result[0]['usu_clave'];
         } else {
             echo "No se encontraron resultados";
         }
@@ -322,7 +322,7 @@ class UsuariosController
 
         if ($ejecutar) {
 
-            if(!empty($_SESSION['sql'])){
+            if (!empty($_SESSION['sql'])) {
                 $sql = $_SESSION['sql'];
             }
 
@@ -520,7 +520,7 @@ class UsuariosController
                     JOIN tipo_documento td ON u.doc_id = td.doc_id
                     JOIN estados est ON u.est_id = est.est_id
                     ORDER BY u.usu_nombre1 DESC";
-        } else{
+        } else {
             $sql = $_SESSION['sql'];
         }
         $_SESSION['sql'] = $sql;
@@ -552,6 +552,27 @@ class UsuariosController
             } else {
                 echo "<p class='text-danger'>No se encontraron detalles para este usuario.</p>";
             }
+        }
+    }
+    public function getDatosGraf()
+    {
+
+        $obj = new UsuariosModel();
+
+        $sql = "SELECT EXTRACT(YEAR FROM fecha) AS anio, EXTRACT(MONTH FROM fecha) AS mes, COUNT(*) AS usuarios
+                FROM auditoria_usuarios
+                GROUP BY EXTRACT(YEAR FROM fecha), EXTRACT(MONTH FROM fecha)
+                ORDER BY EXTRACT(YEAR FROM fecha), EXTRACT(MONTH FROM fecha)";
+
+        $datos = $obj->consult($sql);
+
+        if ($datos) {
+            $salida = array();
+            foreach ($datos as $fecha) {
+                $salida[] = $fecha['mes'] . '/' . $fecha['anio'] . ',' . $fecha['usuarios'];
+            }
+            
+            echo implode(";", $salida);
         }
     }
 }

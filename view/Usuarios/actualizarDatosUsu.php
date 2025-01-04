@@ -20,13 +20,13 @@
 </div>
 <div class="container container-scroll">
     <?php
-    if($_SESSION['rol']==1 || $_SESSION['rol']==3){
-        $readonly = '';
-        $disabled = '';
-    }else{
-        $readonly = 'readonly';
-        $disabled = 'disabled';
-    }
+    // if($_SESSION['rol']== 1){
+    //     $readonly = '';
+    //     $disabled = '';
+    // }else if ($_SESSION['']){
+    //     $readonly = 'readonly';
+    //     $disabled = 'disabled';
+    // }
     foreach ($usuarios as $usu) {
         ?>
         <form action="<?php echo getUrl("Usuarios", "Usuarios", "postUpdateUsu"); ?> " method="post" id="formUpdateUsu">
@@ -50,26 +50,26 @@
                 <div class="col-md-3">
                     <label for="usu_nombre1">Primer nombre*</label>
                     <input type="text" name="usu_nombre1" id="nombre1" class="form-control validar-nombre"
-                        placeholder="Primer nombre" value="<?php echo $usu['usu_nombre1']; ?>" <?php echo $readonly; ?>>
+                        placeholder="Primer nombre" value="<?php echo $usu['usu_nombre1']; ?>" <?php if($_SESSION['rol'] == 2){echo 'readonly'; } ?>>
                 </div>
                 <div class="col-md-3">
                     <label for="usu_nombre2">Segundo nombre </label>
                     <input type="text" name="usu_nombre2" id="nombre2" class="form-control validar-nombre"
-                        placeholder="Segundo nombre" value="<?php echo $usu['usu_nombre2']; ?>" <?php echo $readonly; ?>>
+                        placeholder="Segundo nombre" value="<?php echo $usu['usu_nombre2']; ?>" <?php if($_SESSION['rol'] == 2){echo 'readonly'; } ?>>
                 </div>
                 <div class="col-md-3">
                     <label for="usu_apellido1">Primer Apellido*</label>
                     <input type="text" name="usu_apellido1" id="apellido1" class="form-control validar-nombre"
-                        placeholder="Primer apellido" value="<?php echo $usu['usu_apellido1']; ?>" <?php echo $readonly; ?>>
+                        placeholder="Primer apellido" value="<?php echo $usu['usu_apellido1']; ?>" <?php if($_SESSION['rol'] == 2){echo 'readonly'; } ?>>
                 </div>
                 <div class="col-md-3">
                     <label for="usu_apellido2"> Segundo Apellido</label>
                     <input type="text" name="usu_apellido2" id="apellido2" class="form-control validar-nombre"
-                        placeholder="Segundo apellido" value="<?php echo $usu['usu_apellido2']; ?>" <?php echo $readonly; ?>>
+                        placeholder="Segundo apellido" value="<?php echo $usu['usu_apellido2']; ?>" <?php if($_SESSION['rol'] == 2){echo 'readonly'; } ?>>
                 </div>
                 <div class="col-md-4 mt-3">
                     <label for="doc_id">Tipo de documento*</label>
-                    <select name="doc_id" id="doc" class="form-control"  <?php echo $disabled; ?> >
+                    <select name="doc_id" id="doc" class="form-control"  <?php if($_SESSION['rol'] == 2 || $_SESSION['rol'] == 3){echo 'disabled';} ?> >
                         <option value="">Seleccione...</option>
                         <?php
                         foreach ($docs as $doc) {
@@ -87,11 +87,11 @@
                 <div class="col-md-2 mt-3">
                     <label for="usu_tel">Nro Documento*</label>
                     <input type="text" name="usu_documento" id="documento" class="form-control validar-num"
-                        placeholder="Documento" value="<?php echo $usu['usu_documento']; ?>"  <?php echo $readonly;?>>
+                        placeholder="Documento" value="<?php echo $usu['usu_documento']; ?>"  <?php if($_SESSION['rol'] == 2 || $_SESSION['rol'] == 3){echo 'readonly';} ?>>
                 </div>
                 <div class="col-md-2 mt-3">
                     <label for="sex_id">Sexo biologico*</label>
-                    <select id="sexo" name="sex_id" class="form-control" <?php echo $disabled; ?>>
+                    <select id="sexo" name="sex_id" class="form-control" <?php if($_SESSION['rol'] == 2 || $_SESSION['rol'] == 3){echo 'disabled';} ?>>
                         <option value="">Seleccione...</option>
                         <?php
                         foreach ($sexo as $sex) {

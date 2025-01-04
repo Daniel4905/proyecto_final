@@ -221,14 +221,15 @@
                     </div>
                 </div>
                 <div class="mt-3">
-                    <input type="submit" value="Enviar" class="btn btn-success">
+                    <input type="submit" value="Enviar" class="btn btn-success" id="enviarAcc">
                 </div>
         </form>
     </div>
 </div>
+
 <script>
-    var valorPunto1 = document.getElementById("punto1").value; 
-    var valorPunto2 = document.getElementById("punto2").value; 
+    var valorPunto1 = document.getElementById("punto1").value;
+    var valorPunto2 = document.getElementById("punto2").value;
 
     document.getElementById("Coord1").value = valorPunto1;
     document.getElementById("Coord2").value = valorPunto2;

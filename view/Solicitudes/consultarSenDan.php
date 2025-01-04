@@ -10,12 +10,20 @@
                 if (!empty($senialDan)) {
                     foreach ($senialDan as $sen) {
                         if ($sen) {
-                            echo "<p><strong>ID:</strong> " . $sen['sol_sen_dan_id'] . "</p>" .
+                            if($_SESSION['rol'] == 2){
+                                echo "<p><strong>Fecha y hora:</strong> " . $sen['sol_sen_dan_fecha'] . "</p>" .
+                                        "<p><strong>Tipo de señal:</strong> " . $sen['senal'] . "</p>" .
+                                        "<p><strong>Descripcion:</strong> " . $sen['desc_sen_dan'] . "</p>" .
+                                        "<p><strong>Estado:</strong> " . $sen['est_nombre'] . "</p>";
+                            }else{
+                                echo "<p><strong>ID:</strong> " . $sen['sol_sen_dan_id'] . "</p>" .
                                 "<p><strong>Fecha y hora:</strong> " . $sen['sol_sen_dan_fecha'] . "</p>" .
                                 "<p><strong>Solicitante:</strong> " .  $sen['usuario_nombre'] . "</p>" .
                                 "<p><strong>Tipo de señal:</strong> " . $sen['senal'] . "</p>" .
                                 "<p><strong>Descripcion:</strong> " . $sen['desc_sen_dan'] . "</p>" .
                                 "<p><strong>Estado:</strong> " . $sen['est_nombre'] . "</p>";
+                            }
+                           
 
                                 if (!empty($sen['img_sen_dan'])) {
                                     echo "<p><strong>Evidencia adjunta:</strong></p>";

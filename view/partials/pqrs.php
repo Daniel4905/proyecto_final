@@ -6,7 +6,14 @@
         <i class="fa-solid fa-comment"></i>
     </button>
     <div class="dropdown-menu">
-        <a href="<?php echo getUrl('PQRS', 'PQRS', 'getPQRS'); ?>" class="dropdown-item">Ver mis PQRS</a>
+        <?php
+            if($_SESSION['rol'] != 1){
+                $texto = 'Ver mis PQRS';
+            }else{
+                $texto = 'Revisar PQRS';
+            }
+        ?>
+        <a href="<?php echo getUrl('PQRS', 'PQRS', 'getPQRS'); ?>" class="dropdown-item"><?php echo $texto; ?></a>
         <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#pqrsModal">Enviar PQRS</a>
     </div>
 </div>

@@ -76,7 +76,8 @@ CREATE TABLE pqrs(
     id_pqrs INTEGER NOT NULL,
     desc_pqrs character varying(50) NOT NULL, 
     tipo_pqrs INTEGER,
-    usu_id INTEGER 
+    usu_id INTEGER,
+    fecha_hora timestamp NOT NULL
 );
 
 CREATE TABLE tipo_pqrs(
@@ -538,6 +539,43 @@ CREATE TABLE tokens_contra
   expiracion timestamp without time zone NOT NULL,
   CONSTRAINT tokens_contra_pkey PRIMARY KEY (id_token)
 );
+
+
+
+DISPARADORES
+
+CREATE TABLE auditoria_usuarios (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    fecha TIMESTAMP DEFAULT NOW()
+);
+
+CREATE OR REPLACE FUNCTION registrar_usuario()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO auditoria_usuarios(usuario_id, fecha)
+    VALUES (NEW.usu_id, NOW()); 
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_registrar_usuario
+AFTER INSERT ON usuarios
+FOR EACH ROW
+EXECUTE PROCEDURE registrar_usuario();
+
+
+
+PROCEDIMIENTOS 
+
+CREATE OR REPLACE FUNCTION contar_usuarios(OUT total INTEGER)
+AS $$
+BEGIN
+    SELECT COUNT(*) INTO total FROM usuarios;
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 
 

@@ -308,13 +308,15 @@ $(document).ready(function () {
     $(document).on('change', "#tipo_solicitud", function () {
         let tipoSolicitud = $(this).val();
         let url = $(this).attr('data-url');
+        let rol = $(this).attr('data-rol');
+        let usu_id = $(this).attr('data-id');
         console.log("aqui");
 
         if (tipoSolicitud) {
             $.ajax({
                 url: url,
                 type: 'POST',
-                data: { tipoSolicitud: tipoSolicitud },
+                data: { tipoSolicitud: tipoSolicitud, rol: rol, usu_id: usu_id },
                 success: function (data) {
                     $('#div_dinamico').html(data);
                     console.log('sisaz');
@@ -574,10 +576,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
-
-
 });
 
 

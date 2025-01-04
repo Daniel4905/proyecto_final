@@ -288,6 +288,13 @@ class AccesoController
 
     public function enviar($correo, $usuario, $url)
     {
+        //Para usar PHPMailer: 
+        // Habilitar estas dos extensiones en php.ini
+        // extension=php_openssl.dll extension=php_sockets.dll
+        // Habilitar Telnet:
+        // Panel de control > Programas > Progamas y carácteristicas >  Activar o desactivar las características de Windows > Marcar casilla cliente telnet o telnet client
+        // Verificar Telnet:  cmd: telnet smtp.gmail.com 587 o tambien con esto en powershell: Test-NetConnection -ComputerName smtp.gmail.com -Port 587
+        
         require 'PHPMailer-5.2.28/PHPMailerAutoload.php';
 
         $mail = new PHPMailer();

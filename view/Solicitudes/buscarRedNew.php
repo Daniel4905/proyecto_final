@@ -1,5 +1,5 @@
 <?php
-if (count($reductores) > 0) {
+if (is_array($reductores) && count($reductores) > 0) {
     foreach ($reductores as $red) {
         $redId = $red['sol_red_new_id'];
         echo "<div class='accordion-item'>";
@@ -11,27 +11,27 @@ if (count($reductores) > 0) {
         echo "<div id='collapse$redId' class='accordion-collapse collapse' aria-labelledby='heading$redId' data-bs-parent='#accordionReductores'>";
         echo "<div class='accordion-body'>";
         echo "<p><strong><i class='fa fa-car-crash'></i> Tipo:</strong> " . $red['reductor'] . "</p>";
-        echo "<p><strong><i class='fa fa-user-injured'></i> Solicitud Fecha:</strong> " . $red['sol_red_new_fecha'] . "</p>";
         echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $red['usuario_nombre'] . "</p>";
+        if ($_SESSION['rol'] != 2) {
 
-
-        echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
-        echo "<div class='row'>";
-        echo "<div class='col-md-2'>";
-        echo "<select id='' name='estado' class='form-select estado_solicitud' 
-                data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoRedDan", false, "ajax") . "' 
-                data-soli='" . $red['sol_red_dan_id'] . "'>";
-        foreach ($estados as $est) {
-            $selected = "";
-            if ($est['est_id'] == $red['est_sol_id']) {
-                $selected = "selected";
+            echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
+            echo "<div class='row'>";
+            echo "<div class='col-md-2'>";
+            echo "<select id='' name='estado' class='form-select estado_solicitud' 
+        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoRedNew", false, "ajax") . "' 
+        data-soli='" . $red['sol_red_new_id'] . "'>";
+            foreach ($estados as $est) {
+                $selected = "";
+                if ($est['est_id'] == $red['est_sol_id']) {
+                    $selected = "selected";
+                }
+                echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
             }
-            echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
+            echo "</select>";
+            echo "</div>";
+            echo "</div>";
+            echo "</p>";
         }
-        echo "</select>";
-        echo "</div>";
-        echo "</div>";
-        echo "</p>";
 
         echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $red['sol_red_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesRedNew", false, "ajax") . "'>Ver detalles</button>";
         echo "</div>";

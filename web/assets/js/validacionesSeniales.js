@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
     function agregarError(campo, mensaje) {
         const $campo = $(campo);

@@ -4,7 +4,7 @@
         <div class="col-md-3 mb-3">
             <label for="tipo-solicitud" class="form-label">Escoja el tipo de solicitud:</label>
             <select class="form-select" id="tipo_solicitud" name="tipoSolicitud"
-                data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getSolEscogida", false, "ajax") ?>'>
+                data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getSolEscogida", false, "ajax") ?>' data-rol = '<?php echo $_SESSION['rol'];?>' data-id='<?php echo $_SESSION['id'];?>'>
                 <option value="" selected>Seleccione una opción</option>
                 <option value="1">Reporte de accidentes</option>
                 <option value="2">Reporte de señalización vial - Nuevo</option>

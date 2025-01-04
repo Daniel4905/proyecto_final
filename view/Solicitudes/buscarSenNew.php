@@ -1,5 +1,5 @@
 <?php
-if (count($senial) > 0) {
+if (is_array($senial) && count($senial) > 0) {
     foreach ($senial as $sen) {
         $senId = $sen['sol_sen_new_id'];
         echo "<div class='accordion-item'>";
@@ -13,25 +13,25 @@ if (count($senial) > 0) {
 
         echo "<p><strong><i class='fa fa-traffic-light'></i> Tipo de Señal:</strong> " . $sen['senal'] . "</p>";
         echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $sen['usuario_nombre'] . "</p>";
-
-        echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
-        echo "<div class='row'>";
-        echo "<div class='col-md-2'>";
-        echo "<select class='form-select estado_solicitud' 
-                        data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoSenNew", false, "ajax") . "' 
-                        data-soli='" . $sen['sol_sen_new_id'] . "'>";
-        foreach ($estados as $est) {
-            $selected = "";
-            if ($est['est_id'] == $sen['est_sol_id']) {
-                $selected = "selected";
+        if ($_SESSION['rol'] != 2) {
+            echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
+            echo "<div class='row'>";
+            echo "<div class='col-md-2'>";
+            echo "<select class='form-select estado_solicitud' 
+                    data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoSenNew", false, "ajax") . "' 
+                    data-soli='" . $sen['sol_sen_new_id'] . "'>";
+            foreach ($estados as $est) {
+                $selected = "";
+                if ($est['est_id'] == $sen['est_sol_id']) {
+                    $selected = "selected";
+                }
+                echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
             }
-            echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
+            echo "</select>";
+            echo "</div>";
+            echo "</div>";
+            echo "</p>";
         }
-        echo "</select>";
-        echo "</div>";
-        echo "</div>";
-        echo "</p>";
-
         echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver detalles</button>";
         echo "</div>";
         echo "</div>";
