@@ -28,7 +28,7 @@
                 echo "<h2 class='accordion-header' id='heading$index'>";
                 echo "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse$index' aria-expanded='false' aria-controls='collapse$index'>";
                 if($_SESSION['rol'] == 1){
-                    echo "ID: " . $pq['id_pqrs'] . " - " . $pq['desc_tipo_pqrs'];
+                    echo "ID: " . $pq['id_pqrs'] . " - " . $pq['desc_tipo_pqrs'] . " - " .$pq['fecha_hora']. " &nbsp; <i class='fa-regular fa-calendar'></i>";
                 }else{
                     echo $pq['desc_tipo_pqrs']. " - " . $pq['fecha_hora']. " &nbsp; <i class='fa-regular fa-calendar'></i>";
                 }
