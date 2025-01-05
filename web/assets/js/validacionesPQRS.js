@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.,;:¿?¡!]+$/;
     const patronNumero = /^[0-9]+$/;
 
     function agregarError1(campo, mensaje) {
@@ -52,8 +52,8 @@ $(document).ready(function () {
         }
 
         const observaciones = $('#observaciones').val().trim();
-        if (observaciones === ! '' && !patronTexto.test(observaciones) || observaciones.length > 300) {
-            agregarError($('#observaciones'), "Este campo solo admite letras (máx. 300)");
+        if (observaciones === ! '' && !patronTexto.test(observaciones) || observaciones.length > 300 || observaciones.length <30) {
+            agregarError($('#observaciones'), "Este campo solo admite letras (30mín, 300máx.)");
             valido = false;
         }
         if (observaciones === '') {

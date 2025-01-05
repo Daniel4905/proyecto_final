@@ -1,5 +1,5 @@
 $(document).ready(function () {
-   const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.,;:¿?¡!]+$/;
     const patronNumero = /^[0-9]+$/;
 
     function agregarError(campo, mensaje) {
@@ -87,11 +87,11 @@ $(document).ready(function () {
             }
         
             const desc_red=$('#desc_red').val().trim();
-            if (desc_red==='' || desc_red===null) {
+            if (desc_red==='' || desc_red === null) {
                 agregarError($('#desc_red'),"Por favor ingrese una descripción");
                 valido = false;
-            }else if ( !patronTexto.test(desc_red) || desc_red.length > 300) {
-                agregarError($('#desc_red'), "El campo observaciones solo admite letras (máx. 300)");
+            }else if ( !patronTexto.test(desc_red) || desc_red.length > 300 ||  desc_red.length <= 30) {
+                agregarError($('#desc_red'), "El campo observaciones solo admite letras (30mín, 300máx.)");
                 valido = false;
             }
 

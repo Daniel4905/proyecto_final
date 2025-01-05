@@ -499,7 +499,7 @@ class SolicitudesController
                        WHERE tp.tipo_choque_id  = $idTipo";
 
             $tip = $obj->consult($sqlTip);
-
+            echo "<option value=''>Seleccione....</option>";
             foreach ($tip as $t) {
                 echo "<option value='" . $t['choq_detal_id'] . "'>" . $t['descripcion'] . "</option>";
             }

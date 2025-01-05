@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.,;:¿?¡!]+$/;
+    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    const patronNumero = /^[0-9]+$/;
 
     function agregarError(campo, mensaje) {
         const $campo = $(campo);
@@ -9,6 +10,7 @@ $(document).ready(function () {
             console.error('El campo no se encontró');
         }
     }
+
     $('.fSen').on('change', function () {
         let categoriaId = $('select[name="sen_cate"]').val();
         let orientacionId = $('select[name="orienSen"]').val();
@@ -32,8 +34,6 @@ $(document).ready(function () {
         }
     });
 
-
-    //imagen 
     $('.image-upload input[type="file"]').on('change', function () {
         const input = $(this);
         const file = input[0].files[0];
@@ -53,8 +53,18 @@ $(document).ready(function () {
             reader.readAsDataURL(file);
         }
     });
+    $('.remove-image-btn').on('click', function () {
+        const button = $(this);
+        const wrapper = button.parent();
+        const input = wrapper.find('input[type="file"]');
+        const preview = wrapper.find('.preview-image');
+        const placeholder = wrapper.find('.upload-placeholder');
 
-
+        input.val('');
+        preview.attr('src', '').hide();
+        placeholder.show();
+        button.hide();
+    });
 
     $('input, select').on('focus', function () {
         $(this).removeClass('input-error');
@@ -65,33 +75,49 @@ $(document).ready(function () {
         $(this).next('.text-danger').remove();
     });
 
-    $('#formSeñalesReporte').submit(function (event) {
+    $('#formSeñalesDan').submit(function (event) {
 
         event.preventDefault();
+
         $('.text-danger').remove();
         $('input, select').removeClass('input-error');
 
         let valido = true;
 
-        const tipoSen = $('#tipoSen').val().trim();
+        const tipo_sen = $('#tipoSen').val().trim();
 
-        if (tipoSen === '' || tipoSen === null) {
+        if (tipo_sen === '' || tipo_sen === null) {
             agregarError($('#tipoSen'), "Por favor seleccione un tipo de señal");
             valido = false;
         }
 
-        desc = $('#desc').val().trim();
-
+        const desc = $('#desc_sen_dan').val().trim();
         if (desc === '' || desc === null) {
-            agregarError($('#desc'), "Por favor ingrese una descripción");
+            agregarError($('#desc_sen_dan'), "Por favor ingrese una descripción");
             valido = false;
-        } else if (!patronTexto.test(desc) || desc.length > 300 || desc.length <= 30) {
-            agregarError($('#desc'), "El campo observaciones solo admite letras (30mín, 300máx.)");
+        } else if (!patronTexto.test(desc) || desc.length > 300) {
+            agregarError($('#desc_sen_dan'), "El campo observaciones solo admite letras (máx. 300)");
             valido = false;
         }
 
+        const orien = $('#orien').val().trim();
+        if (orien === '' || orien === null) {
+            agregarError($('#orien'), "Por seleccion la orientacion de la señal");
+            valido = false;
+        }
 
+        const archivos = $('input[name="imagenSD"]')[0].files;
+        if (archivos.length === 0) {
+            agregarError($('input[name="imagenSD"]'), "Por favor seleccione una imagen");
+            valido = false;
+        }
 
+        const tipoDanio = $('#tipoDanio').val().trim();
+
+        if (tipoDanio === '' || tipoDanio === null) {
+            agregarError($('#tipoDanio'), "Por favor seleccione un tipo de daño");
+            valido = false;
+        }
 
         if (valido) {
             this.submit();
@@ -100,8 +126,3 @@ $(document).ready(function () {
     });
 
 });
-
-
-
-
-

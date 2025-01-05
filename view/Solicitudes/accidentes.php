@@ -100,66 +100,66 @@
                     <label class="form-label">Vehículos involucrados:</label>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo1" name="vehiculos[]" value="1"
                                     class="form-check-input">
                                 <label for="vehiculo1" class="form-check-label">Automóvil</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo2" name="vehiculos[]" value="2"
                                     class="form-check-input">
                                 <label for="vehiculo2" class="form-check-label">Bus</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo3" name="vehiculos[]" value="3"
                                     class="form-check-input">
                                 <label for="vehiculo3" class="form-check-label">Buseta</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo4" name="vehiculos[]" value="4"
                                     class="form-check-input">
                                 <label for="vehiculo4" class="form-check-label">Camión</label>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo5" name="vehiculos[]" value="5"
                                     class="form-check-input">
                                 <label for="vehiculo5" class="form-check-label">Camioneta</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo6" name="vehiculos[]" value="6"
                                     class="form-check-input">
                                 <label for="vehiculo6" class="form-check-label">Microbús</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo7" name="vehiculos[]" value="7"
                                     class="form-check-input">
                                 <label for="vehiculo7" class="form-check-label">Tractocamión</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo8" name="vehiculos[]" value="8"
                                     class="form-check-input">
                                 <label for="vehiculo8" class="form-check-label">Volqueta</label>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo9" name="vehiculos[]" value="9"
                                     class="form-check-input">
                                 <label for="vehiculo9" class="form-check-label">Motocicleta</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo10" name="vehiculos[]" value="10"
                                     class="form-check-input">
                                 <label for="vehiculo10" class="form-check-label">Bicicleta</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo11" name="vehiculos[]" value="11"
                                     class="form-check-input">
                                 <label for="vehiculo11" class="form-check-label">Motocarro</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo12" name="vehiculos[]" value="12"
                                     class="form-check-input">
                                 <label for="vehiculo12" class="form-check-label">Cuatrimoto</label>
