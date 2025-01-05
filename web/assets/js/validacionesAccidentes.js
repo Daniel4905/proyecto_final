@@ -55,6 +55,7 @@ $(document).ready(function () {
             valido = false;
         }
 
+
         const detalleChoque = $('#detalleChoque').val().trim();
 
         if (detalleChoque === '' || detalleChoque === null) {
@@ -62,12 +63,15 @@ $(document).ready(function () {
             valido = false;
         }
 
-
-        if ($('input[name="vehiculos[]"]:checked').length === 0) {
+        if (tipoChoque == 1 && $('input[name="vehiculos[]"]:checked').length !== 2) {
+            agregarError1($('.vehi').first(), "Por favor seleccione los dos vehículos involucrados");
+            valido = false;
+        } else if ($('input[name="vehiculos[]"]:checked').length === 0) {
             agregarError1($('.vehi').first(), "Por favor seleccione al menos un vehículo involucrado");
             valido = false;
         }
 
+        
         let errorMostrado = false;
 
         const observaciones = $('#observaciones').val().trim();
