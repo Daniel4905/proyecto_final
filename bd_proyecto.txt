@@ -377,8 +377,10 @@ CREATE TABLE orientacion_seniales (
 CREATE TABLE tipo_seniales (
    tipo_senial_id SERIAL NOT NULL PRIMARY KEY,
    tipo_sen_desc character varying(100) NOT NULL,
-   orientacion_id integer(11) NOT NULL,
-   cat_id integer(11) NOT NULL,
+   desc_sen TEXT,
+   img_sen TEXT,
+   orientacion_id integer NOT NULL,
+   cat_id integer NOT NULL,
    FOREIGN KEY (orientacion_id) REFERENCES orientacion_seniales(orientacion_id),
    FOREIGN KEY (cat_id) REFERENCES categoria_seniales(categoria_seniales_id)
 );
@@ -398,18 +400,109 @@ CREATE TABLE solicitud_seniales_new (
 
 
 
-INSERT INTO categoria_seniales VALUES (1,'Reglamentaria'),(2,'Informativa'),(3,'Preventiva');
+INSERT INTO categoria_seniales VALUES (1,'Reglamentaria'),(2,'Informativa'), (3,'Preventiva');
 
-INSERT INTO orientacion_seniales VALUES (1,'Vertical'),(2,'Horizontal'),(3,'Preventiva');
+INSERT INTO orientacion_seniales VALUES (1,'Vertical'),(2,'Horizontal');
+
 
 INSERT INTO tipo_seniales 
 VALUES 
-(1, 'Alto', 1, 1), 
-(2, 'Límite de velocidad', 1, 1), 
-(3, 'Prohibido', 1, 1), 
-(4, 'Paradero', 2, 1), 
-(5, 'Peligrosa', 3, 1), 
-(6, 'Peatones', 3, 1); 
+(1, 'Alto o pare', 'Son las que más se suelen encontrar a lo largo de las carreteras, indican al conductor que debe detener el vehículo', 'imgSen/pare.jpg', 1, 1),  
+(2, 'Ceda el paso', 'Señal de tránsito que indica al conductor que debe ceder el paso a los vehículos que circulan por la vía a la que se aproxima', 'imgSen/ceda_el_paso.jpg', 1, 1),  
+(3, 'Siga de frente', 'Esta señal se empleará para advertir a los usuarios de las vías, la proximidad a un sitio en el cual se desvía la circulación del tránsito', 'imgSen/siga_de_frente.jpg', 1, 1),  
+(4, 'No pase', 'Indica al conductor que está prohibido avanzar en esa dirección', 'imgSen/no_pase.jpg', 1, 1),  
+(5, 'Giro a la izquierda', 'Anuncian la proximidad de un giro peligroso a la izquierda', 'imgSen/giro_izquierda.jpg', 1, 1),  
+(6, 'Prohibido girar a la izquierda', 'Indica que no se permite realizar giros a la izquierda', 'imgSen/prohibido_girar_izquierda.jpg', 1, 1),  
+(7, 'Giro a la derecha', 'Anuncian la proximidad de un giro peligroso a la derecha', 'imgSen/giro_derecha.jpg', 1, 1),  
+(8, 'Prohibido girar a la derecha', 'Indica que no se permite realizar giros a la derecha', 'imgSen/prohibido_girar_derecha.jpg', 1, 1),  
+(9, 'Prohibido girar en "U"', 'Señal que indica que no se puede realizar un giro en forma de "U"', 'imgSen/prohibido_girar_u.jpg', 1, 1),  
+(10, 'Doble vía', 'Indica que la vía cuenta con doble sentido de circulación', 'imgSen/doble_via.jpg', 1, 1),  
+(11, 'Tres carriles (uno en contraflujo)', 'Indica que hay tres carriles disponibles, uno de los cuales está en sentido contrario', 'imgSen/tres_carriles_uno_contraflujo.jpg', 1, 1),  
+(12, 'Tres carriles (dos en contraflujo)', 'Indica que hay tres carriles disponibles, dos de los cuales están en sentido contrario', 'imgSen/tres_carriles_dos_contraflujo.jpg', 1, 1),  
+(13, 'Prohibido el cambio de calzada', 'Prohíbe a los conductores cruzar de un carril a otro en la vía', 'imgSen/prohibido_cambio_calzada.jpg', 1, 1),  
+(14, 'Circulación prohibida de vehículos automotores', 'Indica que no está permitido el paso de vehículos automotores', 'imgSen/circulacion_prohibida_automotores.jpg', 1, 1),  
+(15, 'Vehículos pesados a la derecha', 'Señala que los vehículos pesados deben circular por el lado derecho de la vía', 'imgSen/vehiculos_pesados_derecha.jpg', 1, 1),  
+(16, 'Circulación prohibida de vehículos de carga', 'Prohíbe el tránsito de vehículos destinados al transporte de carga', 'imgSen/circulacion_prohibida_carga.jpg', 1, 1),  
+(17, 'Peatones a la izquierda', 'Indica que los peatones deben circular por el lado izquierdo de la vía', 'imgSen/peatones_izquierda.jpg', 1, 1),  
+(18, 'Curva sucesiva (primero derecha)', 'Advierte sobre una curva doble, siendo la primera hacia la derecha', 'imgSen/curva_sucesiva_derecha.jpg', 1, 1),  
+(19, 'Prohibido parquear', 'Prohíbe estacionar en la zona señalada', 'imgSen/prohibido_parquear.jpg', 1, 1),  
+(20, 'Prohibido pitar', 'Prohíbe el uso de bocinas en la zona señalada', 'imgSen/prohibido_pitar.jpg', 1, 1),  
+(21, 'Velocidad máxima', 'Indica el límite máximo de velocidad permitido en esa vía', 'imgSen/velocidad_maxima.jpg', 1, 1),  
+(22, 'Peso máximo total permitido', 'Indica el peso máximo permitido para vehículos en esa vía', 'imgSen/peso_maximo_total.jpg', 1, 1),  
+(23, 'Altura máxima permitida', 'Señal que indica la altura máxima permitida para vehículos en esa vía', 'imgSen/altura_maxima.jpg', 2, 1),  
+(24, 'Ancho máximo permitido', 'Indica el ancho máximo permitido para vehículos que transitan por esa vía', 'imgSen/ancho_maximo.jpg', 1, 1),  
+(25, 'Zona de estacionamiento de taxis', 'Indica un área designada exclusivamente para el estacionamiento de taxis', 'imgSen/zona_taxis.jpg', 1, 1),  
+(26, 'Circulación de carga baja', 'Permite únicamente la circulación de vehículos con carga baja', 'imgSen/circulacion_carga_baja.jpg', 1, 1),  
+(27, 'Retén', 'Señal que indica la proximidad de un retén policial o de control', 'imgSen/reten.jpg', 1, 1),  
+(28, 'Ciclorruta', 'Indica un carril o vía exclusiva para bicicletas', 'imgSen/ciclorruta.jpg', 1, 1),  
+(29, 'Sentido único de circulación', 'Indica que la vía tiene un solo sentido de circulación', 'imgSen/sentido_unico.jpg', 1, 1),  
+(30, 'Sentido de circulación doble', 'Indica que la vía tiene doble sentido de circulación', 'imgSen/sentido_doble.jpg', 1, 1),  
+(31, 'Paradero', 'Indica la ubicación de un punto de parada autorizado para transporte público', 'imgSen/paradero.jpg', 1, 1),  
+(32, 'Prohibido dejar o recoger pasajeros', 'Prohíbe detenerse para subir o bajar pasajeros en esa zona', 'imgSen/prohibido_recoger_pasajeros.jpg', 1, 1),  
+(33, 'Zona de cargue y descargue', 'Señala un área destinada al cargue y descargue de mercancías', 'imgSen/zona_cargue_descargue.jpg', 1, 1),  
+(34, 'Prohibido el cargue y descargue', 'Indica que no está permitido realizar actividades de cargue y descargue en esa zona', 'imgSen/prohibido_cargue_descargue.jpg', 1, 1),  
+(35, 'Espaciamiento', 'Indica la distancia mínima que los vehículos deben mantener entre sí', 'imgSen/espaciamiento.jpg', 1, 1),  
+(36, 'Indicación de semáforo para giro a la izquierda', 'Señala que existe un semáforo específico para giros a la izquierda', 'imgSen/semaforo_giro_izquierda.jpg', 1, 1),  
+(37, 'Indicación de semáforo para giro a la derecha', 'Señala que existe un semáforo específico para giros a la derecha', 'imgSen/semaforo_giro_derecha.jpg', 1, 1),  
+(38, 'Vía cerrada', 'Indica que la vía está cerrada al tránsito', 'imgSen/via_cerrada.jpg', 1, 1),  
+(39, 'Desvío', 'Señala una ruta alterna debido a una interrupción en la vía principal', 'imgSen/desvio.jpg', 2, 1),  
+(40, 'Paso uno a uno', 'Indica que los vehículos deben alternar el paso en la zona señalada', 'imgSen/paso_uno_a_uno.jpg', 1, 1),
+(41, 'Ruta Nacional', 'Indica una ruta nacional importante.', 'imgSen/ruta_nacional.jpg', 1, 2),  
+(42, 'Ruta Departamental', 'Señala una ruta dentro de un departamento.', 'imgSen/ruta_departamental.jpg', 1, 2),  
+(43, 'Ruta Panamericana', 'Indica que la vía es parte de la Ruta Panamericana.', 'imgSen/ruta_panamericana.jpg', 1, 2),  
+(44, 'Ruta Marginal de la Selva', 'Señala que la vía pertenece a la Ruta Marginal de la Selva.', 'imgSen/ruta_marginal_selva.jpg', 1, 2),  
+(45, 'Poste de referencia', 'Indica un poste con información referencial.', 'imgSen/poste_referencia.jpg', 1, 2),  
+(46, 'Información previa de destino', 'Señala información útil antes de llegar a un destino.', 'imgSen/informacion_previa_destino.jpg', 2, 2),  
+(47, 'Información de destino', 'Indica información específica de un destino.', 'imgSen/informacion_destino.jpg', 2, 2),  
+(48, 'Croquis', 'Representa un croquis o mapa del área.', 'imgSen/croquis.jpg', 2, 2),  
+(49, 'Descripción de giros', 'Indica cómo realizar giros en intersecciones.', 'imgSen/descripcion_giros.jpg', 2, 2),  
+(50, 'Confirmación de nomenclatura de carretera', 'Señala la nomenclatura oficial de una vía.', 'imgSen/nomenclatura_carretera.jpg', 2, 2),  
+(51, 'Sitio de parqueo', 'Indica un lugar designado para estacionar vehículos.', 'imgSen/sitio_parqueo.jpg', 1, 1),  
+(52, 'Zona especiales de parqueo', 'Señala áreas exclusivas para estacionamiento especial.', 'imgSen/zona_especial_parqueo.jpg', 1, 2),  
+(53, 'Paradero de buses', 'Indica un punto oficial de parada para buses.', 'imgSen/paradero_buses.jpg', 1, 2),  
+(54, 'Transbordador', 'Indica la presencia de un transbordador.', 'imgSen/transbordador.jpg', 1, 1),   
+(55, 'Monumento nacional', 'Indica la proximidad a un monumento de importancia nacional.', 'imgSen/monumento_nacional.jpg', 1, 2),  
+(56, 'Zona militar', 'Señala la proximidad a una zona militar.', 'imgSen/zona_militar.jpg', 1, 2),  
+(57, 'Aeropuerto', 'Indica la proximidad a un aeropuerto.', 'imgSen/aeropuerto.jpg', 1, 2),  
+(58, 'Hospedaje', 'Señala lugares destinados al hospedaje.', 'imgSen/hospedaje.jpg', 1, 2),
+(59, 'Primeros auxilios', 'Indica la presencia de servicios de primeros auxilios.', 'imgSen/primeros_auxilios.jpg', 1, 2),  
+(60, 'Servicios sanitarios', 'Señala la ubicación de servicios sanitarios.', 'imgSen/servicios_sanitarios.jpg', 1, 2),  
+(61, 'Restaurante', 'Indica la proximidad a un restaurante.', 'imgSen/restaurante.jpg', 1, 2),  
+(62, 'Teléfono', 'Señala la ubicación de un teléfono público o servicio telefónico.', 'imgSen/telefono.jpg', 1, 2),  
+(63, 'Iglesia', 'Indica la proximidad a una iglesia o lugar de culto.', 'imgSen/iglesia.jpg', 1, 2),  
+(64, 'Taller', 'Señala la ubicación de un taller mecánico.', 'imgSen/taller.jpg', 1, 2),  
+(65, 'Estación de servicio', 'Indica la proximidad a una gasolinera o estación de servicio.', 'imgSen/estacion_servicio.jpg', 1, 2),  
+(66, 'Montallantas', 'Señala un lugar donde se realizan servicios de cambio o reparación de llantas.', 'imgSen/montallantas.jpg', 1, 2),  
+(67, 'Cruce peatonal', 'Indica un lugar designado para que los peatones crucen la vía.', 'imgSen/cruce_peatonal.jpg', 1, 2),  
+(68, 'Discapacitados', 'Señala un área o servicio destinado a personas con discapacidad.', 'imgSen/discapacitados.jpg', 1, 2),  
+(69, 'Nomenclatura urbana', 'Indica información sobre la nomenclatura de calles o avenidas.', 'imgSen/nomenclatura_urbana.jpg', 2, 2),   
+(70, 'Transporte ferroviario', 'Señala un área relacionada con transporte en tren.', 'imgSen/transporte_ferroviario.jpg', 2, 2),  
+(71, 'Transporte masivo', 'Indica la presencia de sistemas de transporte público masivo.', 'imgSen/transporte_masivo.jpg', 1, 2),  
+(72, 'Zona recreativa', 'Señala la proximidad a un área de recreación.', 'imgSen/zona_recreativa.jpg', 1, 2),  
+(73, 'Obra en la vía', 'Indica que se realizan trabajos en la vía.', 'imgSen/obra_en_via.jpg', 1, 2),  
+(74, 'Inicio de obra', 'Señala el inicio de una obra en la vía.', 'imgSen/inicio_obra.jpg', 1, 2),  
+(75, 'Fin de obra', 'Indica el fin de los trabajos en la vía.', 'imgSen/fin_obra.jpg', 1, 2),  
+(76, 'Carril izquierdo cerrado', 'Señala que el carril izquierdo está cerrado.', 'imgSen/carril_izquierdo_cerrado.jpg', 1, 2),  
+(77, 'Resalto', 'Señala la presencia de un resalto en la vía.', 'imgSen/resalto.jpg', 2, 3),
+(78, 'Depresión', 'Indica la presencia de una depresión en la vía.', 'imgSen/depresion.jpg', 2, 3),
+(79, 'Descenso peligroso', 'Advierte de un descenso peligroso.', 'imgSen/descenso_peligroso.jpg', 2, 3),
+(80, 'Reducción simétrica de calzada', 'Señala la reducción simétrica de la calzada.', 'imgSen/reduccion_simetrica.png', 2, 3),
+(81, 'Reducción asimétrica de calzada derecha', 'Indica la reducción de la calzada por el lado derecho.', 'imgSen/reduccion_asim_der.jpg', 2, 3),
+(82, 'Reducción asimétrica de calzada izquierda', 'Indica la reducción de la calzada por el lado izquierdo.', 'imgSen/reduccion_asim_izq.jpg', 2, 3),
+(83, 'Puente angosto', 'Advierte sobre un puente angosto en la vía.', 'imgSen/puente_angosto.jpg', 2, 3),
+(84, 'Túnel', 'Señala la presencia de un túnel en la vía.', 'imgSen/tunel.jpg', 1, 3),
+(85, 'Zona de derrumbe', 'Advierte sobre una zona con posible derrumbe.', 'imgSen/zona_derrumbe.png', 2, 3),
+(86, 'Superficie deslizante', 'Advierte sobre una superficie deslizante en la vía.', 'imgSen/superficie_deslizante.jpg', 2, 3),
+(87, 'Maquinaria agrícola en la vía', 'Señala la posible presencia de maquinaria agrícola en la vía.', 'imgSen/maquinaria_agricola.jpg', 2, 3),
+(88, 'Peatones en la vía', 'Advierte sobre la presencia de peatones en la vía.', 'imgSen/peatones_via.jpg', 2, 3),
+(89, 'Zona escolar', 'Señala la proximidad de una zona escolar.', 'imgSen/zona_escolar.jpg', 1, 3),
+(90, 'Riesgo de accidente', 'Señala un punto con alto riesgo de accidente.', 'imgSen/riesgo_accidente.jpg', 2, 3);
+
+
+
+
+
+
 
 CREATE TABLE punto_senialNew
 (
@@ -441,60 +534,38 @@ CREATE TABLE punto_senialDan
   geom geometry(Point,4326)
 );
 
-
-
-
-
-
-
-
-CREATE TABLE categorias_reductores (
-    categoria_red_id SERIAL PRIMARY KEY,
-    nombre_red_categoria VARCHAR(50) NOT NULL,
-    descripcion_cate_red TEXT
+CREATE TABLE categoria_reductores (
+    id_categoria SERIAL PRIMARY KEY,
+    nombre_categoria VARCHAR(100) NOT NULL
 );
 
-    INSERT INTO categorias_reductores (nombre_red_categoria, descripcion_cate_red)
-VALUES 
-    ('Reductores estructurales', 'Reductores diseñados para modificar la estructura de la vía y obligar a los vehículos a reducir su velocidad mediante cambios en el pavimento, desniveles o rotondas.'),
-    ('Reductores modulares', 'Reductores de velocidad que incluyen sistemas flexibles y adaptables, como sistemas hidráulicos o electromagnéticos, que se ajustan a diferentes necesidades de la vía.'),
-    ('Reductores de señalización', 'Reductores diseñados principalmente para alertar a los conductores sobre la necesidad de reducir su velocidad mediante señales luminosas, bandas rugosas, o sistemas de aviso sonoro.');
+INSERT INTO categoria_reductores (nombre_categoria)
+VALUES
+    ('Reductores estructurales'),
+    ('Reductores de señalización');
 
 
 CREATE TABLE tipos_reductores (
     tipo_red_id SERIAL PRIMARY KEY,
-    categoria_red_id INTEGER NOT NULL,
     nombre_tipo_red VARCHAR(100) NOT NULL,
     descripcion_tipo_red TEXT,
-    FOREIGN KEY (categoria_red_id) REFERENCES categorias_reductores(categoria_red_id) 
+    img_reductor TEXT,
+    cat_id INT
 );
 
 
-INSERT INTO tipos_reductores (categoria_red_id, nombre_tipo_red, descripcion_tipo_red)
-VALUES 
-    (1, 'Reductor de velocidad por pavimento (baches controlados)', 'Reductores que utilizan pavimentos irregulares o elevados, forzando a los vehículos a reducir la velocidad para evitar daños mecánicos.'),
-    (1, 'Rampa de velocidad (speed bumps)', 'Elevaciones en la calzada que causan un cambio brusco en la altura del pavimento, lo que obliga a los vehículos a reducir la velocidad.'),
-    (1, 'Reductor de velocidad en rotondas', 'Rotondas diseñadas para reducir la velocidad de los vehículos obligándolos a tomar una curva cerrada, reduciendo la velocidad en intersecciones y zonas de alto tráfico.'),
-
-    (2, 'Reductor de velocidad tipo "tobogán" (desnivel)', 'Sistemas modulares que crean desniveles o rampas para reducir gradualmente la velocidad de los vehículos.'),
-    (2, 'Reductor modulado con sistemas hidráulicos o electromagnéticos', 'Sistemas adaptables que modifican la calzada de manera controlada para forzar la reducción de velocidad en zonas específicas.'),
-
-    (3, 'Resaltos o lomadas', 'Dispositivos horizontales instalados transversalmente en la vía que obligan a los vehículos a reducir la velocidad al pasar sobre ellos.'),
-    (3, 'Bandas rugosas (bandas sonoras)', 'Franja de material rugoso que genera un sonido cuando los vehículos pasan por encima, alertando a los conductores de la necesidad de reducir la velocidad.'),
-    (3, 'Reductor de velocidad con señales luminosas (luminiscentes)', 'Reductores equipados con señales luminosas que alertan a los conductores de la necesidad de reducir la velocidad en zonas específicas.'),
-    (3, 'Reductor de velocidad con sensores de velocidad', 'Reductores que activan luces o señales de alerta cuando los sensores detectan que los vehículos están excediendo la velocidad límite.'),
-    (3, 'Reductor de velocidad con paneles dinámicos', 'Reductores que incluyen paneles electrónicos que muestran la velocidad del vehículo o el límite de velocidad, forzando a los conductores a reducir la velocidad.'),
-    (3, 'Reductor de velocidad en zonas escolares', 'Dispositivos instalados cerca de escuelas que obligan a los conductores a reducir su velocidad para garantizar la seguridad de los peatones.'),
-    (3, 'Reductor de velocidad en pasos de peatones', 'Áreas elevadas para pasos de peatones que obligan a los vehículos a reducir la velocidad para garantizar la seguridad de los peatones.'),
-    (3, 'Rumble strips (bandas sonoras largas)', 'Bandas largas de pavimento que generan ruido y vibración, alertando a los conductores de la necesidad de reducir la velocidad, comúnmente utilizadas en carreteras de alta velocidad.');
+INSERT INTO tipos_reductores VALUES
+(1, 'Reductor de concreto', 'Entre todos los tipos de reductores de velocidad vial, todavía son los más comunes de ver. Como su nombre lo indica, son aquellos topes hechos en concreto.', 'img/reductorpavimento.jpg', 1),
+(2, 'Reductor de resalto virtual', 'Aunque tienen menos presencia, podría decirse que también son reductores de concreto, pero no propiamente como los topes. Esto se debe a que no cuentan con volumen, pero sí están sobre el pavimento.', 'img/reductorvirtual.jpg', 2),
+(3, 'Tachas reflectivas', 'Son pequeños dispositivos que, más que reductores, sirven para acompañar las señaléticas en el pavimento. Pueden ser fabricadas tanto en plástico como en acero', 'img/tachasRef.jpg', 2),
+(4, 'Reductor plastico', 'Son dispositivos diseñados para disminuir la velocidad de los vehículos en zonas específicas, como cruces peatonales, escuelas, hospitales, zonas residenciales, estacionamientos y áreas de alta circulación de personas.', 'img/reductorplastico.jpg', 1);
 
 
 
 
 CREATE TABLE solicitud_reductores_dan (
     sol_red_dan_id SERIAL PRIMARY KEY, 
-    tipo_red_id INTEGER NOT NULL,   
-    cate_red_dan INTEGER NOT NULL,   
+    tipo_red_id INTEGER NOT NULL,      
     danio_id INTEGER NOT NULL,         
     desc_red TEXT,
     sol_red_dan_fecha TIMESTAMP,
@@ -511,14 +582,12 @@ CREATE TABLE punto_reductorDan
 );
 
 
-
-
 CREATE TABLE solicitud_reductores_new (
     sol_red_new_id SERIAL PRIMARY KEY, 
-    tipo_red_id INTEGER NOT NULL,   
-    cate_red_dan INTEGER NOT NULL,   
+    tipo_red_id INTEGER NOT NULL,      
     desc_red_new TEXT,
-    sol_red_new_fecha TIMESTAMP,                    
+    sol_red_new_fecha TIMESTAMP,  
+    img_red_new TEXT,                  
     est_sol_id INTEGER NOT NULL,       
     usu_id INTEGER NOT NULL
 );

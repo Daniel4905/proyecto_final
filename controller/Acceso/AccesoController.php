@@ -394,6 +394,11 @@ class AccesoController
         }
     }
 
+    public function getGestionApp(){
+        
+        include_once '../view/Acceso/gestion.php';
+    }
+
 
 }
 ?>

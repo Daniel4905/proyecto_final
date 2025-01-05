@@ -1,5 +1,3 @@
-
-
 <style>
     .image-upload-wrapper {
         position: relative;
@@ -73,38 +71,40 @@
 
 <div class="container">
     <div class="row align-items-stretch mt-4">
-            <h2>Registro para reductor de velocidad dañado</h2>
-            
-            <?php
-            if (isset($_SESSION['errores'])) {
-                echo "<div class='alert alert-danger' role='alert'>";
-                foreach ($_SESSION['errores'] as $error) {
-                    echo $error . "<br>";
-                }
-                echo "</div>";
-                unset($_SESSION['errores']);
+
+        <?php
+        if (isset($_SESSION['errores'])) {
+            echo "<div class='alert alert-danger' role='alert'>";
+            foreach ($_SESSION['errores'] as $error) {
+                echo $error . "<br>";
             }
+            echo "</div>";
+            unset($_SESSION['errores']);
+        }
 
-            ?>
+        ?>
 
-        <div class="col container-scroll ">
+        <div class="col container-scroll">
+            <h2>Registro para reductor de velocidad dañado</h2>
             <div>
                 <label>Escoja el reductor de velocidad para el tramite</label>
             </div>
-            <form id="formReductorDan" action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'reductorDan2');?>"  method="post" enctype="multipart/form-data">
-            <input type="hidden" name="usu_id" value="<?php echo $_SESSION['id']; ?>">
+            <form id="formReductorDan" action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'reductorDan2'); ?>"
+                method="post" enctype="multipart/form-data">
+                <input type="hidden" name="usu_id" value="<?php echo $_SESSION['id']; ?>">
                 <input type="hidden" name="" id="coordenad  as" class="form-control">
                 <input type="hidden" name="punto1" id="Coord1">
                 <input type="hidden" name="punto2" id="Coord2">
                 <div class="row md-3">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="categoria" class="form-label">Categoria</label>
-                            <select name="categoria" id="categoria" class="form-select" data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getTipoReduc", false, "ajax") ?>'>
+                            <label for="" class="form-label">Categoria del reductor</label>
+                            <select name="categoria" id="categoria" class="form-select"
+                                data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "getTipoReduc", false, "ajax") ?>">
                                 <option value="" class="form-option">Seleccione...</option>
                                 <?php
-                                foreach ($redCate as $cate) {
-                                    echo '<option value="' . $cate['categoria_red_id'] . '" class="form-option"> ' .  $cate['nombre_red_categoria'] . '</option>';
+                                foreach ($categoria as $cat) {
+                                    echo '<option value="' . $cat['id_categoria'] . '" class="form-option"> ' . $cat['nombre_categoria'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -112,8 +112,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="" class="form-label">Tipo Reductor</label>
-                            <select name="tipoRedu" id="tipoRedu" class="form-select">
+                            <label for="" class="form-label">Tipo de reductor</label>
+                            <select name="tipoRedu" id="tipoRedu" class="form-select"
+                                data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "infoRed", false, "ajax") ?>">
                                 <option value="" class="form-option">Seleccione...</option>
                             </select>
                         </div>
@@ -121,7 +122,7 @@
 
                     <div class="col-md-6">
                         <div class="mb-1">
-                            <label for="" class="form-label">Tipo Daño</label>
+                            <label for="" class="form-label">Tipo de daño</label>
                             <select name="tipoRedDanio" id="tipoRedDanio" class="form-select">
                                 <option value="" class="form-option">Seleccione...</option>
                                 <?php
@@ -133,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-3">
+                <div class="col-12 col-md-6 mb-3">
                     <label for="" class="form-label">Adjunte la evidencia</label>
                     <div class="image-upload-wrapper">
                         <label class="image-upload">
@@ -147,12 +148,12 @@
                         </label>
                     </div>
                 </div>
-            
+
                 <div class="row">
                     <div class="mb-2">
                         <label for="" class="form-label">Descripcion de la solicitud</label>
-                        <textarea name="desc_red" id="desc_red" placeholder="Detalle su solicitud...." class="form-control"
-                            style="height: 100px;"></textarea>
+                        <textarea name="desc_red" id="desc_red" placeholder="Detalle su solicitud...."
+                            class="form-control" style="height: 100px;"></textarea>
                     </div>
                 </div>
 
@@ -160,6 +161,10 @@
                     <input type="submit" value="Enviar" class="btn btn-success">
                 </div>
             </form>
+        </div>
+        <div class="col" id="infoRed">
+
+
         </div>
     </div>
 </div>
@@ -171,7 +176,25 @@
     document.getElementById("Coord2").value = valorPunto2;
 </script>
 
+<script>
+    $(document).on('change', "#tipoRedu", function () {
+        let url = $(this).attr('data-url');
+        let id = $(this).val();
+
+        if (id) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    $('#infoRed').html(data);
+                },
+                error: function () {
+                    $('#infoRed').html('<div class="alert alert-danger">Error al cargar la información del reductor.</div>');
+                }
+            });
+        }
+    });
+</script>
+
 <script src="assets/js/validacionesReductorDan.js"></script>
-
-
-

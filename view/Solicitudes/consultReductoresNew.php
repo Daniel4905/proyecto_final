@@ -71,7 +71,7 @@ if (is_array($reductores) && count($reductores) > 0) {
         ?>
         <div class="mt-4">
             <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 6), 'ajax'); ?>"
-                class="btn btn-secondary">
+                class="btn btn-secondary" id="descargar">
                 <i class="fas fa-file-excel"></i>
                 Descargar reporte completo en formato XLSX
             </a>
@@ -127,5 +127,31 @@ if (is_array($reductores) && count($reductores) > 0) {
             }
 
         })
+    });
+    $(document).ready(function () {
+        $('#descargar').click(function (event) {
+            event.preventDefault();
+            let url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: "POST",
+                success: function (resp) {
+                    if (resp.trim() === "No se encontraron datos para generar el archivo Excel.") {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'No se encontraron datos para generar el archivo Excel',
+                            icon: 'error',
+                            confirmButtonText: 'Intentar de nuevo'
+                        });
+                    }else{
+                        window.location.href = url;
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error en la solicitud AJAX:", error);
+                }
+            });
+        });
     });
 </script>

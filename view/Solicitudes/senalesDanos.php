@@ -81,97 +81,125 @@ if (isset($_SESSION['errores'])) {
 }
 
 ?>
-<div class="col container container-scroll ">
-    <h2>Info señal seleccionada</h2>
-    <div>
-        <label class="form-label">Escoja la señal para el tramite</label>
+<div class="row align-items-stretch mt-4">
+    <div class="col-md-6 container container-scroll">
+        <div>
+            <label class="form-label">Escoja la señal para el trámite</label>
+        </div>
+        <form id="formSeñalesDan" action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'senialDanio'); ?>"
+            method="post" enctype="multipart/form-data">
+            <input type="hidden" name="usu_id" value="<?php echo $_SESSION['id']; ?>">
+            <input type="hidden" name="" id="coordenadas" class="form-control">
+            <input type="hidden" name="punto1" id="Coord1">
+            <input type="hidden" name="punto2" id="Coord2">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label class="form-label">Categoría</label>
+                        <select name="sen_cate" class="form-select fSen">
+                            <option value="" class="form-option">Seleccione...</option>
+                            <?php foreach ($senCate as $cat) { ?>
+                                <option value="<?php echo $cat['categoria_seniales_id']; ?>" class="form-option">
+                                    <?php echo $cat['categoria_seniales_desc']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label class="form-label">Orientación</label>
+                        <select name="orienSen" id="orien" class="form-select fSen">
+                            <option value="" class="form-option">Seleccione...</option>
+                            <?php foreach ($senOrientacion as $orien) { ?>
+                                <option value="<?php echo $orien['orientacion_id']; ?>" class="form-option">
+                                    <?php echo $orien['orientacion_desc']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-2">
+                        <label class="form-label">Tipo</label>
+                        <select name="tipoSen" id="tipoSen" class="form-select"
+                            data-url="<?php echo getUrl('Solicitudes', 'Solicitudes', 'infoSens', false, 'ajax'); ?>">
+                            <option value="" class="form-option">Seleccione...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="mb-2">
+                        <label class="form-label">Tipo de daño</label>
+                        <select name="tipoDanio" id="tipoDanio" class="form-select">
+                            <option value="" class="form-option">Seleccione...</option>
+                            <?php foreach ($danio as $dan) { ?>
+                                <option value="<?php echo $dan['tipo_danio_id']; ?>" class="form-option">
+                                    <?php echo $dan['tipo_danio_desc']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Adjunte la evidencia</label>
+                    <div class="image-upload-wrapper">
+                        <label class="image-upload">
+                            <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenSD">
+                            <div class="upload-placeholder">
+                                <i class="fa-solid fa-image"></i>
+                            </div>
+                            <img class="preview-image" style="display: none;" alt="Preview">
+                            <button type="button" class="remove-image-btn" onclick="removeImage(this)"
+                                style="display: none;">✕</button>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Descripción de la solicitud</label>
+                    <textarea name="desc_sen_dan" id="desc_sen_dan" placeholder="Detalle su solicitud..."
+                        class="form-control" style="height: 100px;"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-2">
+                <input type="submit" value="Enviar" class="btn btn-success">
+            </div>
+        </form>
     </div>
-    <form id="formSeñalesDan" action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'senialDanio'); ?>" method="post"
-        enctype="multipart/form-data">
-        <input type="hidden" name="usu_id" value="<?php echo $_SESSION['id']; ?>">
-        <input type="hidden" name="" id="coordenadas" class="form-control">
-        <input type="hidden" name="punto1" id="Coord1">
-        <input type="hidden" name="punto2" id="Coord2">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="mb-2 ">
-                    <label for="" class="form-label">Categoria</label>
-                    <select name="sen_cate" id="" class="form-select fSen">
-                        <option value="" class="form-option">Seleccione...</option>
-                        <?php
-                        foreach ($senCate as $cat) {
-                            echo '<option value="' . $cat['categoria_seniales_id'] . '" class="form-option"> ' . $cat['categoria_seniales_desc'] . '</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-2">
-                    <label for="" class="form-label">Orientacion</label>
-                    <select name="orienSen" id="orien" class="form-select fSen">
-                        <option value="" class="form-option">Seleccione...</option>
-                        <?php
-                        foreach ($senOrientacion as $orien) {
-                            echo '<option value="' . $orien['orientacion_id'] . '" class="form-option"> ' . $orien['orientacion_desc'] . '</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-2">
-                    <label for="" class="form-label">Tipo de señal</label>
-                    <select name="tipoSenDan" id="tipoSenDan" class="form-select">
-                        <option value="" class="form-option">Seleccione...</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-7">
-                <div class="mb-2">
-                    <label for="" class="form-label">Tipo de daño</label>
-                    <select name="tipoDanio" id="tipoDanio" class="form-select">
-                        <option value="" class="form-option">Seleccione...</option>
-                        <?php
-                        foreach ($danio as $dan) {
-                            echo '<option value="' . $dan['tipo_danio_id'] . '" class="form-option"> ' . $dan['tipo_danio_desc'] . '</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="" class="form-label">Adjunte la evidencia</label>
-                <div class="image-upload-wrapper">
-                    <label class="image-upload">
-                        <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenSD">
-                        <div class="upload-placeholder">
-                            <i class="fa-solid fa-image"></i>
-                        </div>
-                        <img class="preview-image" style="display: none;" alt="Preview">
-                        <button type="button" class="remove-image-btn" onclick="removeImage(this)"
-                            style="display: none;">✕</button>
-                    </label>
-                </div>
-            </div>
-        </div>
 
+    <div class="col-md-6" id="infoSen">
 
-        <div class="row ">
-            <div class="mb-2">
-                <label for="" class="form-label">Descripcion de la solicitud</label>
-                <textarea name="desc_sen_dan" id="desc_sen_dan" placeholder="Detalle su solicitud...."
-                    class="form-control" style="height: 100px;"></textarea>
-            </div>
-        </div>
-
-        <div class="mt-2 col-md-4 ">
-            <input type="submit" value="Enviar" class="btn btn-success">
-        </div>
-    </form>
-
+    </div>
 </div>
+
 <script src="assets/js/validacionSenDan.js"></script>
+<script>
+    $(document).on('change', "#tipoSen", function () {
+        let url = $(this).attr('data-url');
+        let id = $(this).val();
+
+        if (id) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    $('#infoSen').html(data);
+                },
+                error: function () {
+                    $('#infoSen').html('<div class="alert alert-danger">Error al cargar la información del reductor.</div>');
+                }
+            });
+        }
+    });
+</script>
 <script>
     var valorPunto1 = document.getElementById("punto1").value;
     var valorPunto2 = document.getElementById("punto2").value;
@@ -180,6 +208,7 @@ if (isset($_SESSION['errores'])) {
     document.getElementById("Coord2").value = valorPunto2;
 </script>
 <script>
+
     $(document).ready(function () {
         const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
         const patronNumero = /^[0-9]+$/;
@@ -192,6 +221,29 @@ if (isset($_SESSION['errores'])) {
                 console.error('El campo no se encontró');
             }
         }
+
+        $('.fSen').on('change', function () {
+            let categoriaId = $('select[name="sen_cate"]').val();
+            let orientacionId = $('select[name="orienSen"]').val();
+
+            let url = "ajax.php?modulo=Solicitudes&controlador=Solicitudes&funcion=getSenialF";
+            if (categoriaId && orientacionId) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        categoria_id: categoriaId,
+                        orientacion_id: orientacionId
+                    },
+                    success: function (response) {
+                        $('select[name="tipoSen"]').html(response);
+                    }
+                });
+            } else {
+                $('select[name="tipoSen"]').html('<option value="">Seleccione categoría y orientación primero</option>');
+                console.warn('Por favor seleccione categoría y orientación.');
+            }
+        });
 
         $('.image-upload input[type="file"]').on('change', function () {
             const input = $(this);
@@ -224,44 +276,44 @@ if (isset($_SESSION['errores'])) {
             placeholder.show();
             button.hide();
         });
-        
-    $('input, select').on('focus', function () {
-        $(this).removeClass('input-error');
-        $(this).next('.text-danger').remove();
-    });
-    $('input, select').on('click', function () {
-        $(this).removeClass('input-error');
-        $(this).next('.text-danger').remove();
-    });
 
-    $('#formSeñalesDan').submit(function (event) {
+        $('input, select').on('focus', function () {
+            $(this).removeClass('input-error');
+            $(this).next('.text-danger').remove();
+        });
+        $('input, select').on('click', function () {
+            $(this).removeClass('input-error');
+            $(this).next('.text-danger').remove();
+        });
+
+        $('#formSeñalesDan').submit(function (event) {
 
             event.preventDefault();
 
             $('.text-danger').remove();
             $('input, select').removeClass('input-error');
-        
+
             let valido = true;
-        
-            const tipo_sen= $('#tipoSenDan').val().trim();
-        
-            if (tipo_sen === '' || tipo_sen=== null ) {
-                agregarError($('#tipoSenDan'), "Por favor seleccione un tipo de señal");
+
+            const tipo_sen = $('#tipoSen').val().trim();
+
+            if (tipo_sen === '' || tipo_sen === null) {
+                agregarError($('#tipoSen'), "Por favor seleccione un tipo de señal");
                 valido = false;
             }
-        
-            const desc=$('#desc_sen_dan').val().trim();
-            if (desc==='' || desc===null) {
-                agregarError($('#desc_sen_dan'),"Por favor ingrese una descripción");
+
+            const desc = $('#desc_sen_dan').val().trim();
+            if (desc === '' || desc === null) {
+                agregarError($('#desc_sen_dan'), "Por favor ingrese una descripción");
                 valido = false;
-            }else if ( !patronTexto.test(desc) || desc.length > 300) {
+            } else if (!patronTexto.test(desc) || desc.length > 300) {
                 agregarError($('#desc_sen_dan'), "El campo observaciones solo admite letras (máx. 300)");
                 valido = false;
             }
 
-            const orien=$('#orien').val().trim();
-            if (orien==='' || orien===null) {
-                agregarError($('#orien'),"Por seleccion la orientacion de la señal");
+            const orien = $('#orien').val().trim();
+            if (orien === '' || orien === null) {
+                agregarError($('#orien'), "Por seleccion la orientacion de la señal");
                 valido = false;
             }
 
@@ -271,18 +323,18 @@ if (isset($_SESSION['errores'])) {
                 valido = false;
             }
 
-            const tipoDanio= $('#tipoDanio').val().trim();
+            const tipoDanio = $('#tipoDanio').val().trim();
 
-            if (tipoDanio===''|| tipoDanio===null) {
+            if (tipoDanio === '' || tipoDanio === null) {
                 agregarError($('#tipoDanio'), "Por favor seleccione un tipo de daño");
                 valido = false;
             }
-            
+
             if (valido) {
                 this.submit();
             }
-        
-    });
-        
+
+        });
+
     });
 </script>

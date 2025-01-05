@@ -38,12 +38,13 @@ if (isset($_SESSION['ActEx'])) {
             data-url='<?php echo getUrl("Usuarios", "Usuarios", "buscar", false, "ajax") ?>'>
     </div>
     <div class="col-md-2 ">
-        Filtrar por orden alfabetico
+        Filtrar por orden alfabetico o más recientes
         <select name="" id="orden" class="form-select"
             data-url='<?php echo getUrl("Usuarios", "Usuarios", "ordenarAlf", false, "ajax") ?>'>
             <option value="">Seleccione</option>
             <option value="1" class="form-option">A-Z</option>
             <option value="2" class="form-option">Z-A</option>
+            <option value="3" class="form-option">Más recientes</option>
         </select>
     </div>
 </div>

@@ -23,12 +23,28 @@
                                     "<p><strong>Descripcion:</strong> " . $red['desc_red_new'] . "</p>" .
                                     "<p><strong>Estado:</strong> " . $red['est_nombre'] . "</p>";
                             }
+                            if (!empty($red['img_red_new'])) {
+                                echo "<p><strong>Imagen adjuntada:</strong></p>";
+                                $rutas = explode(', ', "img/" . $red['img_red_new']);
+                                foreach ($rutas as $ruta) {
+                                    $rutasinEs = trim($ruta);
+                                    if (!empty($rutasinEs) && file_exists($rutasinEs)) {
+                                        echo "<div style='border: 5px solid; max-width: 200px;'>";
+                                        echo "<img src='" . $ruta . "' alt='Evidencia' style='max-width: 150px; margin: 10px;'>";
+                                        echo "</div>";
+                                    } elseif (!empty($rutasinEs)) {
+                                        echo "<p>No se pudo cargar la imagen </p>";
+                                    }
+                                }
+                            } else {
+                                echo "<p><strong>Evidencia adjunta:</strong> No hay evidencia disponible.</p>";
+                            }
                         } else {
-                            echo "<p class='text-danger'>No se encontraron detalles para este accidente.</p>";
+                            echo "<p class='text-danger'>No se encontraron detalles para esta solicitud.</p>";
                         }
                     }
                 } else {
-                    echo "<h3 class='text-danger'>No hay ningun accidente registrado en este lugar.</h3>";
+                    echo "<h3 class='text-danger'>No hay ninguna solicitud registrado en este lugar.</h3>";
                 }
 
                 ?>

@@ -146,13 +146,14 @@ class SolicitudesController
         }
 
         $sql5 = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-               est.est_nombre FROM solicitud_reductores_dan redDan
+               est.est_nombre, c.nombre_categoria FROM solicitud_reductores_dan redDan
                LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
                LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
                LEFT JOIN tipos_reductores tr ON redDan.tipo_red_id= tr.tipo_red_id
+               LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
                LEFT JOIN punto_reductordan pr ON redDan.sol_red_dan_id = pr.id_reductordan
                WHERE ST_DWithin(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
-               GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, pr.geom, est.est_nombre
+               GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, pr.geom, est.est_nombre, c.nombre_categoria
                ORDER BY ST_Distance(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                LIMIT 1 ";
         $redDan = $obj->consult($sql5);
@@ -162,13 +163,14 @@ class SolicitudesController
         }
 
         $sql6 = "SELECT redNew.*, tr.nombre_tipo_red, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-               est.est_nombre FROM solicitud_reductores_new redNew
+               est.est_nombre, c.nombre_categoria FROM solicitud_reductores_new redNew
                LEFT JOIN estados est ON redNew.est_sol_id = est.est_id
                LEFT JOIN usuarios u ON redNew.usu_id = u.usu_id
                LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id = tr.tipo_red_id
+               LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
                LEFT JOIN punto_reductornew pr ON redNew.sol_red_new_id = pr.id_reductornew
                WHERE ST_DWithin(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
-               GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, pr.geom, est.est_nombre
+               GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, pr.geom, est.est_nombre, c.nombre_categoria
                ORDER BY ST_Distance(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                LIMIT 1 ";
 
@@ -279,7 +281,7 @@ class SolicitudesController
         $obj = new SolicitudesModel();
 
         $cateSen = $_POST['sen_cate'];
-        $tipoSen = $_POST['tipoSenDan'];
+        $tipoSen = $_POST['tipoSen'];
         $orienSen = $_POST['orienSen'];
         $desc_dan = $_POST['desc_sen_dan'];
         $img = false;
@@ -322,8 +324,8 @@ class SolicitudesController
     {
         $obj = new SolicitudesModel();
 
-        $sql1 = "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
-        $redCate = $obj->consult($sql1);
+        $sql1 = "SELECT * FROM categoria_reductores";
+        $categoria = $obj->consult($sql1);
         include_once '../view/Solicitudes/reductoresNuevo.php';
     }
 
@@ -334,11 +336,12 @@ class SolicitudesController
 
         $idCate = $_POST['id_cate_red'];
 
-        $sql = "SELECT t.tipo_red_id, t.nombre_tipo_red FROM tipos_reductores t WHERE categoria_red_id=$idCate";
+        $sql = "SELECT t.tipo_red_id, t.nombre_tipo_red FROM tipos_reductores t WHERE cat_id=$idCate";
 
         $tipoRed = $obj->consult($sql);
-
+        echo "<option value= >Seleccione... </option>";
         foreach ($tipoRed as $tr) {
+
             echo "<option value='" . $tr['tipo_red_id'] . "'>" . $tr['nombre_tipo_red'] . "</option>";
         }
     }
@@ -350,30 +353,76 @@ class SolicitudesController
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
 
-        $cate = $_POST['categoria'];
         $tipo = $_POST['tipoRedu'];
         $desc = $_POST['desc_red'];
 
         $punto1Procesado = eliminarSegundoPunto($punto1);
         $punto2rocesado = eliminarSegundoPunto($punto2);
 
-        $idRedNew = $obj->autoIncrement("solicitud_reductores_new", "sol_red_new_id");
-        $sql1 = "INSERT INTO solicitud_reductores_new VALUES($idRedNew,$tipo,$cate,'$desc', date_trunc('second', NOW()),3,$usu_id)";
-        $ejecutar = $obj->insert($sql1);
-        if ($ejecutar) {
-            $sql2 = "INSERT INTO punto_reductorNew (id_reductorNew, geom) VALUES ($idRedNew, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
-            $punto = $obj->insert($sql2);
-            if ($punto) {
-                $_SESSION['redNew'] = "Registro Exitoso";
-                redirect("index.php");
+        
+         $imagen = $_FILES['imagen']['name'];
+        
+
+        $nombreArchivoSinEspacios = str_replace(' ', '', $imagen);
+
+        $rutaDestino = "img/$nombreArchivoSinEspacios";
+
+        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+            $idRedNew = $obj->autoIncrement("solicitud_reductores_new", "sol_red_new_id");
+            $sql1 = "INSERT INTO solicitud_reductores_new VALUES($idRedNew,$tipo,'$desc', date_trunc('second', NOW()),'$nombreArchivoSinEspacios',3,$usu_id)";
+            $ejecutar = $obj->insert($sql1);
+            if ($ejecutar) {
+                $sql2 = "INSERT INTO punto_reductorNew (id_reductorNew, geom) VALUES ($idRedNew, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
+                $punto = $obj->insert($sql2);
+                if ($punto) {
+                    $_SESSION['redNew'] = "Registro Exitoso";
+                    redirect("index.php");
+                } else {
+                    echo "no se registro el punto ";
+                }
             } else {
-                echo "no se registro el punto ";
+                echo "No se pudo registrar la solicitud";
             }
         } else {
-            echo "No se pudo registrar la solicitud";
+            echo "No se movio el archivo";
+        }
+
+
+
+    }
+
+    public function infoRed()
+    {
+        $obj = new SolicitudesModel();
+        $id = $_POST['id'];
+        $sql1 = "SELECT * FROM tipos_reductores WHERE tipo_red_id = $id";
+        $tiposRed = $obj->consult($sql1);
+
+        foreach ($tiposRed as $red) {
+            echo "<h1> Información del reductor </h1>";
+            echo "<h3>" . $red['nombre_tipo_red'] . "</h3>";
+            echo "<img src='" . $red['img_reductor'] . "' class = 'img-fluid'>";
+            echo "<p>" . $red['descripcion_tipo_red'] . "</p>";
         }
 
     }
+
+    public function infoSens()
+    {
+        $obj = new SolicitudesModel();
+        $id = $_POST['id'];
+        $sql1 = "SELECT * FROM tipo_seniales WHERE tipo_senial_id = $id";
+        $tiposSen = $obj->consult($sql1);
+
+        foreach ($tiposSen as $sen) {
+            echo "<h3> Información de la señal</h1>";
+            echo "<h4>" . $sen['tipo_sen_desc'] . "</h3>";
+            echo "<img src='" . $sen['img_sen'] . "' class = 'img-fluid'  width='150'>";
+            echo "<p>" . $sen['desc_sen'] . "</p>";
+        }
+
+    }
+
 
 
 
@@ -383,8 +432,8 @@ class SolicitudesController
     {
         $obj = new SolicitudesModel();
 
-        $sql1 = "SELECT  categoria_red_id, nombre_red_categoria FROM categorias_reductores";
-        $redCate = $obj->consult($sql1);
+        $sql1 = "SELECT * FROM categoria_reductores";
+        $categoria = $obj->consult($sql1);
 
         $sql = "SELECT td.tipo_danio_id, td.tipo_danio_desc FROM  danio cd  
         JOIN tipo_danio td ON td.tipo_danio_id = cd.danio_id
@@ -403,7 +452,6 @@ class SolicitudesController
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
 
-        $cate = $_POST['categoria'];
         $tipo = $_POST['tipoRedu'];
         $desc = $_POST['desc_red'];
         $tipoDanio = $_POST['tipoRedDanio'];
@@ -418,7 +466,7 @@ class SolicitudesController
         $rutaDestino = "img/$nombreArchivoSinEspacios";
 
         if (move_uploaded_file($_FILES['imagenRD']['tmp_name'], $rutaDestino)) {
-            $sql1 = "INSERT INTO solicitud_reductores_dan VALUES($idRedDan,$tipo,$cate,$tipoDanio,'$desc', date_trunc('second', NOW()),'$nombreArchivoSinEspacios',3,$usu_id)";
+            $sql1 = "INSERT INTO solicitud_reductores_dan VALUES($idRedDan,$tipo,$tipoDanio,'$desc', date_trunc('second', NOW()),'$nombreArchivoSinEspacios',3 ,$usu_id)";
             $ejecutar = $obj->insert($sql1);
             if ($ejecutar) {
                 $sql2 = "INSERT INTO punto_reductorDan (id_reductorDan, geom) VALUES ($idRedDan, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
@@ -471,7 +519,7 @@ class SolicitudesController
 
         $punto1 = $_POST['punto1'];
         $punto2 = $_POST['punto2'];
-        
+
         $punto1Procesado = eliminarSegundoPunto($punto1);
         $punto2rocesado = eliminarSegundoPunto($punto2);
 
@@ -566,6 +614,8 @@ class SolicitudesController
             LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
             LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
             GROUP BY  ra.reg_acc_id";
+
+            $_SESSION['sqlAcc'] = $sql;
         }
 
         $accidentes = $obj->consult($sql);
@@ -579,24 +629,26 @@ class SolicitudesController
 
         if ($rol == 2) {
             $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, tv.desc_via, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
-            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre
-            FROM solicitud_via_dan svd
-            LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
-            LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
-            LEFT JOIN estados est ON svd.est_sol_id = est.est_id
-            LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
-            LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
-            WHERE u.usu_id = $usu_id
-            GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, tv.desc_via";
+                        STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
+                        FROM solicitud_via_dan svd
+                        LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+                        LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+                        LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+                        LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
+                        LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
+                        WHERE u.usu_id = $usu_id
+                        GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, tv.desc_via, est.est_nombre";
         } else {
             $sql = " SELECT svd.*, td.tipo_danio_desc AS tipo_danio, tv.desc_via, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
-            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre
-            FROM solicitud_via_dan svd
-            LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
-            LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
-            LEFT JOIN estados est ON svd.est_sol_id = est.est_id
-            LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
-            LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, tv.desc_via";
+                        STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
+                        FROM solicitud_via_dan svd
+                        LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+                        LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+                        LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+                        LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
+                        LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, tv.desc_via, est.est_nombre";
+
+            $_SESSION['sqlVias'] = $sql;
         }
 
 
@@ -847,9 +899,8 @@ class SolicitudesController
                 LEFT JOIN estados est ON redNew.est_sol_id = est.est_id 
                 LEFT JOIN usuarios u ON redNew.usu_id = u.usu_id 
                 LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id = tr.tipo_red_id 
-                LEFT JOIN categorias_reductores c ON tr.categoria_red_id = c.categoria_red_id 
                 WHERE redNew.sol_red_new_id = $id
-                GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, c.nombre_red_categoria, est.est_nombre";
+                GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre";
 
         $redNew = $obj->consult($sql);
 
@@ -858,7 +909,6 @@ class SolicitudesController
 
                 if ($_SESSION['rol'] == 2) {
                     echo "<p><strong>Tipo de reductor:</strong> " . $red['nombre_tipo_red'] . "</p>" .
-                        "<p><strong>Categoria de reductor:</strong> " . $red['nombre_red_categoria'] . "</p>" .
                         "<p><strong>Detalles adicionales:</strong> " . $red['desc_red_new'] . "</p>" .
                         "<p><strong>Fecha y hora:</strong> " . $red['sol_red_new_fecha'] . "</p>" .
                         "<p><strong>Estado de la solicitud:</strong> " . $red['est_nombre'] . "</p>" .
@@ -866,14 +916,29 @@ class SolicitudesController
                 } else {
                     echo "<p><strong>ID:</strong> " . $red['sol_red_new_id'] . "</p>" .
                         "<p><strong>Tipo de reductor:</strong> " . $red['nombre_tipo_red'] . "</p>" .
-                        "<p><strong>Categoria de reductor:</strong> " . $red['nombre_red_categoria'] . "</p>" .
                         "<p><strong>Detalles adicionales:</strong> " . $red['desc_red_new'] . "</p>" .
                         "<p><strong>Fecha y hora:</strong> " . $red['sol_red_new_fecha'] . "</p>" .
                         "<p><strong>Estado de la solicitud:</strong> " . $red['est_nombre'] . "</p>" .
                         "<p><strong>Solicitante:</strong> " . $red['usuario_nombre'] . "</p>";
                 }
+                if (!empty($red['img_red_new'])) {
+                    echo "<p><strong>Imagen adjuntada:</strong></p>";
+                    $rutas = explode(', ', "img/" . $red['img_red_new']);
+                    foreach ($rutas as $ruta) {
+                        $rutasinEs = trim($ruta);
+                        if (!empty($rutasinEs) && file_exists($rutasinEs)) {
+                            echo "<div style='border: 5px solid; max-width: 200px;'>";
+                            echo "<img src='" . $ruta . "' alt='Evidencia' style='max-width: 150px; margin: 10px;'>";
+                            echo "</div>";
+                        } elseif (!empty($rutasinEs)) {
+                            echo "<p>No se pudo cargar la imagen </p>";
+                        }
+                    }
+                } else {
+                    echo "<p><strong>Evidencia adjunta:</strong> No hay evidencia disponible.</p>";
+                }
             } else {
-                echo "<p class='text-danger'>No se encontraron detalles para este accidente.</p>";
+                echo "<p class='text-danger'>No se encontraron detalles para esta solicitud.</p>";
             }
         }
 
@@ -886,14 +951,13 @@ class SolicitudesController
         $id = $_POST['id'];
 
 
-        $sql = "SELECT redDan.*, tr.nombre_tipo_red,c.nombre_red_categoria,td.tipo_danio_desc, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ',  ') AS usuario_nombre, est.est_nombre FROM solicitud_reductores_dan redDan
+        $sql = "SELECT redDan.*, tr.nombre_tipo_red, td.tipo_danio_desc, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ',  ') AS usuario_nombre, est.est_nombre FROM solicitud_reductores_dan redDan
             LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
             LEFT JOIN tipo_danio td ON redDan.danio_id = td.tipo_danio_id
             LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
             LEFT JOIN tipos_reductores tr ON redDan.tipo_red_id = tr.tipo_red_id
-            LEFT JOIN categorias_reductores c ON tr.categoria_red_id = c.categoria_red_id
             WHERE redDan.sol_red_dan_id = $id 
-            GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, c.nombre_red_categoria, est.est_nombre, td.tipo_danio_desc";
+            GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre, td.tipo_danio_desc";
 
         $redDan = $obj->consult($sql);
 
@@ -901,7 +965,6 @@ class SolicitudesController
             if ($red) {
                 if ($_SESSION['rol'] == 2) {
                     echo "<p><strong>Tipo de reductor:</strong> " . $red['nombre_tipo_red'] . "</p>" .
-                        "<p><strong>Categoria de reductor:</strong> " . $red['nombre_red_categoria'] . "</p>" .
                         "<p><strong>Tipo de daño:</strong> " . $red['tipo_danio_desc'] . "</p>" .
                         "<p><strong>Detalles adicionales:</strong> " . $red['desc_red'] . "</p>" .
                         "<p><strong>Fecha y hora:</strong> " . $red['sol_red_dan_fecha'] . "</p>" .
@@ -910,7 +973,6 @@ class SolicitudesController
                 } else {
                     echo "<p><strong>ID:</strong> " . $red['sol_red_dan_id'] . "</p>" .
                         "<p><strong>Tipo de reductor:</strong> " . $red['nombre_tipo_red'] . "</p>" .
-                        "<p><strong>Categoria de reductor:</strong> " . $red['nombre_red_categoria'] . "</p>" .
                         "<p><strong>Tipo de daño:</strong> " . $red['tipo_danio_desc'] . "</p>" .
                         "<p><strong>Detalles adicionales:</strong> " . $red['desc_red'] . "</p>" .
                         "<p><strong>Fecha y hora:</strong> " . $red['sol_red_dan_fecha'] . "</p>" .
@@ -1042,22 +1104,26 @@ class SolicitudesController
 
         $obj = new SolicitudesModel();
         if ($solicitud == 1) {
-            $sql = "SELECT ra.*, 
-            STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, 
-            STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, 
-            STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, 
-            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-            STRING_AGG(DISTINCT tc.tipo_choque_desc, ', ') AS tipo_choque FROM registro_accidente ra
-            LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
-            LEFT JOIN reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
-            LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
-            LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
-            LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
-            LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
-            LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
-            GROUP BY ra.reg_acc_id";
+            if (isset($_SESSION['sqlAcc'])) {
+                $sqlAcc = $_SESSION['sqlAcc'];
+            } else {
+                $sqlAcc = "SELECT ra.*, 
+                STRING_AGG(DISTINCT ia.img_ruta, ', ') AS img_rutas, 
+                STRING_AGG(DISTINCT v.vehiculo_descripcion, ', ') AS vehiculos, 
+                STRING_AGG(DISTINCT dta.descripcion, ', ') AS detalles_accidente, 
+                STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                STRING_AGG(DISTINCT tc.tipo_choque_desc, ', ') AS tipo_choque FROM registro_accidente ra
+                LEFT JOIN imagenes_accidente ia ON ra.reg_acc_id = ia.reg_acc_id
+                LEFT JOIN reg_acc_vehi rav ON ra.reg_acc_id = rav.reg_acc_id
+                LEFT JOIN vehiculo v ON rav.vehiculo_id = v.vehiculo_id
+                LEFT JOIN usuarios u ON ra.usu_id = u.usu_id
+                LEFT JOIN registro_detalle_accidente rda ON ra.reg_acc_id = rda.reg_acc_id
+                LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
+                LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
+                GROUP BY ra.reg_acc_id";
+            }
 
-            $accidentes = $obj->consult($sql);
+            $accidentes = $obj->consult($sqlAcc);
 
             if (!empty($accidentes)) {
                 $excel = new PHPExcel();
@@ -1103,25 +1169,30 @@ class SolicitudesController
             }
         } else if ($solicitud == 2) {
 
-            $sql = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
-                    STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
-                    FROM solicitud_via_dan svd
-                    LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
-                    LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
-                    LEFT JOIN estados est ON svd.est_sol_id = est.est_id
-                    LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre";
-
-            $vias = $obj->consult($sql);
+            if (isset($_SESSION['sqlVias'])) {
+                $sqlVias = $_SESSION['sqlVias'];
+            } else {
+                $sqlVias = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, tv.desc_via, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+                            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
+                            FROM solicitud_via_dan svd
+                            LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+                            LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+                            LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+                            LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
+                            LEFT JOIN usuarios u ON svd.usu_id = u.usu_id GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, tv.desc_via, est.est_nombre";
+            }
+            $vias = $obj->consult($sqlVias);
 
             if (!empty($vias)) {
                 $excel = new PHPExcel();
                 $excel->setActiveSheetIndex(0);
                 $sheet = $excel->getActiveSheet();
                 $sheet->setCellValue('A1', 'ID');
-                $sheet->setCellValue('B1', 'Tipo de daño');
-                $sheet->setCellValue('C1', 'Fecha y hora');
-                $sheet->setCellValue('D1', 'Solicitante');
-                $sheet->setCellValue('E1', 'Estado');
+                $sheet->setCellValue('B1', 'Tipo de via');
+                $sheet->setCellValue('C1', 'Tipo de daño');
+                $sheet->setCellValue('D1', 'Fecha y hora');
+                $sheet->setCellValue('E1', 'Solicitante');
+                $sheet->setCellValue('F1', 'Estado');
 
 
                 $sheet->getStyle('A1:I1')->getFont()->setBold(true);
@@ -1130,10 +1201,11 @@ class SolicitudesController
                 foreach ($vias as $via) {
 
                     $sheet->setCellValue("A{$row}", $via['sol_via_dan_id']);
-                    $sheet->setCellValue("B{$row}", $via['tipo_danio']);
-                    $sheet->setCellValue("C{$row}", $via['fecha_hora']);
-                    $sheet->setCellValue("D{$row}", $via['usuario_nombre']);
-                    $sheet->setCellValue("E{$row}", $via['est_nombre']);
+                    $sheet->setCellValue("B{$row}", $via['desc_via']);
+                    $sheet->setCellValue("C{$row}", $via['tipo_danio']);
+                    $sheet->setCellValue("D{$row}", $via['fecha_hora']);
+                    $sheet->setCellValue("E{$row}", $via['usuario_nombre']);
+                    $sheet->setCellValue("F{$row}", $via['est_nombre']);
                     $row++;
                 }
                 $filename = 'Daños_via_' . date('Ymd_His') . '.xlsx';
@@ -1148,13 +1220,19 @@ class SolicitudesController
                 echo "No se encontraron datos para generar el archivo Excel.";
             }
         } else if ($solicitud == 3) {
-            $sql = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-            est.est_nombre FROM solicitud_seniales_new snew
-            LEFT JOIN estados est ON snew.est_sol_id = est.est_id
-            LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
-            LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
-            GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
-            $senial = $obj->consult($sql);
+
+            if (isset($_SESSION['sqlSenNew'])) {
+                $sqlSenNew = $_SESSION['sqlSenNew'];
+            } else {
+                $sqlSenNew = "SELECT snew.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                est.est_nombre FROM solicitud_seniales_new snew
+                LEFT JOIN estados est ON snew.est_sol_id = est.est_id
+                LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
+                LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
+                GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
+            }
+
+            $senial = $obj->consult($sqlSenNew);
 
             if (!empty($senial)) {
                 $excel = new PHPExcel();
@@ -1165,13 +1243,9 @@ class SolicitudesController
                 $sheet->setCellValue('C1', 'Fecha y hora');
                 $sheet->setCellValue('D1', 'Solicitante');
                 $sheet->setCellValue('E1', 'Estado');
-
-
                 $sheet->getStyle('A1:I1')->getFont()->setBold(true);
-
                 $row = 2;
                 foreach ($senial as $sen) {
-
                     $sheet->setCellValue("A{$row}", $sen['sol_sen_new_id']);
                     $sheet->setCellValue("B{$row}", $sen['senal']);
                     $sheet->setCellValue("C{$row}", $sen['sol_sen_new_fecha']);
@@ -1191,13 +1265,19 @@ class SolicitudesController
                 echo "No se encontraron datos para generar el archivo Excel.";
             }
         } else if ($solicitud == 4) {
-            $sql = "SELECT sdan.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+
+            if (isset($_SESSION['sqlSenDan'])) {
+                $sqlSenDan = $_SESSION['sqlSenDan'];
+            } else {
+                $sqlSenDan = "SELECT sdan.*, tp.tipo_sen_desc AS senal, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
                 est.est_nombre FROM solicitud_seniales_dan sdan
                LEFT JOIN estados est ON sdan.est_sol_id = est.est_id
                LEFT JOIN usuarios u ON sdan.usu_id = u.usu_id
                LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
                GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, est.est_nombre";
-            $senal = $obj->consult($sql);
+            }
+
+            $senal = $obj->consult($sqlSenDan);
 
             if (!empty($senal)) {
                 $excel = new PHPExcel();
@@ -1234,24 +1314,30 @@ class SolicitudesController
                 echo "No se encontraron datos para generar el archivo Excel.";
             }
         } else if ($solicitud == 5) {
-            $sql = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-               est.est_nombre FROM solicitud_reductores_dan redDan
-               LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
-               LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
-               LEFT JOIN tipos_reductores tr ON redDan.sol_red_dan_id = tr.tipo_red_id
-               GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre";
-            $reductores = $obj->consult($sql);
+            if (isset($_SESSION['sqlRedDan'])) {
+                $sqlRedDan = $_SESSION['sqlRedDan'];
+            } else {
+                $sqlRedDan = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                est.est_nombre, c.nombre_categoria FROM solicitud_reductores_dan redDan
+                LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
+                LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
+                LEFT JOIN tipos_reductores tr ON redDan.sol_red_dan_id = tr.tipo_red_id
+                LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
+                GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre, c.nombre_categoria";
+            }
+            $reductores = $obj->consult($sqlRedDan);
 
             if (!empty($reductores)) {
                 $excel = new PHPExcel();
                 $excel->setActiveSheetIndex(0);
                 $sheet = $excel->getActiveSheet();
                 $sheet->setCellValue('A1', 'ID');
-                $sheet->setCellValue('B1', 'Reductor');
-                $sheet->setCellValue('C1', 'Fecha y hora');
-                $sheet->setCellValue('D1', 'Solicitante');
-                $sheet->setCellValue('E1', 'Estado');
-                $sheet->setCellValue('F1', 'Descripcion de la solicitud');
+                $sheet->setCellValue('B1', 'Categoria');
+                $sheet->setCellValue('C1', 'Reductor');
+                $sheet->setCellValue('D1', 'Fecha y hora');
+                $sheet->setCellValue('E1', 'Solicitante');
+                $sheet->setCellValue('F1', 'Estado');
+                $sheet->setCellValue('G1', 'Descripcion de la solicitud');
 
 
 
@@ -1261,11 +1347,12 @@ class SolicitudesController
                 foreach ($reductores as $red) {
 
                     $sheet->setCellValue("A{$row}", $red['sol_red_dan_id']);
-                    $sheet->setCellValue("B{$row}", $red['reductor']);
-                    $sheet->setCellValue("C{$row}", $red['sol_red_dan_fecha']);
-                    $sheet->setCellValue("D{$row}", $red['usuario_nombre']);
-                    $sheet->setCellValue("E{$row}", $red['est_nombre']);
-                    $sheet->setCellValue("F{$row}", $red['desc_red']);
+                    $sheet->setCellValue("A{$row}", $red['nombre_categoria']);
+                    $sheet->setCellValue("C{$row}", $red['reductor']);
+                    $sheet->setCellValue("D{$row}", $red['sol_red_dan_fecha']);
+                    $sheet->setCellValue("E{$row}", $red['usuario_nombre']);
+                    $sheet->setCellValue("F{$row}", $red['est_nombre']);
+                    $sheet->setCellValue("G{$row}", $red['desc_red']);
                     $row++;
                 }
                 $filename = 'Reductores_dan_' . date('Ymd_His') . '.xlsx';
@@ -1280,13 +1367,19 @@ class SolicitudesController
                 echo "No se encontraron datos para generar el archivo Excel.";
             }
         } else if ($solicitud == 6) {
-            $sql = "SELECT redNew.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-               est.est_nombre FROM solicitud_reductores_new redNew
-               LEFT JOIN estados est ON redNew.est_sol_id = est.est_id
-               LEFT JOIN usuarios u ON redNew.usu_id = u.usu_id
-               LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id = tr.tipo_red_id
-               GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre";
-            $reductores = $obj->consult($sql);
+            if (isset($_SESSION['sqlRedNew'])) {
+                $sqlRedNew = $_SESSION['sqlRedNew'];
+            } else {
+                $sqlRedNew = "SELECT redNew.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
+                est.est_nombre, c.nombre_categoria FROM solicitud_reductores_new redNew
+                LEFT JOIN estados est ON redNew.est_sol_id = est.est_id
+                LEFT JOIN usuarios u ON redNew.usu_id = u.usu_id
+                LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id = tr.tipo_red_id
+                LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
+                GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre, ";
+            }
+
+            $reductores = $obj->consult($sqlRedNew);
 
             if (!empty($reductores)) {
                 $excel = new PHPExcel();
@@ -1348,6 +1441,7 @@ class SolicitudesController
             LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
             LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
             GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
+            $_SESSION['sqlSenNew'] = $sql;
         }
 
         $senial = $obj->consult($sql);
@@ -1378,6 +1472,8 @@ class SolicitudesController
                LEFT JOIN usuarios u ON sdan.usu_id = u.usu_id
                LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
                GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, est.est_nombre";
+
+            $_SESSION['sqlSenDan'] = $sql;
         }
 
         $senial = $obj->consult($sql);
@@ -1395,19 +1491,22 @@ class SolicitudesController
 
         if ($rol == 2) {
             $sql = "SELECT redNew.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-               est.est_nombre FROM solicitud_reductores_new redNew
+               est.est_nombre, c.nombre_categoria FROM solicitud_reductores_new redNew
                LEFT JOIN estados est ON redNew.est_sol_id = est.est_id
                LEFT JOIN usuarios u ON redNew.usu_id = u.usu_id
                LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id= tr.tipo_red_id
+               LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
                WHERE u.usu_id = $usu_id
-               GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre";
+               GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre, c.nombre_categoria";
         } else {
             $sql = "SELECT redNew.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-               est.est_nombre FROM solicitud_reductores_new redNew
+               est.est_nombre, c.nombre_categoria FROM solicitud_reductores_new redNew
                LEFT JOIN estados est ON redNew.est_sol_id = est.est_id
                LEFT JOIN usuarios u ON redNew.usu_id = u.usu_id
                LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id= tr.tipo_red_id
-               GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre";
+               LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
+               GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre, c.nombre_categoria";
+            $_SESSION['sqlRedNew'] = $sql;
         }
 
         $reductores = $obj->consult($sql);
@@ -1426,19 +1525,22 @@ class SolicitudesController
 
         if ($rol == 2) {
             $sql = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-            est.est_nombre FROM solicitud_reductores_dan redDan
+            est.est_nombre, c.nombre_categoria FROM solicitud_reductores_dan redDan
             LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
             LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
             LEFT JOIN tipos_reductores tr ON redDan.tipo_red_id= tr.tipo_red_id
+            LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
             WHERE u.usu_id = $usu_id
-            GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre";
+            GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre, c.nombre_categoria";
         } else {
             $sql = "SELECT redDan.*, tr.nombre_tipo_red AS reductor, STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, 
-            est.est_nombre FROM solicitud_reductores_dan redDan
+            est.est_nombre, c.nombre_categoria FROM solicitud_reductores_dan redDan
             LEFT JOIN estados est ON redDan.est_sol_id = est.est_id
             LEFT JOIN usuarios u ON redDan.usu_id = u.usu_id
             LEFT JOIN tipos_reductores tr ON redDan.tipo_red_id= tr.tipo_red_id
-            GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre";
+            LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
+            GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre, c.nombre_categoria";
+            $_SESSION['sqlRedDan'] = $sql;
         }
 
 
@@ -1587,6 +1689,7 @@ class SolicitudesController
         $tipoSen = $obj->consult($sql);
 
         if (!empty($tipoSen)) {
+            echo '<option value="">Seleccione...</option>';
             foreach ($tipoSen as $ts) {
                 echo '<option value="' . $ts['tipo_senial_id'] . '">' . $ts['tipo_sen_desc'] . '</option>';
             }
@@ -1683,8 +1786,8 @@ class SolicitudesController
 
         $reportes = $obj->consult($sql);
         $total = $obj->consult($sql1);
-        
-        if(!empty($total)){
+
+        if (!empty($total)) {
             $totalU = $total[0]['total'];
         }
 
@@ -1752,6 +1855,8 @@ class SolicitudesController
                             LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id 
                             LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id 
                             WHERE ra.reg_acc_fecha_hora BETWEEN '$fecha1' AND '$fecha2' GROUP BY  ra.reg_acc_id";
+
+                $_SESSION['sqlAcc'] = $sql1;
             }
 
             //echo $sql1;
@@ -1778,6 +1883,7 @@ class SolicitudesController
                 LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
                 WHERE snew.sol_sen_new_fecha BETWEEN '$fecha1' AND '$fecha2'
                 GROUP BY snew.sol_sen_new_id, tp.tipo_sen_desc, est.est_nombre";
+                $_SESSION['sqlSenNew'] = $sql2;
             }
 
             $senial = $obj->consult($sql2);
@@ -1803,6 +1909,8 @@ class SolicitudesController
                 LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
                  WHERE sdan.sol_sen_dan_fecha BETWEEN '$fecha1' AND '$fecha2'
                 GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, est.est_nombre";
+                $_SESSION['sqlSenDan'] = $sql3;
+
             }
 
             $senial = $obj->consult($sql3);
@@ -1827,6 +1935,7 @@ class SolicitudesController
                 LEFT JOIN tipos_reductores tr ON redDan.tipo_red_id = tr.tipo_red_id  
                 WHERE redDan.sol_red_dan_fecha BETWEEN '$fecha1' AND '$fecha2'
                 GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, est.est_nombre;";
+                $_SESSION['sqlRedDan'] = $sql4;
             }
 
             $reductores = $obj->consult($sql4);
@@ -1851,6 +1960,9 @@ class SolicitudesController
                 LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id= tr.tipo_red_id
                 WHERE redNew.sol_red_new_fecha BETWEEN '$fecha1' AND '$fecha2'
                 GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, est.est_nombre";
+
+                $_SESSION['sqlRedNew'] = $sql5;
+
             }
 
             $reductores = $obj->consult($sql5);
@@ -1860,25 +1972,28 @@ class SolicitudesController
             include_once '../view/Solicitudes/buscarRedNew.php';
         } else if ($num == 6) {
             if ($_SESSION['rol'] == 2) {
-                $sql6 = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
-                STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
-                FROM solicitud_via_dan svd
-                LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
-                LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
-                LEFT JOIN estados est ON svd.est_sol_id = est.est_id
-                LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
-                WHERE svd.fecha_hora BETWEEN '$fecha1' AND '$fecha2' AND u.usu_id = $usu_id
-                GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre";
+                $sql6 = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+                            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
+                            FROM solicitud_via_dan svd
+                            LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+                            LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+                            LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+                            LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
+                            WHERE svd.fecha_hora BETWEEN '$fecha1' AND '$fecha2' AND u.usu_id = $usu_id
+                            GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre";
             } else {
-                $sql6 = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, u.usu_nombre1 AS solicitante, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
-                STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
-                FROM solicitud_via_dan svd
-                LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
-                LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
-                LEFT JOIN estados est ON svd.est_sol_id = est.est_id
-                LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
-                WHERE svd.fecha_hora BETWEEN '$fecha1' AND '$fecha2'
-                GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre";
+                $sql6 = "SELECT svd.*, td.tipo_danio_desc AS tipo_danio, tv.desc_via, STRING_AGG(DISTINCT ia.img_ruta, ', ') AS imagenes, 
+                            STRING_AGG(DISTINCT CONCAT_WS(' ', u.usu_nombre1, u.usu_nombre2, u.usu_apellido1), ', ') AS usuario_nombre, est.est_nombre
+                            FROM solicitud_via_dan svd
+                            LEFT JOIN imagenes_vias ia ON svd.sol_via_dan_id = ia.reg_via_id
+                            LEFT JOIN tipo_danio td ON svd.tipo_dano_via_id = td.tipo_danio_id
+                            LEFT JOIN estados est ON svd.est_sol_id = est.est_id
+                            LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
+                            LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
+                            WHERE svd.fecha_hora BETWEEN '$fecha1' AND '$fecha2'
+                            GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, est.est_nombre, tv.desc_via";
+
+                $_SESSION['sqlVias'] = $sql6;
             }
 
             $sqlEst = "SELECT e. est_id, e.est_nombre from tipo_estado t JOIN estados e ON e.est_id = t.id_estado WHERE t.id_perteneciente = 2 ";

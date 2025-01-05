@@ -12,14 +12,16 @@
                         if ($red) {
                             if ($_SESSION['rol'] == 2) {
                                 echo "<p><strong>Fecha y hora:</strong> " . $red['sol_red_dan_fecha'] . "</p>" .
-                                    "<p><strong>Tipo de señal:</strong> " . $red['reductor'] . "</p>" .
+                                    "<p><strong>Categoria:</strong> " . $red['nombre_categoria'] . "</p>" .
+                                    "<p><strong>Tipo de reductor:</strong> " . $red['reductor'] . "</p>" .
                                     "<p><strong>Descripcion:</strong> " . $red['desc_red'] . "</p>" .
                                     "<p><strong>Estado:</strong> " . $red['est_nombre'] . "</p>";
                             } else {
                                 echo "<p><strong>ID:</strong> " . $red['sol_red_dan_id'] . "</p>" .
                                     "<p><strong>Fecha y hora:</strong> " . $red['sol_red_dan_fecha'] . "</p>" .
                                     "<p><strong>Solicitante:</strong> " . $red['usuario_nombre'] . "</p>" .
-                                    "<p><strong>Tipo de señal:</strong> " . $red['reductor'] . "</p>" .
+                                    "<p><strong>Categoria:</strong> " . $red['nombre_categoria'] . "</p>" .
+                                    "<p><strong>Tipo de reductor:</strong> " . $red['reductor'] . "</p>" .
                                     "<p><strong>Descripcion:</strong> " . $red['desc_red'] . "</p>" .
                                     "<p><strong>Estado:</strong> " . $red['est_nombre'] . "</p>";
                             }

@@ -520,6 +520,13 @@ class UsuariosController
                     JOIN tipo_documento td ON u.doc_id = td.doc_id
                     JOIN estados est ON u.est_id = est.est_id
                     ORDER BY u.usu_nombre1 DESC";
+        } else if ($criterio == 3) {
+            $sql = "SELECT u.*, r.rol_nombre, est.est_nombre FROM usuarios u
+                    JOIN rol r ON u.rol_id = r.rol_id
+                    JOIN sexo s ON u.sex_id = s.sex_id 
+                    JOIN tipo_documento td ON u.doc_id = td.doc_id
+                    JOIN estados est ON u.est_id = est.est_id
+                    ORDER BY u.usu_id DESC";
         } else {
             $sql = $_SESSION['sql'];
         }
@@ -571,7 +578,7 @@ class UsuariosController
             foreach ($datos as $fecha) {
                 $salida[] = $fecha['mes'] . '/' . $fecha['anio'] . ',' . $fecha['usuarios'];
             }
-            
+
             echo implode(";", $salida);
         }
     }

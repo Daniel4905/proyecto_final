@@ -43,7 +43,7 @@
 
                         <div class="card-header">
                             <div class="card-head-row">
-                                <div class="card-title">Gráfico de usuarios registrados</div>
+                                <div class="card-title">Gráfico de usuarios nuevos registrados</div>
                             </div>
                         </div>
                         <div class="card-body">
@@ -184,7 +184,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Meses - ' + anio  // Concatenamos "Meses - " con el año
+                                text: 'Meses - ' + anio  
                             }
                         },
                         y: {

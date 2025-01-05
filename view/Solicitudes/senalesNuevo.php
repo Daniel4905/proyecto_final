@@ -41,7 +41,7 @@
                     <div class="col-md-4">
                         <div class="mb-2">
                             <label for="" class="form-label">Tipo</label>
-                            <select name="tipoSen" id="tipoSen" class="form-select">
+                            <select name="tipoSen" id="tipoSen" class="form-select" data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "infoSens", false, "ajax") ?>">
                                 <option value="" class="form-option">Seleccione...</option>
                             </select>
                         </div>
@@ -62,6 +62,9 @@
             </form>
 
         </div>
+        <div class="col" id="infoSen">
+
+        </div>
     </div>
 </div>
 
@@ -71,6 +74,26 @@
 
     document.getElementById("Coord1").value = valorPunto1;
     document.getElementById("Coord2").value = valorPunto2;
+</script>
+<script>
+    $(document).on('change', "#tipoSen", function () {
+        let url = $(this).attr('data-url');
+        let id = $(this).val();
+
+        if (id) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    $('#infoSen').html(data);
+                },
+                error: function () {
+                    $('#infoSen').html('<div class="alert alert-danger">Error al cargar la información del reductor.</div>');
+                }
+            });
+        }
+    });
 </script>
 
 <script src="assets/js/validacionesSeniales.js"></script>
