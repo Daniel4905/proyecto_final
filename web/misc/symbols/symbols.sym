@@ -92,7 +92,7 @@ END
 SYMBOL
     NAME 'puntoSenNew'
     TYPE PIXMAP
-    IMAGE 'stop.gif'
+    IMAGE 'nuevo.gif'
 END
 
 SYMBOL
@@ -110,7 +110,7 @@ END
 SYMBOL
     NAME 'puntoReduNew'
     TYPE PIXMAP
-    IMAGE 'velento.gif'
+    IMAGE 'nuevo_red.gif'
 END
 
 END
