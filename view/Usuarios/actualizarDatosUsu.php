@@ -1,52 +1,14 @@
 <div class="container">
-    <?php
-    if (isset($_SESSION['mensaje_exito'])) {
-        echo "<script>
-            document.addEventListener('DOMContentLoaded', function () {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: '" . $_SESSION['mensaje_exito'] . "',
-                    confirmButtonText: 'Ok'
-                });
-            });
-        </script>";
-        unset($_SESSION['mensaje_exito']);
-    }
-    ?>
     <div class="mt 3">
         <h3 class="display-4">Actuliza tus datos <?php echo $_SESSION['nombre']; ?></h3>
     </div>
 </div>
 <div class="container container-scroll">
     <?php
-    // if($_SESSION['rol']== 1){
-    //     $readonly = '';
-    //     $disabled = '';
-    // }else if ($_SESSION['']){
-    //     $readonly = 'readonly';
-    //     $disabled = 'disabled';
-    // }
     foreach ($usuarios as $usu) {
         ?>
-        <form action="<?php echo getUrl("Usuarios", "Usuarios", "postUpdateUsu"); ?> " method="post" id="formUpdateUsu">
+        <form action="<?php echo getUrl("Usuarios", "Usuarios", "postUpdateUsu", false, "ajax"); ?> " method="post" id="formUpdateUsu">
             <div class="row mt-5">
-                <?php
-                // if (isset($_SESSION['errores'])) {
-                //     echo "<script>
-                //         document.addEventListener('DOMContentLoaded', function () {
-                //             Swal.fire({
-                //                 icon: 'error',
-                //                 title: 'Errores detectados',
-                //                 html: '" . implode("<br>", $_SESSION['errores']) . "',
-                //                 confirmButtonText: 'Ok'
-                //             });
-                //         });
-                //     </script>";
-                //     unset($_SESSION['errores']);
-                // }
-
-                ?>
                 <div class="col-md-3">
                     <label for="usu_nombre1">Primer nombre*</label>
                     <input type="text" name="usu_nombre1" id="nombre1" class="form-control validar-nombre"
@@ -187,24 +149,6 @@
                         data-url="<?php echo getUrl('Usuarios', 'Usuarios', "ValidarCont", false, "ajax"); ?>">
                     <small class="form-text text-muted">Para actualizar sus datos debe igresar su contraseña.</small>
                 </div>
-                <div class="col-md-12 mt-2">
-
-                    <input type="checkbox" name="cambiarCont" id="cambiarCont">
-                    <label for="cambiarCont">Cambiar contraseña</label>
-                </div>
-                <div class="row col-md-7 mt-2 d-none" id="divContra">
-                    <div class="col-md-6 mt-2">
-                        <label for="usu_clave">Clave nueva</label>
-                        <input type="password" name="usu_clavenew" id="clavenewUp" class="form-control claves"
-                            placholder="Clave">
-                    </div>
-                    <div class="col-md-6 mt-2">
-                        <label for="usu_clave">Confirmar clave nueva*</label>
-                        <input type="password" name="usu_clavenewConf" id="clavenewConf" class="form-control claves"
-                            placholder="Clave">
-                    </div>
-                </div>
-
                 <div class="mt-3">
                     <input type="submit" value="Enviar" class="btn btn-success">
                 </div>

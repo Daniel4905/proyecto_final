@@ -143,6 +143,27 @@ class UsuariosController
         include_once '../view/usuarios/viewProfile.php';
     }
 
+    public function viewProfile2()
+    {
+        $obj = new UsuariosModel();
+        $usu_id = $_POST['id'];
+
+        $sql = "SELECT u.*, s.sex_desc, td.doc_abrev, r.rol_nombre, est.est_id, td.nombre_tipo FROM usuarios u
+                JOIN rol r ON u.rol_id = r.rol_id 
+                JOIN sexo s ON u.sex_id = s.sex_id 
+                JOIN tipo_documento td ON u.doc_id = td.doc_id
+                JOIN estados est ON u.est_id = est.est_id
+                 WHERE usu_id = $usu_id";
+
+        $perfil = $obj->consult($sql);
+        include_once '../view/usuarios/viewProfile.php';
+    }
+
+    public function getActualizarContra()
+    {
+        include_once '../view/usuarios/contra.php';
+    }
+
 
 
     public function buscar()
@@ -340,7 +361,7 @@ class UsuariosController
     {
         $obj = new UsuariosModel();
 
-        $usu_id = $_GET['usu_id'];
+        $usu_id = $_POST['id'];
 
         $sql = "SELECT * FROM usuarios WHERE usu_id = $usu_id";
 
@@ -355,6 +376,20 @@ class UsuariosController
         $docs = $obj->consult($sqldoc);
 
         include_once '../view/usuarios/actualizarDatosUsu.php';
+    }
+
+    public function getConf()
+    {
+        $obj = new UsuariosModel();
+
+        include_once '../view/usuarios/configuracionPerfil.php';
+    }
+
+    public function getConf2()
+    {
+        $obj = new UsuariosModel();
+
+        include_once '../view/usuarios/confP.php';
     }
 
     public function postUpdateUsu()
@@ -440,14 +475,7 @@ class UsuariosController
             $_SESSION['errores'][] = "La contraseña actual ingresada no es correcta";
             $validacion = false;
         }
-
-
-        if (isset($_POST['cambiarCont'])) {
-            $usu_clavenew = $_POST['usu_clavenew'];
-            $hash = hash('sha256', $usu_clavenew);
-        } else {
-            $hash = $contraBase;
-        }
+        $hash = $contraBase;
 
         $sql = "";
         if (empty($usu_apellido2) && empty($usu_nombre2)) {
@@ -467,13 +495,12 @@ class UsuariosController
                     $_SESSION['apellido'] = $usu_apellido1;
                     $_SESSION['sexo'] = $sex_id;
                 }
-                $_SESSION['mensaje_exito'] = "¡Actualización exitosa!";
-                redirect(getUrl("Usuarios", "Usuarios", "getUpdateUsu", array("usu_id" => $usu_id)));
+                echo "Actualización exitosa";
             } else {
-                redirect(getUrl("Usuarios", "Usuarios", "getUpdateUsu", array("usu_id" => $usu_id)));
+                echo "No se pudo actualizar al usuario";
             }
         } else {
-            redirect(getUrl("Usuarios", "Usuarios", "getUpdateUsu", array("usu_id" => $usu_id)));
+            echo "No se pudo actualizar al usuario";
         }
     }
 
@@ -582,4 +609,45 @@ class UsuariosController
             echo implode(";", $salida);
         }
     }
+
+    public function actualizarContra()
+    {
+        $obj = new UsuariosModel();
+
+        $usu_clavenew = $_POST['usu_clavenew'];
+        $usu_clavenewConf = $_POST['usu_clavenewConf'];
+        $usu_clave = $_POST['usu_clave'];
+        $usu_id = $_POST['usu_id'];
+        $validoContra = true;
+
+        $sql2 = "SELECT * FROM usuarios WHERE usu_id = $usu_id";
+        $resultado = $obj->consult($sql2);
+        $hash = hash('sha256', $usu_clave);
+        if ($resultado && isset($resultado[0])) {
+            $contraBase = $resultado[0]['usu_clave'];
+            if ($contraBase === $hash) {
+                $validoContra = true;
+            } else {
+                echo "La contraseña actual no es la correcta";
+                $validoContra = false;
+            }
+        }
+
+        if ($usu_clavenew != $usu_clavenewConf) {
+            echo "Las contraseñas no coinciden";
+            $validoContra = false;
+        }
+        if ($validoContra) {
+            $hash = hash('sha256', $usu_clavenew);
+            $sql = "UPDATE usuarios SET usu_clave = '$hash' WHERE usu_id = $usu_id";
+            $ejecutar = $obj->update($sql);
+            if ($ejecutar) {
+                echo "Actualización exitosa";
+            } else {
+                echo "No se pudo actualizar la contraseña";
+            }
+        }
+    }
+
 }
+

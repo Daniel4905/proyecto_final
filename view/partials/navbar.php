@@ -44,7 +44,7 @@
                     <div class="u-text">
                       <h4><?php echo $_SESSION['nombre'] . " " . $_SESSION['apellido']; ?></h4>
                       <p class="text-muted"><?php echo $_SESSION['correo']; ?></p>
-                      <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'viewProfile', array("usu_id" => $_SESSION['id'])); ?>"
+                      <a href="<?php echo getUrl('Usuarios', 'Usuarios', 'getConf'); ?>"
                         class="btn btn-xs btn-secondary btn-sm"> <i class="fa-regular fa-eye"></i> Ver perfil</a>
                     </div>
                   </div>
@@ -52,7 +52,7 @@
                 <li>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item"
-                    href="<?php echo getUrl('Usuarios', 'Usuarios', 'getUpdateUsu', array("usu_id" => $_SESSION['id'])); ?>">
+                    href="<?php echo getUrl('Usuarios', 'Usuarios', 'getConf2'); ?>">
                     <i class="fa-solid fa-gear"></i> Configuracion de la cuenta</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"

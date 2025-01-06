@@ -8,17 +8,17 @@ $(document).ready(function () {
     let claveValida = false;
 
     function agregarError1(campo, mensaje) {
-        const $campo = $(campo);  
-        if ($campo.length > 0) {  
-            $campo.after(`<p class='text-danger'>${mensaje}</p>`);  
+        const $campo = $(campo);
+        if ($campo.length > 0) {
+            $campo.after(`<p class='text-danger'>${mensaje}</p>`);
         } else {
             console.error('El campo no se encontró');
         }
     }
     function agregarError(campo, mensaje) {
-        const $campo = $(campo);  
-        if ($campo.length > 0) {  
-            $campo.addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);  
+        const $campo = $(campo);
+        if ($campo.length > 0) {
+            $campo.addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
         } else {
             console.error('El campo no se encontró');
         }
@@ -51,19 +51,19 @@ $(document).ready(function () {
                 data: { 'clave': clave, 'id': idUsuario },
                 success: function (response) {
                     if (response === "Contraseña válida") {
-                        claveValida = true; 
+                        claveValida = true;
                         console.log("Contraseña válida");
                     } else {
-                        claveValida = false; 
+                        claveValida = false;
                         agregarError('#clave', response);
                     }
                 },
                 error: function () {
-                    claveValida = false; 
+                    claveValida = false;
                 }
             });
         } else {
-            claveValida = false; 
+            claveValida = false;
             agregarError('#clave', 'Por favor, ingrese su contraseña.');
         }
     });
@@ -169,17 +169,6 @@ $(document).ready(function () {
             valido = false;
         }
 
-        const checkbox2 = $('#cambiarCont').is(':checked');
-        if(checkbox2){
-            if (!validarCampo($('#clavenewUp'), patronClave, 'la nueva contraseña', 'La nueva contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial.')) {
-                valido = false;
-            }
-            const clavenew2 = $('#clavenewConf').val().trim();
-            if (clavenew2 === '' || clavenew2 !== $('#clavenewUp').val().trim()) {
-                agregarError($('#clavenewConf'), 'La confirmación de la contraseña no coincide con la contraseña ingresada.');
-                valido = false;
-            }
-        }
         if (!claveValida) {
             agregarError('#clave', 'La contraseña no ha sido validada correctamente.');
             valido = false;
@@ -197,15 +186,49 @@ $(document).ready(function () {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.submit(); 
+                    let formData = $(this).serialize();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        success: function (response) {
+
+                            if (response === 'Actualización exitosa') {
+                                Swal.fire({
+                                    title: '¡Actualizado!',
+                                    text: 'Los datos se han actualizado correctamente. Para ver los cambios recargué la página',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            }else{
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Ocurrió un problema al actualizar los datos',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire(
+                                'Error',
+                                'Ocurrió un problema al actualizar los datos.',
+                                'error'
+                            );
+                        }
+                    });
                 }
             });
         }
 
     });
 
-  
-    
-    
-    
+
+
+
+
 });

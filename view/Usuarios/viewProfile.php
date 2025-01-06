@@ -72,10 +72,6 @@
                 </div>
             <?php } ?>
 
-            <!-- Botón de volver -->
-            <div class="text-center">
-                <a class="btn btn-outline-primary" href="../web/index.php">Volver</a>
-            </div>
         </div>
     </div>
 </div>
