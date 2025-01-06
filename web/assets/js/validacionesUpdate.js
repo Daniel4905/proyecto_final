@@ -197,7 +197,7 @@ $(document).ready(function () {
                             if (response === 'Actualización exitosa') {
                                 Swal.fire({
                                     title: '¡Actualizado!',
-                                    text: 'Los datos se han actualizado correctamente. Para ver los cambios recargué la página',
+                                    text: 'Los datos se han actualizado correctamente.',
                                     icon: 'success',
                                     confirmButtonText: 'OK'
                                 }).then(() => {
