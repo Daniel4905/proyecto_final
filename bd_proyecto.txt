@@ -1,5 +1,5 @@
 CREATE TABLE estados (
-    est_id integer NOT NULL,
+    est_id SERIAL PRIMARY KEY NOT NULL,
     est_nombre character varying
 );
 
@@ -15,6 +15,7 @@ CREATE TABLE tipo_estado(
     id_tipo_estado INTEGER NOT NULL,
     id_estado INTEGER,
     id_perteneciente INTEGER
+   FOREIGN KEY (id_estado) REFERENCES estados(est_id)
 );
 
 INSERT INTO tipo_estado (id_tipo_estado, id_estado, id_perteneciente) VALUES (1, 1, 1);
@@ -26,7 +27,7 @@ INSERT INTO tipo_estado (id_tipo_estado, id_estado, id_perteneciente) VALUES (6,
 INSERT INTO tipo_estado (id_tipo_estado, id_estado, id_perteneciente) VALUES (7, 7, 2);
 
 CREATE TABLE rol (
-    rol_id integer NOT NULL,
+    rol_id SERIAL PRIMARY KEY NOT NULL,
     rol_nombre character varying(30)
 );
 
@@ -35,7 +36,7 @@ INSERT INTO rol (rol_id, rol_nombre) VALUES (2, 'Ciudadano');
 INSERT INTO rol (rol_id, rol_nombre) VALUES (3, 'Funcionario');
 
 CREATE TABLE tipo_documento (
-    doc_id integer NOT NULL,
+    doc_id SERIAL PRIMARY KEY NOT NULL,
     nombre_tipo character varying,
     doc_abrev character varying(4)
 );
@@ -45,14 +46,14 @@ INSERT INTO tipo_documento (doc_id, nombre_tipo, doc_abrev) VALUES (2, 'Cedula d
 
 
 CREATE TABLE sexo(
-    sex_id SERIAL,
+    sex_id SERIAL PRIMARY KEY,
     sex_desc character varying(50)
 );
 
 INSERT INTO sexo (sex_id, sex_desc) VALUES (1, 'Masculino'), (2, 'Femenino');
 
 CREATE TABLE usuarios (
-    usu_id integer NOT NULL,
+    usu_id SERIAL PRIMARY KEY NOT NULL,
     usu_documento character varying(50) NOT NULL,
     usu_nombre1 character varying(50) NOT NULL,
     usu_nombre2 character varying(50),
@@ -65,7 +66,11 @@ CREATE TABLE usuarios (
     rol_id integer,
     est_id integer,
     doc_id integer,
-    sex_id integer
+    sex_id integer,
+    FOREIGN KEY (rol_id) REFERENCES rol(rol_id),
+    FOREIGN KEY (est_id) REFERENCES estados(est_id),
+    FOREIGN KEY (doc_id) REFERENCES tipo_documento(doc_id),
+    FOREIGN KEY (sex_id) REFERENCES sexo(sex_id)
 );
 
 INSERT INTO usuarios 
@@ -73,11 +78,13 @@ VALUES (1, '1106514243','Jose', 'Daniel', 'Ruiz', 'Montaño', 'jose@gmail.com', 
 
 
 CREATE TABLE pqrs(
-    id_pqrs INTEGER NOT NULL,
-    desc_pqrs character varying(50) NOT NULL, 
+    id_pqrs SERIAL PRIMARY KEY NOT NULL,
+    desc_pqrs TEXT NOT NULL, 
     tipo_pqrs INTEGER,
     usu_id INTEGER,
     fecha_hora timestamp NOT NULL
+    FOREIGN KEY (tipo_pqrs) REFERENCES tipo_pqrs(id_tipo_pqrs),
+    FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
 );
 
 CREATE TABLE tipo_pqrs(
@@ -96,15 +103,18 @@ CREATE TABLE registro_accidente
     reg_acc_fecha_hora timestamp NOT NULL,
     tipo_accidente_id integer NOT NULL,
     reg_acc_lesionados boolean NOT NULL,
-    reg_acc_observaciones character varying NOT NULL,
-    usu_id integer NOT NULL
+    reg_acc_observaciones TEXT NOT NULL,
+    usu_id integer NOT NULL,
+    FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
+
 );
 
 CREATE TABLE punto_accidente
 (
   id serial NOT NULL,
   id_accidente integer NOT NULL,
-  geom geometry(Point,4326)
+  geom geometry(Point,4326),
+  FOREIGN KEY (id_accidente) REFERENCES registro_accidente(reg_acc_id)
 );
 
 
@@ -169,7 +179,8 @@ CREATE TABLE choque_detalle
     choq_detal_id integer NOT NULL,
     descripcion character varying(80),
     id_perteneciente integer,
-    CONSTRAINT choque_detalle_pkey PRIMARY KEY (choq_detal_id)
+    CONSTRAINT choque_detalle_pkey PRIMARY KEY (choq_detal_id),
+    FOREIGN KEY (id_perteneciente) REFERENCES tipo_choque(tipo_choque_id)
 );
 
 INSERT INTO choque_detalle (choq_detal_id, descripcion, id_perteneciente) VALUES
@@ -255,10 +266,6 @@ INSERT INTO choque_detalle (choq_detal_id, descripcion, id_perteneciente) VALUES
 (80, 'Terreno resbaladizo', 4);
 
 
-INSERT INTO choque_detalle (choq_detal_id, descripcion, id_perteneciente) VALUES
-(11, 'Alta velocidad', 4),
-(12, 'Pavimento mojado', 4),
-(13, 'Error mecanico', 4);
 
 CREATE TABLE registro_detalle_accidente
 (
@@ -278,12 +285,15 @@ CREATE TABLE solicitud_via_dan
 (
     sol_via_dan_id integer NOT NULL,
     tipo_dano_via_id integer,
-    descripcion_via character varying,
+    descripcion_via TEXT,
     fecha_hora timestamp without time zone NOT NULL,
     via_id integer,
     est_sol_id integer,
     usu_id integer,
-    CONSTRAINT solicitud_via_dan_pkey PRIMARY KEY (sol_via_dan_id)
+    CONSTRAINT solicitud_via_dan_pkey PRIMARY KEY (sol_via_dan_id),
+    FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id),
+    FOREIGN KEY (est_sol_id) REFERENCES estados(est_id),
+    FOREIGN KEY (via_id) REFERENCES tipo_via(id_tipo_via)
 );
 
 
@@ -291,7 +301,8 @@ CREATE TABLE punto_via
 (
   id serial NOT NULL,
   id_via integer NOT NULL,
-  geom geometry(Point,4326)
+  geom geometry(Point,4326),
+  FOREIGN KEY (id_via) REFERENCES solicitud_via_dan(sol_via_dan_id)
 );
 
 CREATE TABLE tipo_via(
@@ -346,7 +357,7 @@ INSERT INTO danio (danio_id, tipo_danio_id, solicitud_id) VALUES
 
 CREATE TABLE tipo_danio
 (
-    tipo_danio_id integer NOT NULL,
+    tipo_danio_id SERIAL NOT NULL PRIMARY KEY,
     tipo_danio_desc character varying(100),
     CONSTRAINT tipo_danio_pkey PRIMARY KEY (tipo_danio_id)
 );
@@ -389,7 +400,7 @@ CREATE TABLE tipo_seniales (
 CREATE TABLE solicitud_seniales_new (
     sol_sen_new_id SERIAL PRIMARY KEY,
     tipo_sen_id INTEGER NOT NULL, 
-    desc_sen VARCHAR(500) NOT NULL, 
+    desc_sen TEXT NOT NULL, 
     sol_sen_new_fecha TIMESTAMP,
     est_sol_id INTEGER NOT NULL, 
     usu_id INTEGER NOT NULL, 
@@ -509,13 +520,14 @@ CREATE TABLE punto_senialNew
   id serial NOT NULL,
   id_senialNew integer NOT NULL,
   geom geometry(Point,4326)
+  FOREIGN KEY (id_senialNew) REFERENCES solicitud_seniales_new(sol_sen_new_id)
 );
 
 
 CREATE TABLE solicitud_seniales_dan (
     sol_sen_dan_id SERIAL PRIMARY KEY,
     tipo_sen_id INTEGER NOT NULL, 
-    desc_sen_dan VARCHAR(500) NOT NULL,
+    desc_sen_dan TEXT NOT NULL,
     danio_id INTEGER NOT NULL, 
     sol_sen_dan_fecha TIMESTAMP,
     img_sen_dan TEXT,
@@ -532,6 +544,8 @@ CREATE TABLE punto_senialDan
   id serial NOT NULL,
   id_senialDan integer NOT NULL,
   geom geometry(Point,4326)
+  FOREIGN KEY (id_senialDan) REFERENCES solicitud_seniales_new(sol_sen_dan_id)
+
 );
 
 CREATE TABLE categoria_reductores (
@@ -550,7 +564,8 @@ CREATE TABLE tipos_reductores (
     nombre_tipo_red VARCHAR(100) NOT NULL,
     descripcion_tipo_red TEXT,
     img_reductor TEXT,
-    cat_id INT
+    cat_id INTEGER,
+    CONSTRAINT fk_cat FOREIGN KEY (cat_id) REFERENCES categoria_reductores(id_categoria)
 );
 
 
@@ -571,7 +586,11 @@ CREATE TABLE solicitud_reductores_dan (
     sol_red_dan_fecha TIMESTAMP,
     img_red_dan TEXT,                     
     est_sol_id INTEGER NOT NULL,       
-    usu_id INTEGER NOT NULL
+    usu_id INTEGER NOT NULL,
+    FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id),
+    FOREIGN KEY (est_sol_id) REFERENCES estados(est_id),
+    FOREIGN KEY (danio_id) REFERENCES tipo_danio(tipo_danio_id),
+    FOREIGN KEY (tipo_red_id) REFERENCES tipos_reductores(tipo_red_id)
 );
 
 CREATE TABLE punto_reductorDan
@@ -579,6 +598,8 @@ CREATE TABLE punto_reductorDan
   id_red_dan serial NOT NULL,
   id_reductorDan integer NOT NULL,
   geom geometry(Point,4326)
+  FOREIGN KEY (id_reductorDan) REFERENCES solicitud_reductores_dan(sol_red_dan_id)
+
 );
 
 
@@ -589,7 +610,11 @@ CREATE TABLE solicitud_reductores_new (
     sol_red_new_fecha TIMESTAMP,  
     img_red_new TEXT,                  
     est_sol_id INTEGER NOT NULL,       
-    usu_id INTEGER NOT NULL
+    usu_id INTEGER NOT NULL,
+    FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id),
+    FOREIGN KEY (est_sol_id) REFERENCES estados(est_id),
+    FOREIGN KEY (tipo_red_id) REFERENCES tipos_reductores(tipo_red_id)
+    
 );
 
 CREATE TABLE punto_reductorNew
@@ -597,6 +622,8 @@ CREATE TABLE punto_reductorNew
   id_red_new serial NOT NULL,
   id_reductorNew integer NOT NULL,
   geom geometry(Point,4326)
+  FOREIGN KEY (id_reductorNew) REFERENCES solicitud_reductores_dan(sol_red_new_id)
+
 );
 
 
@@ -606,7 +633,8 @@ CREATE TABLE tokens_contra
   token character varying(6) NOT NULL,
   usu_id integer NOT NULL,
   expiracion timestamp without time zone NOT NULL,
-  CONSTRAINT tokens_contra_pkey PRIMARY KEY (id_token)
+  CONSTRAINT tokens_contra_pkey PRIMARY KEY (id_token), 
+   FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
 );
 
 
