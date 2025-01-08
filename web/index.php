@@ -17,7 +17,7 @@
                                      
                                      echo "<div class = 'container-scroll-index' > ";
                                      echo "<h1>Bienvenido a AccidentEye</h1>";
-                                     echo "<p>Selecciona una zona del mapa para realizar una solicitud.</p>";
+                                     echo "<p> Selecciona una zona del mapa para realizar una solicitud.</p>";
                                      include_once "maqueta.php";
                                      include_once "../view/partials/content.php";
                                      echo"</div>";

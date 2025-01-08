@@ -102,7 +102,6 @@ if (isset($_SESSION['error'])) {
 
                 var formData = form.serialize();
 
-
                 $.ajax({
                     url: form.attr('action'),
                     type: 'POST',

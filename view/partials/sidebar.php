@@ -51,8 +51,8 @@
         ?>
     </ul>
     <li class="sidebar-footer">
-        <a href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
-            onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');" class="sidebar-link"
+        <a href="javascript:void(0);"
+            onclick="cerrarSesion();" class="sidebar-link"
             title="Cerrar sesión">
             <img src="img/cerrarS.png" style="width: 30px;" alt="">
             <span class="cerrarS">Cerrar sesion</span>
@@ -61,3 +61,22 @@
 
 
 </div>
+
+<script>
+    function cerrarSesion(){
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Se cerrará la sesión.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "index.php?modulo=Acceso&controlador=Acceso&funcion=logout";
+            }
+        });
+    }
+</script>

@@ -55,8 +55,8 @@
                     href="<?php echo getUrl('Usuarios', 'Usuarios', 'getConf2'); ?>">
                     <i class="fa-solid fa-gear"></i> Configuracion de la cuenta</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="<?php echo getUrl('Acceso', 'Acceso', 'logout'); ?>"
-                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?');" style="color: red; font-weight: bold;"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesion</a>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    onclick="cerrarSesion();" style="color: red; font-weight: bold;"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesion</a>
                 </li>
               </div>
             </ul>
@@ -66,3 +66,22 @@
     </div>
   </div>
 </nav>
+
+<script>
+    function cerrarSesion(){
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Se cerrará la sesión.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "index.php?modulo=Acceso&controlador=Acceso&funcion=logout";
+            }
+        });
+    }
+</script>
