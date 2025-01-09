@@ -54,6 +54,9 @@
                 }
 
                 echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenDan", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver detalles</button>";
+                if ($_SESSION['rol'] != 2) {
+                    echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' style = 'margin-left: 10px;' data-id='" . $sen['sol_sen_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiSenDan", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+                }
                 echo "</div>";
                 echo "</div>";
                 echo "</div>";
@@ -91,7 +94,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="auditoriaForm" action="<?php echo getUrl('Solicitudes', 'Solicitudes','auditoriaSenDan', false, "ajax")?>" method="POST">
+                <form id="auditoriaForm"
+                    action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'auditoriaSenDan', false, "ajax") ?>"
+                    method="POST">
                     <input type="hidden" id="auditoriaSolicitudId" name="solicitudId">
                     <div class="mb-3 d-none">
                         <label for="estado1" class="form-label">Estado Anterior</label>
@@ -100,13 +105,15 @@
                     <div class="mb-3 d-none">
                         <label for="estado2" class="form-label">Nuevo Estado</label>
                         <input type="text" class="form-control" id="estado2" value="" name="id" readonly>
-                    </div> 
+                    </div>
                     <div class="mb-3">
                         <label for="auditoriaDescripcion" class="form-label">Descripción del cambio</label>
-                        <textarea class="form-control" id="auditoriaDescripcion" name="descripcion" rows="3" required></textarea>
+                        <textarea class="form-control" id="auditoriaDescripcion" name="descripcion" rows="3"
+                            required></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="cerrar_modal" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="cerrar_modal" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary" id="guardarAuditoria">Guardar</button>
                     </div>
                 </form>
@@ -119,7 +126,22 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detallesModalLabel">Detalles del accidente</h5>
+                <h5 class="modal-title" id="detallesModalLabel">Detalles de la solicitud</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="contenidoDetalles">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="verAudiSenDan" tabindex="-1" aria-labelledby="verAudiSenDan" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verAudiSenDan">Historial de cambios de estado</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="contenidoDetalles">
@@ -162,8 +184,35 @@
 
         });
 
+        $(document).on('click', '.btn-cambios-estado', function () {
+            const solicitudId = $(this).data('id');
+            const url = $(this).data('url');
+
+            $('#verAudiSenDan.modal-body').html('<p>Cargando...</p>');
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: { solicitudId: solicitudId },
+                success: function (response) {
+                    $('#verAudiSenDan .modal-body').html(response);
+
+                    $('#verAudiSenDan').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar los cambios de estado:", error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudieron cargar los cambios de estado. Intenta de nuevo más tarde.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            });
+        });
+
         $(document).off('change', '.estado_solicitud'); // Limpia eventos anterior
-        
+
         //optener el estado actual
         $(document).on('focus', '.estado_solicitud', function () {
             estadoInicial = $(this).val();  // Guarda el estado inicial del select
@@ -179,7 +228,7 @@
         });
 
 
-        
+
         $(document).on('submit', '#auditoriaForm', function (event) {
             event.preventDefault();
             var formData = $(this).serialize();
@@ -224,7 +273,7 @@
             });
         });
 
-        
+
 
         $('#cerrar_modal').click(function (event) {
             Swal.fire({
@@ -236,7 +285,7 @@
         });
 
     });
-    
+
     $(document).ready(function () {
         $('#descargar').click(function (event) {
             event.preventDefault();
@@ -252,7 +301,7 @@
                             icon: 'error',
                             confirmButtonText: 'Intentar de nuevo'
                         });
-                    }else{
+                    } else {
                         window.location.href = url;
                     }
 

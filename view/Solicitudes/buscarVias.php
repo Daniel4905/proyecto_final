@@ -6,7 +6,7 @@ if (is_array($vias) && count($vias) > 0) {
         echo "<h2 class='accordion-header' id='heading$viaId'>";
         echo "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse$viaId' aria-expanded='false' aria-controls='collapse$viaId'>";
         if ($_SESSION['rol'] == 2) {
-            echo "Via" . " - " . $via['fecha_hora'] . "&nbsp; <i class='fa-regular fa-calendar'></i>";
+            echo "Via " . " -  " . $via['fecha_hora'] . "&nbsp; <i class='fa-regular fa-calendar'></i>";
         } else {
             echo "Via ID: " . $via['sol_via_dan_id'] . " - " . $via['fecha_hora'] . "&nbsp; <i class='fa-regular fa-calendar'></i>";
         }
@@ -27,8 +27,8 @@ if (is_array($vias) && count($vias) > 0) {
             echo "<div class='col-md-2'>";
 
             echo "<select id='' name='estado' class='form-select estado_solicitud' 
-            data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoVias", false, "ajax") . "' 
-            data-soli='" . $via['sol_via_dan_id'] . "'>";
+                    data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoVias", false, "ajax") . "' 
+                    data-soli='" . $via['sol_via_dan_id'] . "'>";
             foreach ($estados as $est) {
                 $selected = "";
                 if ($est['est_id'] == $via['est_sol_id']) {
@@ -42,12 +42,14 @@ if (is_array($vias) && count($vias) > 0) {
             echo "</p>";
         }
         echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesVia", false, "ajax") . "'>Ver detalles</button>";
+        if ($_SESSION['rol'] != 2) {
+            echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' style = 'margin-left: 10px;' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiVias", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+        }
         echo "</div>";
         echo "</div>";
         echo "</div>";
     }
 } else {
-    echo "<div class='alert alert-danger text-center' role='alert'>No se encontraron resultados.</div>";
+    echo "<div class='alert alert-danger text-center' role='alert'>No hay solicitudes de vias a reparar registradas.</div>";
 }
-
 ?>

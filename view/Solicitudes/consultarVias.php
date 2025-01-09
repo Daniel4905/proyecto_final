@@ -58,6 +58,9 @@
                     echo "</p>";
                 }
                 echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesVia", false, "ajax") . "'>Ver detalles</button>";
+                if ($_SESSION['rol'] != 2) {
+                    echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' style = 'margin-left: 10px;' data-id='" . $via['sol_via_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiVias", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+                }
                 echo "</div>";
                 echo "</div>";
                 echo "</div>";
@@ -91,7 +94,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="auditoriaForm" action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'auditoriaVia', false, "ajax") ?>"
+                <form id="auditoriaForm"
+                    action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'auditoriaVia', false, "ajax") ?>"
                     method="POST">
                     <input type="hidden" id="auditoriaSolicitudId" name="solicitudId">
                     <div class="mb-3 d-none">
@@ -122,7 +126,23 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detallesModalLabel">Detalles del accidente</h5>
+                <h5 class="modal-title" id="detallesModalLabel">Detalles de la solicitud</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="contenidoDetalles">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="verAudiVias" tabindex="-1" aria-labelledby="verAudiVias" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verAudiVias">Historial de cambios de estado</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="contenidoDetalles">
@@ -221,6 +241,33 @@
                         text: 'Ocurrió un error al realizar la solicitud.',
                         icon: 'error',
                         confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-cambios-estado', function () {
+            const solicitudId = $(this).data('id');
+            const url = $(this).data('url');
+
+            $('#verAudiVias.modal-body').html('<p>Cargando...</p>');
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: { solicitudId: solicitudId },
+                success: function (response) {
+                    $('#verAudiVias .modal-body').html(response);
+
+                    $('#verAudiVias').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar los cambios de estado:", error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudieron cargar los cambios de estado. Intenta de nuevo más tarde.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
                     });
                 }
             });

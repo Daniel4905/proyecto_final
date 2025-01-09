@@ -47,7 +47,9 @@
                     echo "</p>";
                 }
                 echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver detalles</button>";
-                echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+                if ($_SESSION['rol'] != 2) {
+                    echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' style = 'margin-left: 10px;' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+                }
                 echo "</div>";
                 echo "</div>";
                 echo "</div>";
@@ -155,19 +157,15 @@ if (is_array($senial) && count($senial) > 0) {
             const solicitudId = $(this).data('id');
             const url = $(this).data('url');
 
-            // Limpia el contenido del modal antes de cargar nuevos datos
             $('#verAudiSenNew .modal-body').html('<p>Cargando...</p>');
 
-            // Realiza una solicitud AJAX para obtener los detalles
             $.ajax({
                 url: url,
                 type: "POST",
                 data: { solicitudId: solicitudId },
                 success: function (response) {
-                    // Inserta los datos recibidos en el cuerpo del modal
                     $('#verAudiSenNew .modal-body').html(response);
 
-                    // Muestra el modal
                     $('#verAudiSenNew').modal('show');
                 },
                 error: function (xhr, status, error) {

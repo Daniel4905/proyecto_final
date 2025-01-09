@@ -803,32 +803,183 @@ class SolicitudesController
         $id = $_POST['solicitudId'];
 
 
-        $sql = "SELECT a.*, e.est_nombre,(SELECT est_nombre FROM estados e2 WHERE e2.est_id = a.au_sen_new_estadofin) AS estado2, u.usu_nombre1, u.usu_apellido1 FROM auditoriaSenNew a JOIN estados e ON a.au_sen_new_estadoini = e.est_id JOIN 
-        usuarios u ON a.usu_id = u.usu_id WHERE a.sol_sen_new_id = $id";
+        $sql = "SELECT a.*, e.est_nombre,
+                (SELECT est_nombre FROM estados e2 WHERE e2.est_id = a.au_sen_new_estadofin) AS estado2, u.usu_nombre1, u.usu_apellido1
+                 FROM auditoriaSenNew a JOIN estados e ON a.au_sen_new_estadoini = e.est_id JOIN 
+                  usuarios u ON a.usu_id = u.usu_id WHERE a.sol_sen_new_id = $id ORDER BY a.au_sen_new_fechah DESC";
 
         $audito = $obj->consult($sql);
-
-        foreach ($audito as $au) {
-            if ($audito) {
-                if ($_SESSION['rol'] == 1) {
+        if (is_array($audito) && count($audito) > 1) {
+            foreach ($audito as $au) {
+                if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Auditoría ID: " . ($au['au_sen_new_id']) . "</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
                     echo "  <div class='card-body'>";
-                    echo "      <p><strong>ID de la Solicitud:</strong> " . ($au['sol_sen_new_id']) . "</p>";
-                    echo "      <p><strong>Fecha y Hora de la Auditoría:</strong> " . ($au['au_sen_new_fechah']) . "</p>";
-                    echo "      <p><strong>Descripción de la Auditoría:</strong> " . ($au['au_sen_new_desc']) . "</p>";
-                    echo "      <p><strong>Estado Inicial:</strong> " . ($au['est_nombre']) . "</p>";
-                    echo "      <p><strong>Estado Final:</strong> " . ($au['estado2']) . "</p>";
-                    echo "      <p><strong>Usuario que Realizó el Cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
+                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_sen_new_id']) . "</p>";
+                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_sen_new_fechah']) . "</p>";
+                    echo "      <p><strong>Justificación:</strong> " . ($au['au_sen_new_desc']) . "</p>";
+                    echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
+                    echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
+                    echo "      <p><strong>Usuario que realizó el cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
+                    echo "  </div>";
+                    echo "</div>";
+                } else {
+                    echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
+                }
+            }
+        }else{
+            echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
+        }
+
+    }
+
+    public function verAudiSenDan()
+    {
+        $obj = new SolicitudesModel();
+        $id = $_POST['solicitudId'];
+
+
+        $sql = "SELECT a.*, e.est_nombre,
+                (SELECT est_nombre FROM estados e2 WHERE e2.est_id = a.au_sen_dan_estadofin) AS estado2, u.usu_nombre1, u.usu_apellido1
+                 FROM auditoriaSenDan a JOIN estados e ON a.au_sen_dan_estadoini = e.est_id JOIN 
+                  usuarios u ON a.usu_id = u.usu_id WHERE a.sol_sen_dan_id = $id ORDER BY a.au_sen_dan_fechah DESC";
+
+        $audito = $obj->consult($sql);
+        if (is_array($audito) && count($audito) > 1) {
+            foreach ($audito as $au) {
+                if ($audito) {
+                    echo "<div class='card mb-3 border-primary'>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-body'>";
+                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_sen_dan_id']) . "</p>";
+                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_sen_dan_fechah']) . "</p>";
+                    echo "      <p><strong>Justificación:</strong> " . ($au['au_sen_dan_desc']) . "</p>";
+                    echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
+                    echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
+                    echo "      <p><strong>Usuario que realizó el cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
                     echo "  </div>";
                     echo "</div>";
 
+
                 } else {
-                    echo "<div class='alert alert-danger text-center'>No se encontraron registros para esta auditoría.</div>";
+                    echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
                 }
-            } else {
-                echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
             }
+        }else{
+            echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
+        }
+    }
+
+    public function verAudiVias()
+    {
+        $obj = new SolicitudesModel();
+        $id = $_POST['solicitudId'];
+
+
+        $sql = "SELECT a.*, e.est_nombre,
+                (SELECT est_nombre FROM estados e2 WHERE e2.est_id = a.au_via_estadofin) AS estado2, u.usu_nombre1, u.usu_apellido1
+                 FROM auditoriavia a JOIN estados e ON a.au_via_estadoini = e.est_id JOIN 
+                  usuarios u ON a.usu_id = u.usu_id WHERE a.sol_via_dan_id = $id ORDER BY a.au_via_fechah DESC";
+
+        $audito = $obj->consult($sql);
+
+        if (is_array($audito) && count($audito) > 1) {
+            foreach ($audito as $au) {
+                if ($audito) {
+                    echo "<div class='card mb-3 border-primary'>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-body'>";
+                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_via_dan_id']) . "</p>";
+                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_via_fechah']) . "</p>";
+                    echo "      <p><strong>Justificación:</strong> " . ($au['au_via_desc']) . "</p>";
+                    echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
+                    echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
+                    echo "      <p><strong>Usuario que realizó el cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
+                    echo "  </div>";
+                    echo "</div>";
+
+
+                } else {
+                    echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
+                }
+            }
+        }else{
+            echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
+        }
+    }
+
+    public function verAudiRedDan()
+    {
+        $obj = new SolicitudesModel();
+        $id = $_POST['solicitudId'];
+
+
+        $sql = "SELECT a.*, e.est_nombre,
+                (SELECT est_nombre FROM estados e2 WHERE e2.est_id = a.au_red_dan_estadofin) AS estado2, u.usu_nombre1, u.usu_apellido1
+                 FROM auditoriareddan a JOIN estados e ON a.au_red_dan_estadoini = e.est_id JOIN 
+                  usuarios u ON a.usu_id = u.usu_id WHERE a.sol_red_dan_id = $id ORDER BY a.au_red_dan_fechah DESC";
+
+        $audito = $obj->consult($sql);
+
+        if (is_array($audito) && count($audito) > 1) {
+            foreach ($audito as $au) {
+                if ($audito) {
+                    echo "<div class='card mb-3 border-primary'>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-body'>";
+                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_red_dan_id']) . "</p>";
+                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_red_dan_fechah']) . "</p>";
+                    echo "      <p><strong>Justificación:</strong> " . ($au['au_red_dan_desc']) . "</p>";
+                    echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
+                    echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
+                    echo "      <p><strong>Usuario que realizó el cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
+                    echo "  </div>";
+                    echo "</div>";
+
+
+                } else {
+                    echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
+                }
+            }
+        }else{
+            echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
+        }
+    }
+    public function verAudiRedNew()
+    {
+        $obj = new SolicitudesModel();
+        $id = $_POST['solicitudId'];
+
+
+        $sql = "SELECT a.*, e.est_nombre,
+                (SELECT est_nombre FROM estados e2 WHERE e2.est_id = a.au_red_new_estadofin) AS estado2, u.usu_nombre1, u.usu_apellido1
+                 FROM auditoriarednew a JOIN estados e ON a.au_red_new_estadoini = e.est_id JOIN 
+                  usuarios u ON a.usu_id = u.usu_id WHERE a.sol_red_new_id = $id ORDER BY a.au_red_new_fechah DESC";
+
+        $audito = $obj->consult($sql);
+
+        if (is_array($audito) && count($audito) > 1) {
+            foreach ($audito as $au) {
+                if ($audito) {
+                    echo "<div class='card mb-3 border-primary'>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-body'>";
+                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_red_new_id']) . "</p>";
+                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_red_new_fechah']) . "</p>";
+                    echo "      <p><strong>Justificación:</strong> " . ($au['au_red_new_desc']) . "</p>";
+                    echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
+                    echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
+                    echo "      <p><strong>Usuario que realizó el cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
+                    echo "  </div>";
+                    echo "</div>";
+    
+    
+                } else {
+                    echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
+                }
+            }
+        }else{
+            echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
         }
     }
     //__________________________________DETALLE SEÑALES___________________________________________________

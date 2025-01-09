@@ -5,7 +5,7 @@ if (is_array($reductores) && count($reductores) > 0) {
         echo "<div class='accordion-item'>";
         echo "<h2 class='accordion-header' id='heading$redId'>";
         echo "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse$redId' aria-expanded='false' aria-controls='collapse$redId'>";
-        echo "Reductor ID: " . $red['sol_red_dan_id'] . " &nbsp; - &nbsp;" . $red['sol_red_dan_fecha'] . " &nbsp; <i class='fa-regular fa-calendar'></i>";
+        echo "Reductor - reparación &nbsp; - &nbsp;" . $red['sol_red_dan_fecha'] . " &nbsp; <i class='fa-regular fa-calendar'></i>";
         echo "</button>";
         echo "</h2>";
         echo "<div id='collapse$redId' class='accordion-collapse collapse' aria-labelledby='heading$redId' data-bs-parent='#accordionReductores'>";
@@ -13,14 +13,18 @@ if (is_array($reductores) && count($reductores) > 0) {
 
 
         echo "<p><strong><i class='fa fa-wrench'></i> Tipo de Reductor:</strong> " . $red['reductor'] . "</p>";
-        echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $red['usuario_nombre'] . "</p>";
+        if ($_SESSION['rol'] == 2) {
+            echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> Tú </p>";
+        } else {
+            echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $red['usuario_nombre'] . "</p>";
+        }
         if ($_SESSION['rol'] != 2) {
             echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
             echo "<div class='row'>";
             echo "<div class='col-md-2'>";
             echo "<select id='' name='estado' class='form-select estado_solicitud' 
-            data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoRedDan", false, "ajax") . "' 
-            data-soli='" . $red['sol_red_dan_id'] . "'>";
+                    data-url='" . getUrl("Solicitudes", "Solicitudes", "updateEstadoRedDan", false, "ajax") . "' 
+                    data-soli='" . $red['sol_red_dan_id'] . "'>";
             foreach ($estados as $est) {
                 $selected = "";
                 if ($est['est_id'] == $red['est_sol_id']) {
@@ -34,11 +38,15 @@ if (is_array($reductores) && count($reductores) > 0) {
             echo "</p>";
         }
         echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $red['sol_red_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesRedDan", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver detalles</button>";
+        if ($_SESSION['rol'] != 2) {
+            echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' style = 'margin-left: 10px;' data-id='" . $red['sol_red_dan_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiRedDan", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+        }
         echo "</div>";
         echo "</div>";
         echo "</div>";
     }
+
 } else {
-    echo "<div class='alert alert-danger text-center' role='alert'>No se encontraron resultados.</div>";
+    echo "<div class='alert alert-danger text-center' role='alert'>No hay solicitudes de reductores a reparar registradas.</div>";
 }
 ?>
