@@ -265,23 +265,44 @@ $(document).ready(function () {
         let buscar = $(this).val();
         let url = $(this).data('url');
 
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: { 'buscar': buscar },
-            success: function (data) {
-                $('#userList').html(data);
-                if (data.trim() === '' || $('#userList').children().length === 0) {
-                    $('#datError').removeClass('d-none');
-                } else {
-                    $('#datError').addClass('d-none');
+        let patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; 
+        let patronNumero = /^[0-9]+$/;                 
+
+        if (buscar.trim() === "") {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { 'buscar': '' }, 
+                success: function (data) {
+                    $('#userList').html(data);
+                    $('#datError').addClass('d-none'); 
+                },
+                error: function () {
+                    console.log("Error en la solicitud AJAX.");
                 }
-            },
-            error: function () {
-                console.log("Error en la solicitud AJAX.");
-            }
-        });
+            });
+        } else if (patronTexto.test(buscar) || patronNumero.test(buscar)) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { 'buscar': encodeURIComponent(buscar) },
+                success: function (data) {
+                    $('#userList').html(data);
+                    if (data.trim() === '' || $('#userList').children().length === 0) {
+                        $('#datError').removeClass('d-none');
+                    } else {
+                        $('#datError').addClass('d-none');  
+                    }
+                },
+                error: function () {
+                    console.log("Error en la solicitud AJAX.");
+                }
+            });
+        } else {
+            return; 
+        }
     });
+
 
 
     $(document).on('change', "#tipo-solicitud", function () {
@@ -539,7 +560,7 @@ $(document).ready(function () {
                             'Ocurrió un problema al actualizar el estado.',
                             'error'
                         );
-                        select.val(prevValue); 
+                        select.val(prevValue);
                     }
                 });
             } else {
@@ -547,7 +568,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
 
 
     $('#documentoRegistro').on('blur', function () {

@@ -59,7 +59,7 @@ if (isset($_SESSION['error'])) {
                 });
             });
              </script>";
-            unset($_SESSION['restC']);
+            unset($_SESSION['RegExitoso']);
         }
         if (isset($_SESSION['restC'])) {
             echo "<script>

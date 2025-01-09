@@ -100,7 +100,7 @@ html {
 @media (max-width: 360px) {
 
     .container-scroll {
-        max-height: 530px;
+        max-height: 540px;
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -129,7 +129,7 @@ html {
 
     /* Ejemplo: iPhone 11, iPhone XR */
     .container-scroll {
-        max-height: 440px;
+        max-height: 450px;
         /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
@@ -157,7 +157,7 @@ html {
 
     /* Ejemplo: iPhone 11, iPhone XR */
     .container-scroll {
-        max-height: 750px;
+        max-height: 650px;
         /* Ajustamos a un tamaño más cómodo */
         overflow-y: auto;
         overflow-x: hidden;
@@ -243,7 +243,7 @@ html {
 
     /* Ejemplo: iPad Mini, iPad en modo vertical */
     .container-scroll {
-        max-height: 650px;
+        max-height: 540px;
         overflow-y: auto;
         overflow-x: auto;
     }
@@ -260,7 +260,7 @@ html {
         overflow-x: hidden;
     }
     .container-scroll-sols{
-        max-height:350px;
+        max-height: 280px;
         /* max-width: 320px; */
         overflow-y: auto;
         overflow-x: hidden;
