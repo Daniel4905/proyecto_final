@@ -682,9 +682,7 @@ CREATE TABLE auditoriaSenNew(
   au_sen_new_estadoIni integer not null,
   au_sen_new_estadoFin integer not null,
   sol_sen_new_id integer not null,
-  usu_id integer not null, 
-  FOREIGN KEY (sol_sen_new_id) REFERENCES solicitud_seniales_new (sol_sen_new_id),
-  FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
+  usu_id integer not null
 );
 
 
@@ -695,9 +693,7 @@ CREATE TABLE auditoriaSenDan(
   au_sen_dan_estadoIni integer not null,
   au_sen_dan_estadoFin integer not null,
   sol_sen_dan_id integer not null,
-  usu_id integer not null,
-  FOREIGN KEY (sol_sen_dan_id) REFERENCES solicitud_seniales_dan (sol_sen_dan_id),
-  FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
+  usu_id integer not null
 );
  --------------------
 
@@ -708,9 +704,7 @@ CREATE TABLE auditoriaRedNew(
   au_red_new_estadoIni integer not null,
   au_red_new_estadoFin integer not null,
   sol_red_new_id integer not null,
-  usu_id integer not null, 
-  FOREIGN KEY (sol_red_new_id) REFERENCES solicitud_reductores_new (sol_red_new_id),
-  FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
+  usu_id integer not null
 );
 
 
@@ -721,9 +715,7 @@ CREATE TABLE auditoriaRedDan(
   au_red_dan_estadoIni integer not null,
   au_red_dan_estadoFin integer not null,
   sol_red_dan_id integer not null,
-  usu_id integer not null,
-  FOREIGN KEY (sol_red_dan_id) REFERENCES solicitud_reductores_dan(sol_red_dan_id),
-  FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
+  usu_id integer not null
 );
 
 -------------------------------------
@@ -737,9 +729,7 @@ CREATE TABLE auditoriaVia(
   au_via_estadoIni integer not null,
   au_via_estadoFin integer not null,
   sol_via_dan_id integer not null,
-  usu_id integer not null,
-  FOREIGN KEY (sol_via_dan_id) REFERENCES solicitud_via_dan(sol_via_dan_id),
-  FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
+  usu_id integer not null
 );
 
 
@@ -753,9 +743,7 @@ CREATE TABLE auditoriaAccidente(
   au_acc_estadoIni integer not null,
   au_acc_estadoFin integer not null,
   reg_acc_id integer not null,
-  usu_id integer not null,
-  FOREIGN KEY (reg_acc_id) REFERENCES registro_accidente(reg_acc_id ),
-  FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id)
+  usu_id integer not null
 );
 
 

@@ -19,37 +19,37 @@
             foreach ($senial as $sen) {
                 $senId = $sen['sol_sen_new_id'];
                 echo "<div class='accordion-item'>";
-                    echo "<h2 class='accordion-header' id='heading$senId'>";
-                        echo "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse$senId' aria-expanded='false' aria-controls='collapse$senId'>";
-                            echo "Señal - nueva &nbsp; - &nbsp;" . $sen['sol_sen_new_fecha'] . " &nbsp; <i class='fa-regular fa-calendar'></i>";
-                        echo "</button>";
-                    echo "</h2>";
-                    echo "<div id='collapse$senId' class='accordion-collapse collapse' aria-labelledby='heading$senId' data-bs-parent='#accordionSeniales'>";
-                        echo "<div class='accordion-body'>";
-                        echo "<p><strong><i class='fa fa-traffic-light'></i> Tipo de Señal:</strong> " . $sen['senal'] . "</p>";
-                        echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $sen['usuario_nombre'] . "</p>";
-                        if ($_SESSION['rol'] != 2) {
-                            echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
-                                echo "<div class='row'>";
-                                    echo "<div class='col-md-2'>";
-                                        echo "<select id='estado_solicitud' class='form-select estado_solicitud' 
+                echo "<h2 class='accordion-header' id='heading$senId'>";
+                echo "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapse$senId' aria-expanded='false' aria-controls='collapse$senId'>";
+                echo "Señal - nueva &nbsp; - &nbsp;" . $sen['sol_sen_new_fecha'] . " &nbsp; <i class='fa-regular fa-calendar'></i>";
+                echo "</button>";
+                echo "</h2>";
+                echo "<div id='collapse$senId' class='accordion-collapse collapse' aria-labelledby='heading$senId' data-bs-parent='#accordionSeniales'>";
+                echo "<div class='accordion-body'>";
+                echo "<p><strong><i class='fa fa-traffic-light'></i> Tipo de Señal:</strong> " . $sen['senal'] . "</p>";
+                echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $sen['usuario_nombre'] . "</p>";
+                if ($_SESSION['rol'] != 2) {
+                    echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
+                    echo "<div class='row'>";
+                    echo "<div class='col-md-2'>";
+                    echo "<select id='estado_solicitud' class='form-select estado_solicitud' 
                                                 data-soli='" . $sen['sol_sen_new_id'] . "'>";
-                                                foreach ($estados as $est) {
-                                                    $selected = "";
-                                                    if ($est['est_id'] == $sen['est_sol_id']) {
-                                                        $selected = "selected";
-                                                    }
-                                                    echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
-                                                }
-                                        echo "</select>";
-                                    echo "</div>";
-                                echo "</div>";
-                            echo "</p>";
+                    foreach ($estados as $est) {
+                        $selected = "";
+                        if ($est['est_id'] == $sen['est_sol_id']) {
+                            $selected = "selected";
                         }
-                        echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver detalles</button>";
-                        echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
-                        echo "</div>";
+                        echo "<option value='" . $est['est_id'] . "' $selected>" . $est['est_nombre'] . "</option>";
+                    }
+                    echo "</select>";
                     echo "</div>";
+                    echo "</div>";
+                    echo "</p>";
+                }
+                echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver detalles</button>";
+                echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+                echo "</div>";
+                echo "</div>";
                 echo "</div>";
             }
         } else {
@@ -85,22 +85,26 @@ if (is_array($senial) && count($senial) > 0) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="auditoriaForm" action="<?php echo getUrl('Solicitudes', 'Solicitudes','auditoriaSenNew')?>" method="POST">
+                <form id="auditoriaForm"
+                    action="<?php echo getUrl('Solicitudes', 'Solicitudes', 'auditoriaSenNew', false, "ajax") ?>"
+                    method="POST">
                     <input type="hidden" id="auditoriaSolicitudId" name="solicitudId">
-                    <div class="mb-3">
+                    <div class="mb-3 d-none">
                         <label for="estado1" class="form-label">Estado Anterior</label>
                         <input type="text" class="form-control" id="estado1" name="id_estado1" value="" readonly>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 d-none">
                         <label for="estado2" class="form-label">Nuevo Estado</label>
                         <input type="text" class="form-control" id="estado2" value="" name="id" readonly>
-                    </div> 
+                    </div>
                     <div class="mb-3">
                         <label for="auditoriaDescripcion" class="form-label">Descripción del cambio</label>
-                        <textarea class="form-control" id="auditoriaDescripcion" name="descripcion" rows="3" required></textarea>
+                        <textarea class="form-control" id="auditoriaDescripcion" name="descripcion" rows="3"
+                            required></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="cerrar_modal" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="cerrar_modal" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary" id="guardarAuditoria">Guardar</button>
                     </div>
                 </form>
@@ -148,37 +152,37 @@ if (is_array($senial) && count($senial) > 0) {
         let estadoInicial = null;
 
         $(document).on('click', '.btn-cambios-estado', function () {
-        const solicitudId = $(this).data('id');
-        const url = $(this).data('url');
+            const solicitudId = $(this).data('id');
+            const url = $(this).data('url');
 
-        // Limpia el contenido del modal antes de cargar nuevos datos
-        $('#verAudiSenNew .modal-body').html('<p>Cargando...</p>');
+            // Limpia el contenido del modal antes de cargar nuevos datos
+            $('#verAudiSenNew .modal-body').html('<p>Cargando...</p>');
 
-        // Realiza una solicitud AJAX para obtener los detalles
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: { solicitudId: solicitudId },
-            success: function (response) {
-                // Inserta los datos recibidos en el cuerpo del modal
-                $('#verAudiSenNew .modal-body').html(response);
+            // Realiza una solicitud AJAX para obtener los detalles
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: { solicitudId: solicitudId },
+                success: function (response) {
+                    // Inserta los datos recibidos en el cuerpo del modal
+                    $('#verAudiSenNew .modal-body').html(response);
 
-                // Muestra el modal
-                $('#verAudiSenNew').modal('show');
-            },
-            error: function (xhr, status, error) {
-                console.error("Error al cargar los cambios de estado:", error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudieron cargar los cambios de estado. Intenta de nuevo más tarde.',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
-            }
+                    // Muestra el modal
+                    $('#verAudiSenNew').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar los cambios de estado:", error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudieron cargar los cambios de estado. Intenta de nuevo más tarde.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            });
         });
-    });
 
-        
+
         $('#consultar').click(function (event) {
             var fecha1 = $('#fecha1').val();
             var fecha2 = $('#fecha2').val();
@@ -209,11 +213,11 @@ if (is_array($senial) && count($senial) > 0) {
 
         });
 
-        $(document).off('change', '.estado_solicitud'); // Limpia eventos anterior
-        
-        //optener el estado actual
+        $(document).off('change', '.estado_solicitud');
+
+        //obtener el estado actual
         $(document).on('focus', '.estado_solicitud', function () {
-            estadoInicial = $(this).val();  // Guarda el estado inicial del select
+            estadoInicial = $(this).val();
         });
 
         $(document).on('change', '.estado_solicitud', function () {
@@ -223,9 +227,49 @@ if (is_array($senial) && count($senial) > 0) {
             $('#estado2').val(estadoFinal);
             $('#estado1').val(estadoInicial);
             $('#auditoriaModal').modal('show');
+
         });
 
-        
+        $(document).on('submit', '#auditoriaForm', function (event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                url: $(this).attr('action'),
+                type: "POST",
+                data: formData,
+                success: function (resp) {
+                    console.log("Respuesta del servidor:", resp.trim());
+                    if (resp.trim() === "Se realizo el cambio de estado de la solicitud con exito") {
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: 'Se realizó el cambio de estado de la solicitud con éxito',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then(() => {
+                            $('#auditoriaModal').modal('hide');
+                        });
+                    } else if (resp.trim() === "Error al cambio de estado") {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo realizar el cambio de estado',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error en la solicitud AJAX:", error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Ocurrió un error al realizar la solicitud.',
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        });
+
+
 
         $('#cerrar_modal').click(function (event) {
             Swal.fire({
@@ -233,7 +277,7 @@ if (is_array($senial) && count($senial) > 0) {
                 icon: 'error',
                 confirmButtonText: 'Aceptar'
             });
-            $('.estado_solicitud').val(estadoInicial).change();  // Restaurar el valor inicial
+            $('.estado_solicitud').val(estadoInicial).change();
         });
 
     });
@@ -253,7 +297,7 @@ if (is_array($senial) && count($senial) > 0) {
                             icon: 'error',
                             confirmButtonText: 'Intentar de nuevo'
                         });
-                    }else{
+                    } else {
                         window.location.href = url;
                     }
 

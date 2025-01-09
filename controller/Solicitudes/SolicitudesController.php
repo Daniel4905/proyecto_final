@@ -2063,15 +2063,14 @@ class SolicitudesController
                 $auditoria= $obj->insert($sql);
 
                 if($auditoria){
-                   $_SESSION['auditoria'] = "Se realizo el cambio de estado de la solicitud con exito";
+                  echo "Se realizo el cambio de estado de la solicitud con exito";
                 }else{
-                   $_SESSION['error']= "error al cambio de estado";
+                   echo "Error al cambio de estado";
                 }
             }else{
-               $_SESSION['error'] = "error al cambio de estado";
+               echo "Error al cambio de estado";
             }
         }
-        include_once '../view/Solicitudes/consultarSolicitudes.php';
     }
 
 
