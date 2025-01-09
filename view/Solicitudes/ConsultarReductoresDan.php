@@ -82,6 +82,40 @@ if (is_array($reductores) && count($reductores) > 0) {
     }
 }
 ?>
+
+<div class="modal fade" id="auditoriaModal" tabindex="-1" aria-labelledby="auditoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="auditoriaModalLabel">Registrar Auditoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="auditoriaForm" action="<?php echo getUrl('Solicitudes', 'Solicitudes','auditoriaRedDan')?>" method="POST">
+                    <input type="hidden" id="auditoriaSolicitudId" name="solicitudId">
+                    <div class="mb-3">
+                        <label for="estado1" class="form-label">Estado Anterior</label>
+                        <input type="text" class="form-control" id="estado1" name="id_estado1" value="" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado2" class="form-label">Nuevo Estado</label>
+                        <input type="text" class="form-control" id="estado2" value="" name="id" readonly>
+                    </div> 
+                    <div class="mb-3">
+                        <label for="auditoriaDescripcion" class="form-label">Descripción del cambio</label>
+                        <textarea class="form-control" id="auditoriaDescripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cerrar_modal" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="guardarAuditoria">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -128,7 +162,34 @@ if (is_array($reductores) && count($reductores) > 0) {
                 });
             }
 
-        })
+        });
+        $(document).off('change', '.estado_solicitud'); // Limpia eventos anterior
+        
+        //optener el estado actual
+        $(document).on('focus', '.estado_solicitud', function () {
+            estadoInicial = $(this).val();  // Guarda el estado inicial del select
+        });
+
+        $(document).on('change', '.estado_solicitud', function () {
+            const solicitudId = $(this).data('soli');
+            const estadoFinal = $(this).val();
+            $('#auditoriaSolicitudId').val(solicitudId);
+            $('#estado2').val(estadoFinal);
+            $('#estado1').val(estadoInicial);
+            $('#auditoriaModal').modal('show');
+        });
+
+        
+
+        $('#cerrar_modal').click(function (event) {
+            Swal.fire({
+                title: 'Se canceló el cambio de estado!',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            $('.estado_solicitud').val(estadoInicial).change();  // Restaurar el valor inicial
+        });
+
     });
 
     $(document).ready(function () {

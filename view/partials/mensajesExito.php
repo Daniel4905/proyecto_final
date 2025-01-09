@@ -95,4 +95,18 @@ if (isset($_SESSION['redNew'])) {
     unset($_SESSION['redNew']);
 }
 
+if (isset($_SESSION['audiSenNew'])) {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Cambio de estado con exito',
+                confirmButtonText: 'Ok'
+            });
+        });
+    </script>";
+    unset($_SESSION['audiSenNew']);
+}
+
 ?>

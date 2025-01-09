@@ -796,6 +796,40 @@ class SolicitudesController
 
 
     }
+    //_____________________________________________________________________________________________________
+    public function verAudiSenNew() {
+        $obj = new SolicitudesModel();
+        $id = $_POST['solicitudId'];
+       
+
+        $sql = "SELECT a.*, e.est_nombre,(SELECT est_nombre FROM estados e2 WHERE e2.est_id = a.au_sen_new_estadofin) AS estado2, u.usu_nombre1, u.usu_apellido1 FROM auditoriaSenNew a JOIN estados e ON a.au_sen_new_estadoini = e.est_id JOIN 
+        usuarios u ON a.usu_id = u.usu_id WHERE a.sol_sen_new_id = $id";
+
+        $audito= $obj->consult($sql);
+
+        foreach ($audito as $au) {
+            if ($audito) {
+                if ($_SESSION['rol'] == 1) {
+                    echo "<div class='card mb-3 border-primary'>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Auditoría ID: " . ($au['au_sen_new_id']) . "</strong></div>";
+                    echo "  <div class='card-body'>";
+                    echo "      <p><strong>ID de la Solicitud:</strong> " . ($au['sol_sen_new_id']) . "</p>";
+                    echo "      <p><strong>Fecha y Hora de la Auditoría:</strong> " . ($au['au_sen_new_fechah']) . "</p>";
+                    echo "      <p><strong>Descripción de la Auditoría:</strong> " . ($au['au_sen_new_desc']) . "</p>";
+                    echo "      <p><strong>Estado Inicial:</strong> " . ($au['est_nombre']) . "</p>";
+                    echo "      <p><strong>Estado Final:</strong> " . ($au['estado2']) . "</p>";
+                    echo "      <p><strong>Usuario que Realizó el Cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
+                    echo "  </div>";
+                    echo "</div>";
+                
+                } else {
+                    echo "<div class='alert alert-danger text-center'>No se encontraron registros para esta auditoría.</div>";
+                }
+            } else {
+                echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
+            }
+        }
+    }
     //__________________________________DETALLE SEÑALES___________________________________________________
 
     public function detallesSenNew()
@@ -833,6 +867,7 @@ class SolicitudesController
 
         }
     }
+    
 
 
     public function detallesSenDan()
@@ -2006,6 +2041,173 @@ class SolicitudesController
         }
 
     }
+
+    public function auditoriaSenNew() {
+
+        $obj = new SolicitudesModel();
+        $id_estado1 = $_POST['id_estado1'];
+        $usu_id = $_SESSION['id'];
+        $id= $obj->autoIncrement("auditoriasennew", "au_sen_new_id");
+        $desc= $_POST['descripcion'];
+        $sol_id = $_POST['solicitudId'];
+        $id_estado2 = $_POST['id'];
+
+        if ($id_estado2 !== null) {
+
+            $sql = "UPDATE solicitud_seniales_new SET est_sol_id = $id_estado2 WHERE sol_sen_new_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+                $sql= "INSERT INTO auditoriaSenNew VALUES ($id, date_trunc('second', NOW()),'$desc',$id_estado1,$id_estado2,$sol_id,$usu_id )";
+
+                $auditoria= $obj->insert($sql);
+
+                if($auditoria){
+                   $_SESSION['auditoria'] = "Se realizo el cambio de estado de la solicitud con exito";
+                }else{
+                   $_SESSION['error']= "error al cambio de estado";
+                }
+            }else{
+               $_SESSION['error'] = "error al cambio de estado";
+            }
+        }
+        include_once '../view/Solicitudes/consultarSolicitudes.php';
+    }
+
+
+    public function auditoriaSenDan() {
+        $obj = new SolicitudesModel();
+
+        $id_estado1 = $_POST['id_estado1'];
+        $usu_id = $_SESSION['id'];
+        $id= $obj->autoIncrement("auditoriasendan", "au_sen_dan_id");
+        $desc= $_POST['descripcion'];
+        $sol_id = $_POST['solicitudId'];
+        $id_estado2 = $_POST['id'];
+
+        if ($id_estado2 !== null) {
+
+            $sql = "UPDATE solicitud_seniales_dan SET est_sol_id = $id_estado2 WHERE sol_sen_dan_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+                $sql= "INSERT INTO auditoriaSenDan VALUES ($id, date_trunc('second', NOW()),'$desc',$id_estado1,$id_estado2,$sol_id,$usu_id )";
+
+                $auditoria= $obj->insert($sql);
+
+                if($auditoria){
+                    $_SESSION['auditoria'] = "Se realizo el cambio de estado de la solicitud con exito";
+                }else{
+                   $_SESSION['error']= "error al cambio de estado";
+                }
+            }else{
+                $_SESSION['error'] = "error al cambio de estado";
+            }
+        }
+        include_once '../view/Solicitudes/consultarSolicitudes.php';
+    }
+
+    public function auditoriaRedNew() {
+        $obj = new SolicitudesModel();
+
+        
+        $id_estado1 = $_POST['id_estado1'];
+        $usu_id = $_SESSION['id'];
+        $id= $obj->autoIncrement("auditoriarednew", "au_red_new_id");
+        $desc= $_POST['descripcion'];
+        $sol_id = $_POST['solicitudId'];
+        $id_estado2 = $_POST['id'];
+
+        if ($id_estado2 !== null) {
+
+            $sql = "UPDATE solicitud_reductores_new SET est_sol_id = $id_estado2 WHERE sol_red_new_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+                $sql= "INSERT INTO auditoriarednew VALUES ($id, date_trunc('second', NOW()),'$desc',$id_estado1,$id_estado2,$sol_id,$usu_id )";
+
+                $auditoria= $obj->insert($sql);
+
+                if($auditoria){
+                    $_SESSION['auditoria'] = "Se realizo el cambio de estado de la solicitud con exito";
+                }else{
+                   $_SESSION['error']= "error al cambio de estado";
+                }
+            }else{
+                $_SESSION['error'] = "error al cambio de estado";
+            }
+        }
+        include_once '../view/Solicitudes/consultarSolicitudes.php';
+
+    }
+
+    public function auditoriaRedDan() {
+        $obj = new SolicitudesModel();
+
+        
+        $id_estado1 = $_POST['id_estado1'];
+        $usu_id = $_SESSION['id'];
+        $id= $obj->autoIncrement("auditoriareddan", "au_red_dan_id");
+        $desc= $_POST['descripcion'];
+        $sol_id = $_POST['solicitudId'];
+        $id_estado2 = $_POST['id'];
+
+        if ($id_estado2 !== null) {
+
+            $sql = "UPDATE solicitud_reductores_dan SET est_sol_id = $id_estado2 WHERE sol_red_dan_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+                $sql= "INSERT INTO auditoriareddan VALUES ($id, date_trunc('second', NOW()),'$desc',$id_estado1,$id_estado2,$sol_id,$usu_id )";
+
+                $auditoria= $obj->insert($sql);
+
+                if($auditoria){
+                    $_SESSION['auditoria'] = "Se realizo el cambio de estado de la solicitud con exito";
+                }else{
+                    $_SESSION['error']= "error al cambio de estado";
+                }
+            }else{
+               $_SESSION['error'] = "error al cambio de estado";
+            }
+        }
+        include_once '../view/Solicitudes/consultarSolicitudes.php';
+
+    }
+
+    public function auditoriaVia() {
+        $obj = new SolicitudesModel();
+        
+        $id_estado1 = $_POST['id_estado1'];
+        $usu_id = $_SESSION['id'];
+        $id= $obj->autoIncrement("auditoriaVia", "au_via_id");
+        $desc= $_POST['descripcion'];
+        $sol_id = $_POST['solicitudId'];
+        $id_estado2 = $_POST['id'];
+
+        if ($id_estado2 !== null) {
+
+            $sql = "UPDATE solicitud_via_dan SET est_sol_id = $id_estado2 WHERE sol_via_dan_id = $sol_id";
+            $ejecutar = $obj->update($sql);
+
+            if ($ejecutar) {
+                $sql= "INSERT INTO auditoriaVia VALUES ($id, date_trunc('second', NOW()),'$desc',$id_estado1,$id_estado2,$sol_id,$usu_id )";
+
+                $auditoria= $obj->insert($sql);
+
+                if($auditoria){
+                    $_SESSION['auditoria'] = "Se realizo el cambio de estado de la solicitud con exito";
+                }else{
+                    $_SESSION['error']= "error al cambio de estado";
+                    
+                }
+            }else{
+                $_SESSION['error'] = "error al cambio de estado";
+            }
+        }
+        include_once '../view/Solicitudes/consultarSolicitudes.php';
+    }
+
 
 
 
