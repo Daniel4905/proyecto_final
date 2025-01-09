@@ -247,6 +247,11 @@ if (is_array($senial) && count($senial) > 0) {
                             confirmButtonText: 'Ok'
                         }).then(() => {
                             $('#auditoriaModal').modal('hide');
+                            $('#auditoriaForm')[0].reset();
+
+                            $('#auditoriaSolicitudId').val('');
+                            $('#estado1').val('');
+                            $('#estado2').val('');
                         });
                     } else if (resp.trim() === "Error al cambio de estado") {
                         Swal.fire({
