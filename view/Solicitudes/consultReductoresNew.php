@@ -184,66 +184,7 @@ if (is_array($reductores) && count($reductores) > 0) {
             }
 
         });
-        $(document).off('change', '.estado_solicitud'); // Limpia eventos anterior
-
-        //optener el estado actual
-        $(document).on('focus', '.estado_solicitud', function () {
-            estadoInicial = $(this).val();  // Guarda el estado inicial del select
-        });
-
-        $(document).on('change', '.estado_solicitud', function () {
-            const solicitudId = $(this).data('soli');
-            const estadoFinal = $(this).val();
-            $('#auditoriaSolicitudId').val(solicitudId);
-            $('#estado2').val(estadoFinal);
-            $('#estado1').val(estadoInicial);
-            $('#auditoriaModal').modal('show');
-        });
-
-        $(document).on('submit', '#auditoriaForm', function (event) {
-            event.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data: formData,
-                success: function (resp) {
-                    console.log("Respuesta del servidor:", resp.trim());
-                    if (resp.trim() === "Se realizo el cambio de estado de la solicitud con exito") {
-                        Swal.fire({
-                            title: 'Éxito',
-                            text: 'Se realizó el cambio de estado de la solicitud con éxito',
-                            icon: 'success',
-                            confirmButtonText: 'Ok'
-                        }).then(() => {
-                            $('#auditoriaModal').modal('hide');
-                            $('#auditoriaForm')[0].reset();
-
-                            $('#auditoriaSolicitudId').val('');
-                            $('#estado1').val('');
-                            $('#estado2').val('');
-                        });
-                    } else if (resp.trim() === "Error al cambio de estado") {
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'No se pudo realizar el cambio de estado',
-                            icon: 'error',
-                            confirmButtonText: 'Ok'
-                        });
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error en la solicitud AJAX:", error);
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Ocurrió un error al realizar la solicitud.',
-                        icon: 'error',
-                        confirmButtonText: 'Ok'
-                    });
-                }
-            });
-        });
-
+ 
         $(document).on('click', '.btn-cambios-estado', function () {
             const solicitudId = $(this).data('id');
             const url = $(this).data('url');

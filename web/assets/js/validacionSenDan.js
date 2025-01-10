@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.,;:¿?¡!]+$/;
     const patronNumero = /^[0-9]+$/;
 
     function agregarError(campo, mensaje) {

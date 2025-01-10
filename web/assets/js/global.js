@@ -265,17 +265,17 @@ $(document).ready(function () {
         let buscar = $(this).val();
         let url = $(this).data('url');
 
-        let patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; 
-        let patronNumero = /^[0-9]+$/;                 
+        let patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+        let patronNumero = /^[0-9]+$/;
 
         if (buscar.trim() === "") {
             $.ajax({
                 url: url,
                 type: 'POST',
-                data: { 'buscar': '' }, 
+                data: { 'buscar': '' },
                 success: function (data) {
                     $('#userList').html(data);
-                    $('#datError').addClass('d-none'); 
+                    $('#datError').addClass('d-none');
                 },
                 error: function () {
                     console.log("Error en la solicitud AJAX.");
@@ -291,7 +291,7 @@ $(document).ready(function () {
                     if (data.trim() === '' || $('#userList').children().length === 0) {
                         $('#datError').removeClass('d-none');
                     } else {
-                        $('#datError').addClass('d-none');  
+                        $('#datError').addClass('d-none');
                     }
                 },
                 error: function () {
@@ -299,7 +299,7 @@ $(document).ready(function () {
                 }
             });
         } else {
-            return; 
+            return;
         }
     });
 
@@ -520,54 +520,85 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("focus", ".estado_solicitud", function () {
-        $(this).data('prev-value', $(this).val());
+    let estadoInicial;
+
+    $(document).on('focus', '.estado_solicitud', function () {
+        estadoInicial = $(this).val();
     });
 
-    $(document).on("change", ".estado_solicitud", function () {
-        let select = $(this);
-        let id = select.val();
-        let url = select.attr('data-url');
-        let solicitud = select.attr('data-soli');
-        let prevValue = select.data('prev-value');
 
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: 'Se actualizará el estado de la solicitud.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, confirmar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: url,
-                    data: { id, solicitud },
-                    type: "POST",
-                    success: function (data) {
-                        Swal.fire(
-                            'Actualizado!',
-                            'El estado de la solicitud ha sido actualizado.',
-                            'success'
-                        );
-                        $("tbody").html(data);
-                    },
-                    error: function () {
-                        Swal.fire(
-                            'Error',
-                            'Ocurrió un problema al actualizar el estado.',
-                            'error'
-                        );
-                        select.val(prevValue);
-                    }
+    $(document).off('change', '.estado_solicitud').on('change', '.estado_solicitud', function () {
+        const solicitudId = $(this).data('soli');
+        const estadoFinal = $(this).val();
+        $('#auditoriaSolicitudId').val(solicitudId);
+        $('#estado2').val(estadoFinal);
+        $('#estado1').val(estadoInicial);
+        $('#auditoriaModal').modal('show');
+    });
+
+    $(document).on('submit', '#auditoriaForm', function (event) {
+        event.preventDefault();
+
+        const $submitBtn = $('#guardarAuditoria');
+        $submitBtn.prop('disabled', true);
+
+        const formData = $(this).serialize();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: "POST",
+            data: formData,
+            success: function (resp) {
+                console.log("Respuesta del servidor:", resp.trim());
+                $submitBtn.prop('disabled', false);
+
+                if (resp.trim() === "Se realizo el cambio de estado de la solicitud con exito") {
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'Se realizó el cambio de estado de la solicitud con éxito',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then(() => {
+                        $('#auditoriaModal').modal('hide');
+                        $('#auditoriaForm')[0].reset();
+
+                        $('#auditoriaSolicitudId').val('');
+                        $('#estado1').val('');
+                        $('#estado2').val('');
+                    });
+                } else if (resp.trim() === "Error al cambio de estado") {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo realizar el cambio de estado',
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+                $submitBtn.prop('disabled', false);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Ocurrió un error al realizar la solicitud.',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
                 });
-            } else {
-                select.val(prevValue);
             }
         });
     });
+
+
+
+    $('#cerrar_modal').click(function (event) {
+        Swal.fire({
+            title: 'Se canceló el cambio de estado!',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        $('.estado_solicitud').val(estadoInicial).change();
+    });
+
 
 
 
