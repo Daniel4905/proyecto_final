@@ -2357,6 +2357,10 @@ class SolicitudesController
             }
         }
     }
+    
+    public function getMapInfo(){
+        include_once "../view/partials/infoMap.php";
+    }
 
 
 

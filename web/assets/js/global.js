@@ -1,5 +1,23 @@
 
 $(document).ready(function () {
+
+    $('#infoMap').on('click', function (event) {
+        event.preventDefault(); 
+        const url = $(this).data('url');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                $('#modalContainerInfo').html(response);
+                const modal = new bootstrap.Modal(document.getElementById('infoModal'));
+                modal.show();
+            },
+            error: function () {
+                alert('Hubo un error al cargar la información.');
+            }
+        });
+    });
+
     let docValido = false;
 
     const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
