@@ -77,7 +77,7 @@ if (is_array($reductores) && count($reductores) > 0) {
             <a href="<?php echo getUrl('Solicitudes', 'Solicitudes', 'descargarExcel', array('type' => 'xlsx', 'solicitud' => 5), 'ajax'); ?>"
                 class="btn btn-secondary" id="descargar">
                 <i class="fas fa-file-excel"></i>
-                Descargar reporte completo en formato XLSX
+                Descargar reporte formato XLSX
             </a>
         </div>
         <?php
