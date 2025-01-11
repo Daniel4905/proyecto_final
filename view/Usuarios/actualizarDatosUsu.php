@@ -1,6 +1,6 @@
 <div class="container">
     <div class="mt 3">
-        <h3 class="display-4">Actuliza tus datos <?php echo $_SESSION['nombre']; ?></h3>
+        <h3 class="display-4">Reemplaza en el campo que quieres realizar el cambio</h3>
     </div>
 </div>
 <div class="container container-scroll">
