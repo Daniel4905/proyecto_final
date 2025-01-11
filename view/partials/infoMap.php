@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="infoModalLabel">Instrucciones</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"  style="max-height: 600px; overflow-y: auto;">
                 <?php
                 echo "<h4>¿Cómo realizar una solicitud?</h4>";
                 echo "<p>1. Selecciona el icono de ubicación <img src='misc/img/ubicacion.png' width='20px'> que está en el panel derecho.</p>";
