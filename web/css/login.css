@@ -91,12 +91,10 @@ p {
 }
 
 .form-control:focus {
-	border: 1px solid #57557A;
-	border-radius: 3px;
-	box-shadow: none;
-	background: #212042;
-	color: #fff;
-	letter-spacing: 1px;
+    box-shadow: 0 0 5px rgb(245, 245, 245) !important; 
+    letter-spacing: 1px !important;
+    border: 2px solid rgb(177, 177, 179) !important; 
+	color: white;
 }
 
 .bn {
