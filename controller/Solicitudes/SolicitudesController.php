@@ -813,10 +813,8 @@ class SolicitudesController
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_sen_new_fechah']) ."</strong></div>";
                     echo "  <div class='card-body'>";
-                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_sen_new_id']) . "</p>";
-                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_sen_new_fechah']) . "</p>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_sen_new_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
                     echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
@@ -849,17 +847,14 @@ class SolicitudesController
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el  &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ". ($au['au_sen_dan_fechah']). "</strong></div>";
                     echo "  <div class='card-body'>";
-                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_sen_dan_id']) . "</p>";
-                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_sen_dan_fechah']) . "</p>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_sen_dan_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
                     echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
                     echo "      <p><strong>Usuario que realizó el cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
                     echo "  </div>";
                     echo "</div>";
-
 
                 } else {
                     echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
@@ -887,10 +882,8 @@ class SolicitudesController
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_via_fechah'])."</strong></div>";
                     echo "  <div class='card-body'>";
-                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_via_dan_id']) . "</p>";
-                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_via_fechah']) . "</p>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_via_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
                     echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
@@ -925,10 +918,8 @@ class SolicitudesController
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_red_dan_fechah'])."</strong></div>";
                     echo "  <div class='card-body'>";
-                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_red_dan_id']) . "</p>";
-                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_red_dan_fechah']) . "</p>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_red_dan_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
                     echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
@@ -962,18 +953,14 @@ class SolicitudesController
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambios de estados en esta solicitud</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_red_new_fechah'])."</strong></div>";
                     echo "  <div class='card-body'>";
-                    echo "      <p><strong>ID de la solicitud:</strong> " . ($au['sol_red_new_id']) . "</p>";
-                    echo "      <p><strong>Fecha y hora del cambio:</strong> " . ($au['au_red_new_fechah']) . "</p>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_red_new_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
                     echo "      <p><strong>Estado final:</strong> " . ($au['estado2']) . "</p>";
                     echo "      <p><strong>Usuario que realizó el cambio:</strong> " . ($au['usu_nombre1']) . " " . ($au['usu_apellido1']) . "</p>";
                     echo "  </div>";
                     echo "</div>";
-    
-    
                 } else {
                     echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
                 }

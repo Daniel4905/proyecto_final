@@ -1,20 +1,6 @@
-<?php
-$actualiza = "";
-$error = "";
-
-if (isset($_SESSION['auditoria'])) {
-    $actualiza = $_SESSION['auditoria'];
-    unset($_SESSION['auditoria']); // Limpia los errores después de mostrarlos
-}
-
-if (isset($_SESSION['error'])) {
-    $error = $_SESSION['error'];
-    unset($_SESSION['error']); // Limpia los errores después de mostrarlos
-}
-?>
-
 <div class="">
-    <h3>Filtre segun la solicitud que desee</h3>
+    <h3>Aquí puedes consultar todo sobre las solicitudes</h3>
+    <p>Utiliza el selector para filtrar el tipo de reporte que deseas consultar.</p>
     <form>
         <div class="col-md-3 mb-3">
             <label for="tipo-solicitud" class="form-label">Escoja el tipo de solicitud:</label>
@@ -24,8 +10,8 @@ if (isset($_SESSION['error'])) {
                 <option value="1">Reporte de accidentes</option>
                 <option value="2">Reporte de señalización vial - Nuevo</option>
                 <option value="3">Reporte de señalización vial - Reparación</option>
-                <option value="4">Reporte de reductores - Reparación</option>
-                <option value="5">Reporte de reductores - Nuevo</option>
+                <option value="4">Reporte de reductores de velocidad - Reparación</option>
+                <option value="5">Reporte de reductores de velocidad - Nuevo</option>
                 <option value="6">Reporte de daños en la via</option>
             </select>
         </div>
@@ -36,25 +22,3 @@ if (isset($_SESSION['error'])) {
         </div>
     </div>
 </div>
-
-<script>
-        $(document).ready(function () {
-            // Mostrar SweetAlert si existe la variable de error
-            <?php if (!empty($actualiza)) { ?>
-                Swal.fire({
-                    title: 'Cambio de estado exitoso! ',
-                    html: `<?php echo($actualiza); ?>`,
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar'
-                });
-            <?php } else if (!empty($error)) { ?>
-                Swal.fire({
-                    title: 'Error al cambiar estado ',
-                    html: `<?php echo($error); ?>`,
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
-            <?php } ?>
-        });
-
-</script>

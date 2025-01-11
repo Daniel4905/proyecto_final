@@ -16,8 +16,8 @@
                                 <option value="1">Reportar accidente</option>
                                 <option value="2">Señalización vial - Nuevo</option>
                                 <option value="3">Señalización vial - Reparación</option>
-                                <option value="4">Reductores - Reparación</option>
-                                <option value="5">Reductores - Nuevo</option>
+                                <option value="4">Reductores de velocidad - Reparación</option>
+                                <option value="5">Reductores de velocidad - Nuevo</option>
                                 <option value="6">Reportar daño en la via</option>
                             </select>
                             <input type="hidden" name="punto1" id="punto1">

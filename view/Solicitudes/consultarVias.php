@@ -186,30 +186,62 @@
 
         });
 
-    $(document).ready(function () {
-        $('#descargar').click(function (event) {
-            event.preventDefault();
-            let url = $(this).attr('href');
+        $(document).ready(function () {
+            $('#descargar').click(function (event) {
+                event.preventDefault();
+                let url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    success: function (resp) {
+                        if (resp.trim() === "No se encontraron datos para generar el archivo Excel.") {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'No se encontraron datos para generar el archivo Excel',
+                                icon: 'error',
+                                confirmButtonText: 'Intentar de nuevo'
+                            });
+                        } else {
+                            window.location.href = url;
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
+                    }
+                });
+            });
+        });
+        $(document).on('click', '.btn-cambios-estado', function () {
+            const solicitudId = $(this).data('id');
+            const url = $(this).data('url');
+
+            $('#verAudiVias .modal-body').html('<p>Cargando...</p>');
+
             $.ajax({
                 url: url,
                 type: "POST",
-                success: function (resp) {
-                    if (resp.trim() === "No se encontraron datos para generar el archivo Excel.") {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'No se encontraron datos para generar el archivo Excel',
-                            icon: 'error',
-                            confirmButtonText: 'Intentar de nuevo'
-                        });
-                    } else {
-                        window.location.href = url;
-                    }
+                data: { solicitudId: solicitudId },
+                success: function (response) {
+                    $('#verAudiVias .modal-body').html(response);
 
+                    $('#verAudiVias').modal('show');
                 },
                 error: function (xhr, status, error) {
-                    console.error("Error en la solicitud AJAX:", error);
+                    console.error("Error al cargar los cambios de estado:", error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudieron cargar los cambios de estado. Intenta de nuevo más tarde.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
                 }
             });
         });
     });
+
+
+
+
+
 </script>
