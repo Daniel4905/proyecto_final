@@ -92,11 +92,12 @@ $(document).ready(function () {
         }
 
         const desc = $('#desc_sen_dan').val().trim();
+
         if (desc === '' || desc === null) {
             agregarError($('#desc_sen_dan'), "Por favor ingrese una descripción");
             valido = false;
-        } else if (!patronTexto.test(desc) || desc.length > 300) {
-            agregarError($('#desc_sen_dan'), "El campo observaciones solo admite letras (máx. 300)");
+        } else if (!patronTexto.test(desc) || desc.length > 300 || desc.length <= 30) {
+            agregarError($('#desc_sen_dan'), "El campo observaciones solo admite letras (30mín, 300máx.)");
             valido = false;
         }
 

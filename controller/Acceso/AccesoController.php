@@ -313,7 +313,7 @@ class AccesoController
         $mail->addAddress("$correo", "$usuario"); // Destinatario
         $mail->CharSet = 'UTF-8';
         $mail->isHTML(true);
-        $imagenRuta = 'C:/ms4w/Apache/htdocs/proyect2/web/img/logo_claro.png';
+        $imagenRuta = 'C:/ms4w/Apache/htdocs/proyecto_final/web/img/logo_claro.png';
         $mail->AddEmbeddedImage($imagenRuta, 'imagen_id', 'logo_claro.png');
 
         $mail->Subject = 'Restablecer contraseña';

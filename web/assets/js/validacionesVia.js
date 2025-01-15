@@ -59,15 +59,16 @@ $(document).ready(function () {
             agregarError($('#tipoDanio'), "Por favor ingrese el tipo de daño");
             valido = false;
         }
-        const observaciones = $('#observaciones').val().trim();
-        if (observaciones === ! '' && !patronTexto.test(observaciones) || observaciones.length > 300 || observaciones.length <= 30) {
+        const desc = $('#observaciones').val().trim();
+
+        if (desc === '' || desc === null) {
+            agregarError($('#observaciones'), "Por favor ingrese una descripción");
+            valido = false;
+        } else if (!patronTexto.test(desc) || desc.length > 300 || desc.length <= 30) {
             agregarError($('#observaciones'), "El campo observaciones solo admite letras (30mín, 300máx.)");
             valido = false;
         }
-        if (observaciones === '') {
-            agregarError($('#observaciones'), "El campo observaciones es requerido (30mín, 300máx.)");
-            valido = false;
-        }
+
 
         const archivos = $('input[name="imagenes[]"]')[0].files;
         if (archivos.length === 0) {

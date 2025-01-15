@@ -240,7 +240,6 @@ class SolicitudesController
         $sql1 = "INSERT INTO solicitud_seniales_new VALUES($idSen,$tipoSen,'$descSen', date_trunc('second', NOW()),3,$usu_id)";
         $ejecutar = $obj->insert($sql1);
         if ($ejecutar) {
-
             $sql2 = "INSERT INTO punto_senialNew (id_senialNew, geom) VALUES ($idSen, ST_SetSRID(ST_GeomFromText('POINT($punto1Procesado  $punto2rocesado)'),4326))";
             $punto = $obj->insert($sql2);
             if ($punto) {
@@ -336,7 +335,7 @@ class SolicitudesController
 
         $idCate = $_POST['id_cate_red'];
 
-        $sql = "SELECT t.tipo_red_id, t.nombre_tipo_red FROM tipos_reductores t WHERE cat_id=$idCate";
+        $sql = "SELECT t.tipo_red_id, t.nombre_tipo_red FROM tipos_reductores t WHERE cat_id = $idCate";
 
         $tipoRed = $obj->consult($sql);
         echo "<option value= >Seleccione... </option>";
@@ -809,11 +808,11 @@ class SolicitudesController
                   usuarios u ON a.usu_id = u.usu_id WHERE a.sol_sen_new_id = $id ORDER BY a.au_sen_new_fechah DESC";
 
         $audito = $obj->consult($sql);
-        if (is_array($audito) && count($audito) > 1) {
+        if (is_array($audito) && count($audito) > 0) {
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_sen_new_fechah']) ."</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; " . ($au['au_sen_new_fechah']) . "</strong></div>";
                     echo "  <div class='card-body'>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_sen_new_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
@@ -825,7 +824,7 @@ class SolicitudesController
                     echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
                 }
             }
-        }else{
+        } else {
             echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
         }
 
@@ -843,11 +842,11 @@ class SolicitudesController
                   usuarios u ON a.usu_id = u.usu_id WHERE a.sol_sen_dan_id = $id ORDER BY a.au_sen_dan_fechah DESC";
 
         $audito = $obj->consult($sql);
-        if (is_array($audito) && count($audito) > 1) {
+        if (is_array($audito) && count($audito) > 0) {
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el  &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ". ($au['au_sen_dan_fechah']). "</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el  &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; " . ($au['au_sen_dan_fechah']) . "</strong></div>";
                     echo "  <div class='card-body'>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_sen_dan_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
@@ -860,7 +859,7 @@ class SolicitudesController
                     echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
                 }
             }
-        }else{
+        } else {
             echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
         }
     }
@@ -878,11 +877,11 @@ class SolicitudesController
 
         $audito = $obj->consult($sql);
 
-        if (is_array($audito) && count($audito) > 1) {
+        if (is_array($audito) && count($audito) > 0) {
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_via_fechah'])."</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; " . ($au['au_via_fechah']) . "</strong></div>";
                     echo "  <div class='card-body'>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_via_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
@@ -896,7 +895,7 @@ class SolicitudesController
                     echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
                 }
             }
-        }else{
+        } else {
             echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
         }
     }
@@ -914,11 +913,11 @@ class SolicitudesController
 
         $audito = $obj->consult($sql);
 
-        if (is_array($audito) && count($audito) > 1) {
+        if (is_array($audito) && count($audito) > 0) {
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_red_dan_fechah'])."</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; " . ($au['au_red_dan_fechah']) . "</strong></div>";
                     echo "  <div class='card-body'>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_red_dan_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
@@ -932,7 +931,7 @@ class SolicitudesController
                     echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
                 }
             }
-        }else{
+        } else {
             echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
         }
     }
@@ -949,11 +948,11 @@ class SolicitudesController
 
         $audito = $obj->consult($sql);
 
-        if (is_array($audito) && count($audito) > 1) {
+        if (is_array($audito) && count($audito) > 0) {
             foreach ($audito as $au) {
                 if ($audito) {
                     echo "<div class='card mb-3 border-primary'>";
-                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; ".($au['au_red_new_fechah'])."</strong></div>";
+                    echo "  <div class='card-header bg-primary text-white'><strong>Cambio de estado realizado el &nbsp; <i class='fa-regular fa-calendar'></i> &nbsp; " . ($au['au_red_new_fechah']) . "</strong></div>";
                     echo "  <div class='card-body'>";
                     echo "      <p><strong>Justificación:</strong> " . ($au['au_red_new_desc']) . "</p>";
                     echo "      <p><strong>Estado inicial:</strong> " . ($au['est_nombre']) . "</p>";
@@ -965,7 +964,7 @@ class SolicitudesController
                     echo "<div class='alert alert-danger text-center'>Solicitud inválida. No se proporcionó un ID válido.</div>";
                 }
             }
-        }else{
+        } else {
             echo "<div class='alert alert-danger text-center'>No hay cambios de estados asociados a esta solicitud.</div>";
         }
     }
@@ -1217,13 +1216,13 @@ class SolicitudesController
                     $sql = "INSERT INTO imagenes_vias VALUES($imgid, $id, '$rutaDestino')";
                     $ejecutar = $obj->insert($sql);
                     if ($ejecutar) {
-                        echo "Funciona";
+                        //echo "Funciona";
                     } else {
-                        echo "No FIN";
+                        //echo "No FIN";
                     }
 
                 } else {
-                    echo "No se movio el archivo";
+                    //echo "No se movio el archivo";
                 }
             }
             $_SESSION['regVia'][] = 'Registro exitoso';
@@ -1314,13 +1313,41 @@ class SolicitudesController
 
                 $row = 2;
                 foreach ($accidentes as $acc) {
-                    $lesionados = ($acc['reg_acc_lesionados'] === 't') ? 'Sí' : 'No';
-                    $tipo_choque = isset($acc['tipo_choque']) ? $acc['tipo_choque'] : 'Desconocido';
-                    $detalles_accidente = isset($acc['detalles_accidente']) ? $acc['detalles_accidente'] : 'No disponible';
-                    $fecha_accidente = isset($acc['reg_acc_fecha_hora']) ? date('d-m-Y H:i:s', strtotime($acc['reg_acc_fecha_hora'])) : 'Fecha no disponible';
-                    $usuario_nombre = isset($acc['usuario_nombre']) ? $acc['usuario_nombre'] : 'Usuario desconocido';
-                    $imagenes = isset($acc['img_rutas']) ? $acc['img_rutas'] : 'No disponibles';
-                    $vehiculos = isset($acc['vehiculos']) ? $acc['vehiculos'] : 'No disponibles';
+                    if ($acc['reg_acc_lesionados'] === 't') {
+                        $lesionados = 'Sí';
+                    } else {
+                        $lesionados = 'No';
+                    }
+
+                    if (isset($acc['tipo_choque'])) {
+                        $tipo_choque = $acc['tipo_choque'];
+                    } else {
+                        $tipo_choque = 'Desconocido';
+                    }
+
+                    if (isset($acc['detalles_accidente'])) {
+                        $detalles_accidente = $acc['detalles_accidente'];
+                    } else {
+                        $detalles_accidente = 'No disponible';
+                    }
+
+                    if (isset($acc['reg_acc_fecha_hora'])) {
+                        $fecha_accidente = date('d-m-Y H:i:s', strtotime($acc['reg_acc_fecha_hora']));
+                    } else {
+                        $fecha_accidente = 'Fecha no disponible';
+                    }
+
+                    if (isset($acc['usuario_nombre'])) {
+                        $usuario_nombre = $acc['usuario_nombre'];
+                    } else {
+                        $usuario_nombre = 'Usuario desconocido';
+                    }
+
+                    if (isset($acc['vehiculos'])) {
+                        $vehiculos = $acc['vehiculos'];
+                    } else {
+                        $vehiculos = 'No disponibles';
+                    }
 
                     $sheet->setCellValue("A{$row}", $acc['reg_acc_id']);
                     $sheet->setCellValue("B{$row}", $tipo_choque . ' - ' . $detalles_accidente);
@@ -2344,8 +2371,9 @@ class SolicitudesController
             }
         }
     }
-    
-    public function getMapInfo(){
+
+    public function getMapInfo()
+    {
         include_once "../view/partials/infoMap.php";
     }
 
