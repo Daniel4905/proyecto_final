@@ -225,18 +225,29 @@
             c1 = coordenadas[0];
             c2 = coordenadas[1];
 
-            consultar1 = new objectAjax();
-            consultar1.open("GET", "ajax.php?modulo=Solicitudes&controlador=Solicitudes&funcion=getInfo&x=" + c1 + "&y=" + c2, true);
+            consultar2 = new objectAjax();
+            consultar2.open("GET", "ajax.php?modulo=Solicitudes&controlador=Solicitudes&funcion=getInfo&x=" + c1 + "&y=" + c2, true);
 
-            consultar1.onreadystatechange = function () {
-                if (consultar1.readyState === 4) {
-                    document.getElementById('modal-detalles').innerHTML = consultar1.responseText;
+            consultar2.onreadystatechange = function () {
+                if (consultar2.readyState === 4) {
+                    if (consultar2.status === 200) {
+                        console.log(consultar2.responseText); // Inspecciona la respuesta
+                        document.getElementById('modal-detalles').innerHTML = consultar2.responseText;
 
-                    let modal = new bootstrap.Modal(document.getElementById('detallesModal'));
-                    modal.show();
+                        const modalElement = document.getElementById('detallesModal');
+                        if (modalElement) {
+                            let modal = new bootstrap.Modal(modalElement);
+                            modal.show();
+                        } else {
+                            console.error('El modal no se encuentra en el DOM.');
+                        }
+                    } else {
+                        console.error('Error en la solicitud: ', consultar2.status);
+                    }
                 }
             };
-            consultar1.send(null);
+
+            consultar2.send(null);
             // seleccionado2 = false;
             // myMap1.getTagMap().style.cursor = "default";
         }

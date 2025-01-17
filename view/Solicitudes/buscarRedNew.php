@@ -16,7 +16,7 @@ if (is_array($reductores) && count($reductores) > 0) {
         } else {
             echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $red['usuario_nombre'] . "</p>";
         }
-        if ($_SESSION['rol'] != 2) {
+        if ($_SESSION['rol'] === 3) {
 
             echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
             echo "<div class='row'>";

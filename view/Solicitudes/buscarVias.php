@@ -21,7 +21,7 @@ if (is_array($vias) && count($vias) > 0) {
         } else {
             echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $via['usuario_nombre'] . "</p>";
         }
-        if ($_SESSION['rol'] != 2) {
+        if ($_SESSION['rol'] == 3) {
             echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
             echo "<div class='row'>";
             echo "<div class='col-md-2'>";

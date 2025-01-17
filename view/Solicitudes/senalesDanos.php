@@ -96,8 +96,9 @@ if (isset($_SESSION['errores'])) {
             <div class="row">
                 <div class="col-md-4">
                     <div class="mb-2">
-                        <label class="form-label">Categoría</label>
-                        <select name="sen_cate" class="form-select fSen">
+                        <label class="form-label">Categoría*</label>
+                        <select name="sen_cate" class="form-select fSen" data-bs-toggle="tooltip"
+                            title="Seleccione una categoria, obligatorio.">
                             <option value="" class="form-option">Seleccione...</option>
                             <?php foreach ($senCate as $cat) { ?>
                                 <option value="<?php echo $cat['categoria_seniales_id']; ?>" class="form-option">
@@ -105,13 +106,15 @@ if (isset($_SESSION['errores'])) {
                                 </option>
                             <?php } ?>
                         </select>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-2">
-                        <label class="form-label">Orientación</label>
-                        <select name="orienSen" id="orien" class="form-select fSen">
+                        <label class="form-label">Orientación*</label>
+                        <select name="orienSen" id="orien" class="form-select fSen" data-bs-toggle="tooltip"
+                            title="Seleccione una orientación, obligatorio.">
                             <option value="" class="form-option">Seleccione...</option>
                             <?php foreach ($senOrientacion as $orien) { ?>
                                 <option value="<?php echo $orien['orientacion_id']; ?>" class="form-option">
@@ -119,23 +122,27 @@ if (isset($_SESSION['errores'])) {
                                 </option>
                             <?php } ?>
                         </select>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mb-2">
-                        <label class="form-label">Tipo</label>
+                        <label class="form-label">Tipo*</label>
                         <select name="tipoSen" id="tipoSen" class="form-select"
-                            data-url="<?php echo getUrl('Solicitudes', 'Solicitudes', 'infoSens', false, 'ajax'); ?>">
+                            data-url="<?php echo getUrl('Solicitudes', 'Solicitudes', 'infoSens', false, 'ajax'); ?>"
+                            data-bs-toggle="tooltip" title="Seleccione un tipo, obligatorio.">
                             <option value="" class="form-option">Seleccione...</option>
                         </select>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-7">
                     <div class="mb-2">
-                        <label class="form-label">Tipo de daño</label>
-                        <select name="tipoDanio" id="tipoDanio" class="form-select">
+                        <label class="form-label">Tipo de daño*</label>
+                        <select name="tipoDanio" id="tipoDanio" class="form-select" data-bs-toggle="tooltip"
+                            title="Seleccione un tipo de daño, obligatorio.">
                             <option value="" class="form-option">Seleccione...</option>
                             <?php foreach ($danio as $dan) { ?>
                                 <option value="<?php echo $dan['tipo_danio_id']; ?>" class="form-option">
@@ -143,13 +150,15 @@ if (isset($_SESSION['errores'])) {
                                 </option>
                             <?php } ?>
                         </select>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Adjunte la evidencia</label>
+                    <label class="form-label">Adjunte la evidencia*</label>
                     <div class="image-upload-wrapper">
                         <label class="image-upload">
-                            <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenSD">
+                            <input type="file" accept="image/*" onchange="previewImage(this)" name="imagenSD"
+                                data-bs-toggle="tooltip" title="Adjunte la evidencia, obligatorio.">
                             <div class="upload-placeholder">
                                 <i class="fa-solid fa-image"></i>
                             </div>
@@ -158,18 +167,21 @@ if (isset($_SESSION['errores'])) {
                                 style="display: none;">✕</button>
                         </label>
                     </div>
+                    <small class="form-text text-muted">Obligatorio.</small>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="form-label">Descripción de la solicitud</label>
+                    <label class="form-label">Descripción de la solicitud*</label>
                     <textarea name="desc_sen_dan" id="desc_sen_dan" placeholder="Detalle su solicitud..."
-                        class="form-control" style="height: 100px;"></textarea>
+                        class="form-control" style="height: 100px;" data-bs-toggle="tooltip"
+                        title="Ingrese una descripción, obligatorio."></textarea>
+                    <small class="form-text text-muted">Obligatorio.</small>
                 </div>
             </div>
 
             <div class="mt-2">
-                <input type="submit" value="Enviar" class="btn btn-success">
+                <input type="submit" value="Enviar" class="btn btn-primary">
             </div>
         </form>
     </div>

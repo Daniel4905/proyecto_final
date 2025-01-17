@@ -28,7 +28,7 @@
                 echo "<div class='accordion-body'>";
                 echo "<p><strong><i class='fa fa-traffic-light'></i> Tipo de Señal:</strong> " . $sen['senal'] . "</p>";
                 echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $sen['usuario_nombre'] . "</p>";
-                if ($_SESSION['rol'] != 2) {
+                if ($_SESSION['rol'] == 3) {
                     echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
                     echo "<div class='row'>";
                     echo "<div class='col-md-2'>";

@@ -18,7 +18,7 @@
             <small class="form-text text-muted">Para actualizar sus datos debe igresar su contraseña.</small>
         </div>
     </div>
-    <input type="submit" class="btn btn-success">
+    <input type="submit" class="btn btn-primary">
 </form>
 
 <script>

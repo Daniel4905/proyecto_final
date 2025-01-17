@@ -52,8 +52,8 @@ ob_start();  // Inicia el buffer de salida
             padding: 10px;
             border-radius: 5px;
         }
-
     </style>
+
 
 
 </head>

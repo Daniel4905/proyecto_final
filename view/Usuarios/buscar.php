@@ -14,7 +14,7 @@ if (!empty($usuario)) {
             $estadoText = "Habilitado";
         } else {
             $estadoClass = "text-danger";
-            $class = "btn btn-success";
+            $class = "btn btn-primary";
             $buttonText = "Habilitar";
             $estadoText = "Inhabilitado";
         }

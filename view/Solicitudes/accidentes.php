@@ -79,9 +79,10 @@
             <input type="hidden" name="punto2" id="Coord2">
             <div class="row">
                 <div class="col-md-6">
-                    <label for="tipoChoque" class="form-label">Tipo de choque:</label>
+                    <label for="tipoChoque" class="form-label">Tipo de choque:*</label>
                     <select id="tipoChoque" name="tipoChoque" class="form-select"
-                        data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getDetalleAc", false, "ajax") ?>'>
+                        data-url='<?php echo getUrl("Solicitudes", "Solicitudes", "getDetalleAc", false, "ajax") ?>'
+                        data-bs-toggle="tooltip" title="Seleccione un tipo de choque, obligatorio.">
                         <option value="">Seleccione...</option>
                         <?php
                         foreach ($tipoAc as $tA) {
@@ -89,16 +90,20 @@
                         }
                         ?>
                     </select>
+                    <small class="form-text text-muted">Obligatorio.</small>
                 </div>
                 <div class="col-md-6">
-                    <label for="detalleChoque" class="form-label">Detalles del choque:</label>
-                    <select id="detalleChoque" name="detalleChoque" class="form-select">
+                    <label for="detalleChoque" class="form-label">Detalles del choque:*</label>
+                    <select id="detalleChoque" name="detalleChoque" class="form-select" data-bs-toggle="tooltip"
+                        title="Seleccione un detalle del choque, obligatorio.">
                         <option value="">Seleccione un tipo de choque primero...</option>
                     </select>
+                    <small class="form-text text-muted">Obligatorio.</small>
                 </div>
                 <div class="col-md-12 mt-2">
-                    <label class="form-label">Vehículos involucrados:</label>
-                    <div class="row">
+                    <label class="form-label">Vehículos involucrados:*</label>
+                    <div class="row" data-bs-toggle="tooltip"
+                        title="Seleccione al menos un vehiculo involucrado, obligatorio.">
                         <div class="col-md-4">
                             <div class="form-check vehi">
                                 <input type="checkbox" id="vehiculo1" name="vehiculos[]" value="1"
@@ -165,6 +170,7 @@
                                 <label for="vehiculo12" class="form-check-label">Cuatrimoto</label>
                             </div>
                         </div>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -176,10 +182,12 @@
                 <div class="col-md-7">
                     <label for="observaciones" class="form-label">Observaciones:</label>
                     <textarea id="observaciones" name="observaciones" placeholder="Detalle el accidente..."
-                        class="form-control" style="height: 100px;"></textarea>
+                        class="form-control" style="height: 100px;" data-bs-toggle="tooltip"
+                        title="Ingrese las observaciones, obligatorio."></textarea>
+                    <small class="form-text text-muted">Obligatorio.</small>
                 </div>
-                <h3>Adjunta la evidencia que desees</h3>
-                <div class="row">
+                <h3>Adjunta la evidencia que desees*</h3>
+                <div class="row" data-bs-toggle="tooltip" title="Adjunte al menos una imagen, obligatorio.">
                     <div class="col-12 col-md-4 mb-3">
                         <div class="image-upload-wrapper">
                             <label class="image-upload">
@@ -219,9 +227,10 @@
                             </label>
                         </div>
                     </div>
+                    <small class="form-text text-muted">Obligatorio.</small>
                 </div>
                 <div class="mt-3">
-                    <input type="submit" value="Enviar" class="btn btn-success" id="enviarAcc">
+                    <input type="submit" value="Enviar" class="btn btn-primary" id="enviarAcc">
                 </div>
         </form>
     </div>

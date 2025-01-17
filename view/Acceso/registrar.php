@@ -67,28 +67,31 @@ include_once "../lib/helpers.php";
                                     <div>
                                         <label class="titulos" for="usu_nombre1">Primer nombre*</label>
                                         <input type="text" name="usu_nombre1" id="nombre1"
-                                            class="form-control validar-nombre" placeholder="Primer nombre">
+                                            class="form-control validar-nombre" placeholder="Primer nombre"
+                                            data-bs-toggle="tooltip" title="Ingrese su primer nombre, obligatorio.">
+                                        <small class="form-text titulos">Obligatorio.</small>
                                     </div>
                                     <div class="mt-3">
                                         <label class="titulos" for="usu_nombre2">Segundo nombre</label>
                                         <input type="text" name="usu_nombre2" id="nombre2"
                                             class="form-control validar-nombre" placeholder="Segundo nombre">
-                                        <small class="form-text text-muted">Opcional.</small>
+                                        <small class="form-text titulos">Opcional.</small>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <h2 class="titulos">Apellidos</h2>
                                     <div>
                                         <label class="titulos" for="usu_apellido1">Primer Apellido*</label>
                                         <input type="text" name="usu_apellido1" id="apellido1"
-                                            class="form-control validar-nombre" placeholder="Primer apellido">
+                                            class="form-control validar-nombre" placeholder="Primer apellido"
+                                            data-bs-toggle="tooltip" title="Ingrese su primer apellido, obligatorio.">
+                                        <small class="form-text titulos">Obligatorio.</small>
                                     </div>
                                     <div class="mt-3">
                                         <label class="titulos" for="usu_apellido2">Segundo Apellido</label>
                                         <input type="text" name="usu_apellido2" id="apellido2"
                                             class="form-control validar-nombre" placeholder="Segundo apellido">
-                                        <small class="form-text text-muted">Opcional.</small>
+                                        <small class="form-text titulos">Opcional.</small>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +101,8 @@ include_once "../lib/helpers.php";
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="titulos" for="doc_id">Tipo de documento*</label>
-                                    <select name="doc_id" id="doc" class="form-control">
+                                    <select name="doc_id" id="doc" class="form-control" data-bs-toggle="tooltip"
+                                        title="Seleccione un tipo de documento, obligatorio.">
                                         <option value="">Seleccione...</option>
                                         <?php
                                         foreach ($docs as $doc) {
@@ -106,34 +110,39 @@ include_once "../lib/helpers.php";
                                         }
                                         ?>
                                     </select>
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="titulos" for="usu_documento">Nro Documento*</label>
                                     <input type="text" name="usu_documento" id="documentoRegistro"
                                         class="form-control validar-num" placeholder="Documento"
-                                        data-url="<?php echo getUrl("Acceso", "Acceso", "validarDoc", false, "ajax") ?>">
+                                        data-url="<?php echo getUrl("Acceso", "Acceso", "validarDoc", false, "ajax") ?>"
+                                        data-bs-toggle="tooltip" title="Ingrese su numero de documento, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="mt-3">
                                     <label class="titulos" for="sex_id">Sexo biologico*</label>
-                                    <select id="sexo" name="sex_id" class="form-control">
+                                    <select id="sexo" name="sex_id" class="form-control" data-bs-toggle="tooltip"
+                                        title="Seleccione su sexo biologico, obligatorio.">
                                         <option value="">Seleccione...</option>
                                         <?php
                                         foreach ($sexo as $sex) {
                                             echo "<option value ='" . $sex['sex_id'] . "'>" . $sex['sex_desc'] . "</option>";
                                         }
                                         ?>
-
                                     </select>
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
                         <div class="col-md-12  p-2">
                             <h2 class="titulos">Direccion de residencia</h2>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="titulos" for="tipoVia">Tipo de vía*</label>
                                     <select id="tipoVia" name="tipoVia" class="form-control"
-                                        title="Escoja el tipo de via, por ejemplo: Calle">
+                                        title="Escoja el tipo de via, por ejemplo: Calle, obligatorio"
+                                        data-bs-toggle="tooltip">
                                         <option value="">Seleccione...</option>
                                         <option value="Calle">Calle</option>
                                         <option value="Carrera">Carrera</option>
@@ -141,36 +150,46 @@ include_once "../lib/helpers.php";
                                         <option value="Transversal">Transversal</option>
                                         <option value="Diagonal">Diagonal</option>
                                     </select>
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="titulos" for="numeroPrincipal">Número principal*</label>
                                     <input type="number" id="numeroPrincipal" name="numeroPrincipal"
-                                        class="form-control" placeholder="123" min="1" max="300">
+                                        class="form-control" min="1" max="300" data-bs-toggle="tooltip"
+                                        title="Ingrese el numero principal, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="col-md-1">
                                     <label class="titulos" for="complemento1">Complemento</label>
                                     <input type="text" id="complemento1" name="complemento1" class="form-control"
-                                        placeholder="J" maxlength="3">
+                                        maxlength="3" placeholder="J/G/H">
+                                    <small class="form-text titulos">Opcional.</small>
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="titulos" for="numeroSecundario">Número 1</label>
+                                    <label class="titulos" for="numeroSecundario">Número 1*</label>
                                     <input type="number" id="numeroSecundario" name="numeroSecundario"
-                                        class="form-control" placeholder="22" min="1" max="300" maxlength="3">
+                                        class="form-control" min="1" max="300" maxlength="3" data-bs-toggle="tooltip"
+                                        title="Ingrese el numero secundario, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="col-md-1">
                                     <label class="titulos" for="complemento2">Complemento</label>
                                     <input type="text" id="complemento2" name="complemento2" class="form-control"
                                         placeholder="Bis/A/Sur">
+                                    <small class="form-text titulos">Opcional.</small>
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="titulos" for="numeroTerciario">Número 2</label>
+                                    <label class="titulos" for="numeroTerciario">Número 2*</label>
                                     <input type="number" id="numeroTerciario" name="numeroTerciario"
-                                        class="form-control" placeholder="42" min="1" max="300" maxlength="3">
+                                        class="form-control" min="1" max="300" maxlength="3" data-bs-toggle="tooltip"
+                                        title="Ingrese el numero terceario, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <label class="titulos" for="referencias">Referencias adicionales</label>
                                     <textarea id="referencias" name="referencias" class="form-control" rows="1"
                                         maxlength="100" placeholder="Máx. 100 Carácteres"></textarea>
+                                    <small class="form-text titulos">Opcional.</small>
                                 </div>
                             </div>
                         </div>
@@ -180,12 +199,16 @@ include_once "../lib/helpers.php";
                                 <div class="col-md-6">
                                     <label class="titulos" for="usu_tel">Teléfono*</label>
                                     <input type="text" name="usu_tel" id="telefono" class="form-control validar-num"
-                                        placeholder="Teléfono">
+                                        placeholder="Teléfono" data-bs-toggle="tooltip"
+                                        title="Ingrese su número de telefono, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="titulos" for="usu_correo">Correo*</label>
                                     <input type="text" name="usu_correo" id="correo" class="form-control"
-                                        placeholder="usuario@dominio.com">
+                                        placeholder="usuario@dominio.com" data-bs-toggle="tooltip"
+                                        title="Ingrese su correo electronico, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                             </div>
                         </div>
@@ -195,12 +218,16 @@ include_once "../lib/helpers.php";
                                 <div class="col-md-6">
                                     <label class="titulos" for="usu_clave">Clave*</label>
                                     <input type="password" name="usu_clave" id="clave" class="form-control claves"
-                                        placeholder="Clave">
+                                        placeholder="Clave" data-bs-toggle="tooltip"
+                                        title="Ingrese su clave, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="titulos" for="usu_clavenew">Confirmar clave*</label>
                                     <input type="password" name="usu_clavenew" id="clavenew" class="form-control claves"
-                                        placeholder="Confirmar clave">
+                                        placeholder="Confirmar clave" data-bs-toggle="tooltip"
+                                        title="Confirme su clave, obligatorio.">
+                                    <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                             </div>
                         </div>
@@ -223,7 +250,5 @@ include_once "../lib/helpers.php";
     crossorigin="anonymous"></script>
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/script.js"></script>
-
-
 
 </html>

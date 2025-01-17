@@ -12,7 +12,7 @@ if (is_array($senial) && count($senial) > 0) {
         echo "<div class='accordion-body'>";
         echo "<p><strong><i class='fa fa-traffic-light'></i> Tipo de Señal:</strong> " . $sen['senal'] . "</p>";
         echo "<p><strong><i class='fa-solid fa-user'></i> Solicitante:</strong> " . $sen['usuario_nombre'] . "</p>";
-        if ($_SESSION['rol'] != 2) {
+        if ($_SESSION['rol'] == 3) {
             echo "<p><strong><i class='fa fa-check-circle'></i> Estado:</strong>";
             echo "<div class='row'>";
             echo "<div class='col-md-2'>";
@@ -32,7 +32,7 @@ if (is_array($senial) && count($senial) > 0) {
         }
         echo "<button class='btn btn-sm btn-outline-secondary btn-detalles' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "detallesSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver detalles</button>";
         if ($_SESSION['rol'] != 2) {
-            echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado'  style = 'margin-left: 10px;' style = 'margin-left: 10px;' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
+            echo "<button class='btn btn-sm btn-outline-secondary btn-cambios-estado' style = 'margin-left: 10px;' data-id='" . $sen['sol_sen_new_id'] . "' data-url='" . getUrl("Solicitudes", "Solicitudes", "verAudiSenNew", false, "ajax") . "'><i class='bi bi-info-circle'></i> Ver cambios de estado</button>";
         }
         echo "</div>";
         echo "</div>";

@@ -1,17 +1,20 @@
 <div class="pqrs-btn" id="pqrs-specific">
-    <button class="btn redN" type="button" id="pqrsDropdown" 
-        aria-haspopup="true" aria-expanded="false" 
-        style="background-color: #202434; color: #c2bfbf; size: 50px;" 
+    <button class="btn redN" type="button" id="pqrsDropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #202434; color: #c2bfbf; 
+               display: flex; align-items: center; justify-content: center; 
+               font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif; 
+               font-weight: bold; font-size: 15px; height: 55px; 
+               width: 65px; border: none; cursor: pointer;"
         title="Haga sus peticiones, quejas, reclamos y sugerencias">
-        <i class="fa-solid fa-comment"></i>
+        PQRS
     </button>
+
     <div class="dropdown-menu">
         <?php
-            if($_SESSION['rol'] != 1){
-                $texto = 'Ver mis PQRS';
-            }else{
-                $texto = 'Revisar PQRS';
-            }
+        if ($_SESSION['rol'] != 1) {
+            $texto = 'Ver mis PQRS';
+        } else {
+            $texto = 'Revisar PQRS';
+        }
         ?>
         <a href="<?php echo getUrl('PQRS', 'PQRS', 'getPQRS'); ?>" class="dropdown-item"><?php echo $texto; ?></a>
         <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#pqrsModal">Enviar PQRS</a>
@@ -39,24 +42,23 @@
                             <option value="3">Reclamo</option>
                             <option value="4">Sugerencia</option>
                         </select>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                     <div class="mb-3">
                         <label for="pqrsTextarea" class="form-label">Escribe tu mensaje (Petición, Queja, Reclamo o
                             Sugerencia)</label>
                         <textarea class="form-control" id="observaciones" rows="4" placeholder="Escribe aquí..."
                             name="texto"></textarea>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success">Enviar</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+
                     </div>
                 </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 <script src="assets/js/validacionesPQRS.js"></script>
-

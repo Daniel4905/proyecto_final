@@ -78,8 +78,7 @@ class SolicitudesController
                 LEFT JOIN choque_detalle dta ON rda.choque_detalle_id = dta.choq_detal_id
                 LEFT JOIN tipo_choque tc ON dta.id_perteneciente = tc.tipo_choque_id
                 LEFT JOIN punto_accidente pa ON ra.reg_acc_id = pa.id_accidente
-                WHERE 
-                    ST_DWithin(pa.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+                WHERE ST_DWithin(pa.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0003596)
                 GROUP BY 
                     ra.reg_acc_id, pa.geom
                 ORDER BY 
@@ -101,7 +100,7 @@ class SolicitudesController
                 LEFT JOIN usuarios u ON svd.usu_id = u.usu_id
                 LEFT JOIN tipo_via tv ON svd.via_id = tv.id_tipo_via
                 LEFT JOIN punto_via pv ON svd.sol_via_dan_id = pv.id_via
-                WHERE ST_DWithin(pv.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+                WHERE ST_DWithin(pv.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0003596)
                 GROUP BY svd.sol_via_dan_id, td.tipo_danio_desc, u.usu_nombre1, pv.geom, est.est_nombre, tv.desc_via
                 ORDER BY ST_Distance(pv.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                 LIMIT 1";
@@ -118,7 +117,7 @@ class SolicitudesController
                LEFT JOIN usuarios u ON snew.usu_id = u.usu_id
                LEFT JOIN punto_senialnew ps ON snew.sol_sen_new_id = ps.id_senialnew
                LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = snew.tipo_sen_id
-               WHERE ST_DWithin(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+               WHERE ST_DWithin(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0003596)
                GROUP BY snew.sol_sen_new_id,  tp.tipo_sen_desc, ps.geom, est.est_nombre
                ORDER BY ST_Distance(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                LIMIT 1 ";
@@ -135,7 +134,7 @@ class SolicitudesController
                LEFT JOIN usuarios u ON sdan.usu_id = u.usu_id
                LEFT JOIN tipo_seniales tp ON tp.tipo_senial_id = sdan.tipo_sen_id
                LEFT JOIN punto_senialdan ps ON sdan.sol_sen_dan_id = ps.id_senialdan
-               WHERE ST_DWithin(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+               WHERE ST_DWithin(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0003596)
                GROUP BY sdan.sol_sen_dan_id, tp.tipo_sen_desc, ps.geom, est.est_nombre
                ORDER BY ST_Distance(ps.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                LIMIT 1 ";
@@ -152,7 +151,7 @@ class SolicitudesController
                LEFT JOIN tipos_reductores tr ON redDan.tipo_red_id= tr.tipo_red_id
                LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
                LEFT JOIN punto_reductordan pr ON redDan.sol_red_dan_id = pr.id_reductordan
-               WHERE ST_DWithin(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+               WHERE ST_DWithin(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0003596)
                GROUP BY redDan.sol_red_dan_id, tr.nombre_tipo_red, pr.geom, est.est_nombre, c.nombre_categoria
                ORDER BY ST_Distance(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                LIMIT 1 ";
@@ -169,7 +168,7 @@ class SolicitudesController
                LEFT JOIN tipos_reductores tr ON redNew.tipo_red_id = tr.tipo_red_id
                LEFT JOIN categoria_reductores c ON tr.cat_id = c.id_categoria
                LEFT JOIN punto_reductornew pr ON redNew.sol_red_new_id = pr.id_reductornew
-               WHERE ST_DWithin(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0001798)
+               WHERE ST_DWithin(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326), 0.0003596)
                GROUP BY redNew.sol_red_new_id, tr.nombre_tipo_red, pr.geom, est.est_nombre, c.nombre_categoria
                ORDER BY ST_Distance(pr.geom, ST_SetSRID(ST_MakePoint($punto1, $punto2), 4326)) ASC
                LIMIT 1 ";

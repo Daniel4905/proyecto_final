@@ -97,9 +97,10 @@
 
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="" class="form-label">Categoria del reductor</label>
+                            <label for="" class="form-label">Categoria del reductor*</label>
                             <select name="categoria" id="categoria" class="form-select"
-                                data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "getTipoReduc", false, "ajax") ?>">
+                                data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "getTipoReduc", false, "ajax") ?>"
+                                data-bs-toggle="tooltip" title="Seleccione una categoria, obligatorio.">
                                 <option value="" class="form-option">Seleccione...</option>
                                 <?php
                                 foreach ($categoria as $cat) {
@@ -107,22 +108,26 @@
                                 }
                                 ?>
                             </select>
+                            <small class="form-text text-muted">Obligatorio.</small>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="" class="form-label">Tipo de reductor</label>
+                            <label for="" class="form-label">Tipo de reductor*</label>
                             <select name="tipoRedu" id="tipoRedu" class="form-select"
-                                data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "infoRed", false, "ajax") ?>">
+                                data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "infoRed", false, "ajax") ?>"
+                                data-bs-toggle="tooltip" title="Seleccione un tipo, obligatorio.">
                                 <option value="" class="form-option">Seleccione...</option>
                             </select>
+                            <small class="form-text text-muted">Obligatorio.</small>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 mb-3">
-                        <label for="" class="form-label">Adjunte imagen de la zona</label>
+                        <label for="" class="form-label">Adjunte imagen de la zona*</label>
                         <div class="image-upload-wrapper">
                             <label class="image-upload">
-                                <input type="file" accept="image/*" onchange="previewImage(this)" name="imagen">
+                                <input type="file" accept="image/*" onchange="previewImage(this)" name="imagen"
+                                    data-bs-toggle="tooltip" title="Adjunte la imagen, obligatorio.">
                                 <div class="upload-placeholder">
                                     <i class="fa-solid fa-image"></i>
                                 </div>
@@ -131,18 +136,21 @@
                                     style="display: none;">✕</button>
                             </label>
                         </div>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
                 <div class="row">
                     <div class="mb-2">
-                        <label for="" class="form-label">Descripcion de la solicitud</label>
+                        <label for="" class="form-label">Descripcion de la solicitud*</label>
                         <textarea name="desc_red" id="desc_red" placeholder="Detalle su solicitud...."
-                            class="form-control" style="height: 100px;"></textarea>
+                            class="form-control" style="height: 100px;" data-bs-toggle="tooltip"
+                            title="Ingrese una descripción, obligatorio."></textarea>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
 
                 <div class="mt-2 col-md-4">
-                    <input type="submit" value="Enviar" class="btn btn-success">
+                    <input type="submit" value="Enviar" class="btn btn-primary">
                 </div>
             </form>
         </div>

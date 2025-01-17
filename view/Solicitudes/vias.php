@@ -78,8 +78,9 @@
         <h3>Via a reparar</h3>
         <div class="col-md-6">
             <div class="mb-2">
-                <label for="tipoVia" class="form-label">Tipo de via:</label>
-                <select id="tipoVia" name="tipoVia" class="form-select">
+                <label for="tipoVia" class="form-label">Tipo de via:*</label>
+                <select id="tipoVia" name="tipoVia" class="form-select" data-bs-toggle="tooltip"
+                    title="Selecione un tipo de via, obligatorio.">
                     <option value="">Seleccione..</option>
                     <?php
                     foreach ($vias as $via) {
@@ -87,13 +88,15 @@
                     }
                     ?>
                 </select>
+                <small class="form-text text-muted">Obligatorio.</small>
             </div>
         </div>
         <h3>Descripción del Daño</h3>
         <div class="col-md-6">
             <div class="mb-2">
-                <label for="tipoDanio" class="form-label">Tipo de daño:</label>
-                <select id="tipoDanio" name="tipoDanio" class="form-select">
+                <label for="tipoDanio" class="form-label">Tipo de daño:*</label>
+                <select id="tipoDanio" name="tipoDanio" class="form-select" data-bs-toggle="tooltip"
+                    title="Seleccione un tipo de daño, obligatorio.">
                     <option value="">Seleccione..</option>
                     <?php
                     foreach ($danos as $danio) {
@@ -102,17 +105,20 @@
                     ?>
                 </select>
             </div>
+            <small class="form-text text-muted">Obligatorio.</small>
         </div>
 
         <div class="row">
             <div class="mb-2">
-                <label for="" class="form-label">Descripcion de la solicitud</label>
+                <label for="" class="form-label">Descripcion de la solicitud*</label>
                 <textarea name="detalles" id="observaciones" placeholder="Detalle su solicitud...." class="form-control"
-                    style="height: 100px;"></textarea>
+                    style="height: 100px;" data-bs-toggle="tooltip"
+                    title="Ingrese una descripción, obligatorio."></textarea>
+                <small class="form-text text-muted">Obligatorio.</small>
             </div>
         </div>
-        <h3>Subir Evidencia Fotográfica</h3>
-        <div class="row">
+        <h3>Subir Evidencia Fotográfica*</h3>
+        <div class="row" data-bs-toggle="tooltip" title="Adjunte al menos una imagen, obligatorio.">
             <div class="col-12 col-md-4 mb-3">
                 <div class="image-upload-wrapper">
                     <label class="image-upload">
@@ -152,15 +158,16 @@
                     </label>
                 </div>
             </div>
-            <div class="mt-3">
-                <input type="submit" value="Enviar" class="btn btn-success">
-            </div>
+            <small class="form-text text-muted">Obligatorio.</small>
+        </div>
+        <div class="mt-3">
+            <input type="submit" value="Enviar" class="btn btn-primary">
         </div>
     </form>
 </div>
 <script>
-    var valorPunto1 = document.getElementById("punto1").value; 
-    var valorPunto2 = document.getElementById("punto2").value; 
+    var valorPunto1 = document.getElementById("punto1").value;
+    var valorPunto2 = document.getElementById("punto2").value;
 
     document.getElementById("Coord1").value = valorPunto1;
     document.getElementById("Coord2").value = valorPunto2;

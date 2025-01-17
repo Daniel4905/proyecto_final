@@ -14,8 +14,9 @@
                 <div class="row mt-3">
                     <div class="col-md-4 ">
                         <div class="mb-2">
-                            <label for="" class="form-label">Categoria</label>
-                            <select name="sen_cate" id="categoria" class="form-select fSen">
+                            <label for="" class="form-label">Categoria*</label>
+                            <select name="sen_cate" id="categoria" class="form-select fSen" data-bs-toggle="tooltip"
+                                title="Seleccione una categoria, obligatorio.">
                                 <option value="" class="form-option">Seleccione...</option>
                                 <?php
                                 foreach ($senCate as $cat) {
@@ -23,12 +24,14 @@
                                 }
                                 ?>
                             </select>
+                            <small class="form-text text-muted">Obligatorio.</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-2">
-                            <label for="" class="form-label">Orientacion</label>
-                            <select name="orienSen" id="" class="form-select fSen">
+                            <label for="" class="form-label">Orientacion*</label>
+                            <select name="orienSen" id="" class="form-select fSen" data-bs-toggle="tooltip"
+                                title="Seleccione una orientación, obligatorio.">
                                 <option value="" class="form-option">Seleccione...</option>
                                 <?php
                                 foreach ($senOrientacion as $orien) {
@@ -36,28 +39,34 @@
                                 }
                                 ?>
                             </select>
+                            <small class="form-text text-muted">Obligatorio.</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="mb-2">
-                            <label for="" class="form-label">Tipo</label>
-                            <select name="tipoSen" id="tipoSen" class="form-select" data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "infoSens", false, "ajax") ?>">
+                            <label for="" class="form-label">Tipo*</label>
+                            <select name="tipoSen" id="tipoSen" class="form-select"
+                                data-url="<?php echo getUrl("Solicitudes", "Solicitudes", "infoSens", false, "ajax") ?>"
+                                data-bs-toggle="tooltip" title="Seleccione un tipo, obligatorio.">
                                 <option value="" class="form-option">Seleccione...</option>
                             </select>
+                            <small class="form-text text-muted">Obligatorio.</small>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="mb-2">
-                        <label for="" class="form-label">Descripcion de la solicitud</label>
+                        <label for="" class="form-label">Descripcion de la solicitud*</label>
                         <textarea name="sen_desc" id="desc" placeholder="Detalle su solicitud...." class="form-control"
-                            style="height: 100px;"></textarea>
+                            style="height: 100px;" data-bs-toggle="tooltip"
+                            title="Ingrese una descripción, obligatorio."></textarea>
+                        <small class="form-text text-muted">Obligatorio.</small>
                     </div>
                 </div>
 
                 <div class="mt-2 col-md-4">
-                    <input type="submit" value="Enviar" class="btn btn-success">
+                    <input type="submit" value="Enviar" class="btn btn-primary">
                 </div>
             </form>
 
@@ -95,5 +104,4 @@
         }
     });
 </script>
-
 <script src="assets/js/validacionesSeniales.js"></script>
