@@ -51,11 +51,19 @@ $(document).ready(function () {
   const patronTexto = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
   const patronNumero = /^[0-9]+$/;
   const patronCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const patronClave = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+  const patronClave = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_-])[A-Za-z\d\W_-]{8,}$/;
 
   function agregarError(campo, mensaje) {
-    $(campo).addClass('input-error').after(`<p class='text-danger'>${mensaje}</p>`);
+    const smallElement = $(campo).siblings('small');
+    $(campo).addClass('input-error');
+
+    if (smallElement.length) {
+      smallElement.after(`<p class='text-danger'>${mensaje}</p>`);
+    } else {
+      $(campo).after(`<p class='text-danger'>${mensaje}</p>`);
+    }
   }
+
 
   function validarCampo(campo, patron, campoNombre, mensajeError) {
     const valor = campo.val().trim();
@@ -96,6 +104,28 @@ $(document).ready(function () {
     if (tipoDoc === '') {
       agregarError($('#doc'), 'Por favor, seleccione un tipo de documento.');
       valido = false;
+    }
+
+    const fechaNacimiento = $('#fecha_nacimiento').val().trim();
+
+    if (fechaNacimiento === '') {
+      agregarError($('#fecha_nacimiento'), 'Por favor, ingrese su fecha de nacimiento.');
+      valido = false;
+    } else {
+
+      const hoy = new Date();
+      const fechaNac = new Date(fechaNacimiento);
+      let edad = hoy.getFullYear() - fechaNac.getFullYear();
+      const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
+      const diferenciaDias = hoy.getDate() - fechaNac.getDate();
+
+      if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
+        edad--;
+      }
+      if (edad < 18) {
+        agregarError($('#fecha_nacimiento'), 'Debe ser mayor o igual a 18 años.');
+        valido = false;
+      }
     }
 
     if (!validarCampo($('#documentoRegistro'), patronNumero, 'el número de documento', 'El número de documento solo debe contener dígitos mín(8) y máx(10).')) {

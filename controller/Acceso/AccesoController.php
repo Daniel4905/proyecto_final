@@ -75,6 +75,8 @@ class AccesoController
         $usu_tel = $_POST['usu_tel'];
         $doc_id = $_POST['doc_id'];
         $sex_id = $_POST['sex_id'];
+        $fecha_nac = $_POST['fecha_nacimiento'];
+
 
         $tipoV = $_POST['tipoVia'];
         $numeroPr = $_POST['numeroPrincipal'];
@@ -148,13 +150,13 @@ class AccesoController
         $id = $obj->autoIncrement("usuarios", "usu_id");
         $sql = "";
         if (empty($usu_apellido2)) {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel', '$direccion', 2, 1, $doc_id, $sex_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel', '$direccion', '$fecha_nac', 2, 1, $doc_id, $sex_id)";
         } else if (empty($usu_nombre2)) {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', 2, 1, $doc_id, $sex_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', '$fecha_nac', 2, 1, $doc_id, $sex_id)";
         } else if (empty($usu_nombre2) && empty($usu_apellido2)) {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel','$direccion', 2, 1, $doc_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel','$direccion', '$fecha_nac', 2, 1, $doc_id, $sex_id)";
         } else {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', 2, 1, $doc_id, $sex_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', '$fecha_nac', 2, 1, $doc_id, $sex_id)";
         }
         if ($validacion) {
             $ejecutar = $obj->insert($sql);
@@ -164,11 +166,11 @@ class AccesoController
                 redirect("index.php");
             } else {
                 $_SESSION['errores'][] = "No se pudo realizar el registro";
-                redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
+                //redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
             }
         } else {
             $_SESSION['errores'][] = "No se pudo realizar el registro";
-            redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
+            //redirect(getUrl('Acceso', 'Acceso', 'getCreate', false, "ajax"));
         }
 
     }

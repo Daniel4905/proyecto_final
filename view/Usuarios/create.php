@@ -80,10 +80,16 @@ if (isset($_SESSION['errores'])) {
                 </select>
                 <small class="form-text text-muted">Obligatorio.</small>
             </div>
-            <div class="col-md-4 mt-3">
+            <div class="col-md-2 mt-3">
                 <label for="usu_tel">Telefono*</label>
                 <input type="text" name="usu_tel" id="telefono" class="form-control validar-num" placeholder="Telefono"
                     data-bs-toggle="tooltip" title="Ingrese el numero de telefono, obligatorio.">
+                <small class="form-text text-muted">Obligatorio.</small>
+            </div>
+            <div class="col-md-2 mt-3">
+                <label for="fecha_nacimiento">Fecha de nacimiento*</label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control"
+                    data-bs-toggle="tooltip" title="Ingrese su fecha de nacimiento, obligatorio.">
                 <small class="form-text text-muted">Obligatorio.</small>
             </div>
 

@@ -111,6 +111,16 @@ $(document).ready(function () {
         if (archivos.length === 0) {
             agregarError($('input[name="imagenSD"]'), "Por favor seleccione una imagen");
             valido = false;
+        } else {
+            const extensionesPermitidas = ['png', 'jpg', 'jpeg'];
+            for (let i = 0; i < archivos.length; i++) {
+                const extension = archivos[i].name.split('.').pop().toLowerCase();
+                if (!extensionesPermitidas.includes(extension)) {
+                    agregarError($('input[name="imagenSD"]').first(), "Solo se permiten imágenes en formato PNG, JPG o JPEG");
+                    valido = false;
+                    break;
+                }
+            }
         }
 
         const tipoDanio = $('#tipoDanio').val().trim();

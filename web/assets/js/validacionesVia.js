@@ -72,8 +72,18 @@ $(document).ready(function () {
 
         const archivos = $('input[name="imagenes[]"]')[0].files;
         if (archivos.length === 0) {
-            agregarError($('input[name="imagenes[]"]'), "Por favor seleccione al menos una imagen");
+            agregarError($('input[name="imagenes[]"]').first(), "Por favor seleccione al menos una imagen");
             valido = false;
+        } else {
+            const extensionesPermitidas = ['png', 'jpg', 'jpeg'];
+            for (let i = 0; i < archivos.length; i++) {
+                const extension = archivos[i].name.split('.').pop().toLowerCase();
+                if (!extensionesPermitidas.includes(extension)) {
+                    agregarError($('input[name="imagenes[]"]').first(), "Solo se permiten imágenes en formato PNG, JPG o JPEG");
+                    valido = false;
+                    break; 
+                }
+            }
         }
 
         if (valido) {

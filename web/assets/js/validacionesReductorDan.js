@@ -73,45 +73,55 @@ $(document).ready(function () {
 
     $('#formReductorDan').submit(function (event) {
 
-            event.preventDefault();
-            $('.text-danger').remove();
-            $('input, select').removeClass('input-error');
-        
-            let valido = true;
-        
-            const tipo_red= $('#tipoRedu').val().trim();
-        
-            if (tipo_red === '' || tipo_red=== null ) {
-                agregarError($('#tipoRedu'), "Por favor seleccione un tipo de reductor");
-                valido = false;
-            }
-        
-            const desc_red=$('#desc_red').val().trim();
-            if (desc_red==='' || desc_red === null) {
-                agregarError($('#desc_red'),"Por favor ingrese una descripción");
-                valido = false;
-            }else if ( !patronTexto.test(desc_red) || desc_red.length > 300 ||  desc_red.length <= 30) {
-                agregarError($('#desc_red'), "El campo observaciones solo admite letras (30mín, 300máx.)");
-                valido = false;
-            }
+        event.preventDefault();
+        $('.text-danger').remove();
+        $('input, select').removeClass('input-error');
 
-            const archivos = $('input[name="imagenRD"]')[0].files;
-            if (archivos.length === 0) {
-                agregarError($('input[name="imagenRD"]'), "Por favor seleccione una imagen");
-                valido = false;
-            }
+        let valido = true;
 
-            const tipoDanio= $('#tipoRedDanio').val().trim();
+        const tipo_red = $('#tipoRedu').val().trim();
 
-            if (tipoDanio===''|| tipoDanio===null) {
-                agregarError($('#tipoRedDanio'), "Por favor seleccione un tipo de daño");
-                valido = false;
+        if (tipo_red === '' || tipo_red === null) {
+            agregarError($('#tipoRedu'), "Por favor seleccione un tipo de reductor");
+            valido = false;
+        }
+
+        const desc_red = $('#desc_red').val().trim();
+        if (desc_red === '' || desc_red === null) {
+            agregarError($('#desc_red'), "Por favor ingrese una descripción");
+            valido = false;
+        } else if (!patronTexto.test(desc_red) || desc_red.length > 300 || desc_red.length <= 30) {
+            agregarError($('#desc_red'), "El campo observaciones solo admite letras (30mín, 300máx.)");
+            valido = false;
+        }
+
+        const archivos = $('input[name="imagenRD"]')[0].files;
+        if (archivos.length === 0) {
+            agregarError($('input[name="imagenRD"]'), "Por favor seleccione una imagen");
+            valido = false;
+        } else {
+            const extensionesPermitidas = ['png', 'jpg', 'jpeg'];
+            for (let i = 0; i < archivos.length; i++) {
+                const extension = archivos[i].name.split('.').pop().toLowerCase();
+                if (!extensionesPermitidas.includes(extension)) {
+                    agregarError($('input[name="imagenRD"]').first(), "Solo se permiten imágenes en formato PNG, JPG o JPEG");
+                    valido = false;
+                    break;
+                }
             }
-            
-            if (valido) {
-                this.submit();
-            }
-        
+        }
+
+        const tipoDanio = $('#tipoRedDanio').val().trim();
+
+        if (tipoDanio === '' || tipoDanio === null) {
+            agregarError($('#tipoRedDanio'), "Por favor seleccione un tipo de daño");
+            valido = false;
+        }
+
+        if (valido) {
+            this.submit();
+        }
+
     });
 
 });

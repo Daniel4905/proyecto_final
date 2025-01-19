@@ -120,7 +120,7 @@ include_once "../lib/helpers.php";
                                         data-bs-toggle="tooltip" title="Ingrese su numero de documento, obligatorio.">
                                     <small class="form-text titulos">Obligatorio.</small>
                                 </div>
-                                <div class="mt-3">
+                                <div class="col-md-6 mt-3">
                                     <label class="titulos" for="sex_id">Sexo biologico*</label>
                                     <select id="sexo" name="sex_id" class="form-control" data-bs-toggle="tooltip"
                                         title="Seleccione su sexo biologico, obligatorio.">
@@ -131,6 +131,14 @@ include_once "../lib/helpers.php";
                                         }
                                         ?>
                                     </select>
+                                    <small class="form-text titulos">Obligatorio.</small>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label class="titulos" for="fecha_nacimiento">Fecha de nacimiento*</label>
+                                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
+                                        class="form-control" data-bs-toggle="tooltip"
+                                        title="Ingrese su fecha de nacimiento, obligatorio.">
                                     <small class="form-text titulos">Obligatorio.</small>
                                 </div>
                             </div>

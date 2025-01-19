@@ -42,7 +42,7 @@ $(document).ready(function () {
         placeholder.show();
         button.hide();
     });
-    
+
     $('#categoria').on('change', function () {
         const tipoId = $(this).val();
         const url = $(this).data('url');
@@ -84,6 +84,21 @@ $(document).ready(function () {
         } else if (!patronTexto.test(desc_red) || desc_red.length > 300 || desc_red.length <= 30) {
             agregarError($('#desc_red'), "El campo observaciones solo admite letras (30mín, 300máx.)");
             valido = false;
+        }
+        const archivos = $('input[name="imagen"]')[0].files;
+        if (archivos.length === 0) {
+            agregarError($('input[name="imagen"]'), "Por favor seleccione una imagen");
+            valido = false;
+        } else {
+            const extensionesPermitidas = ['png', 'jpg', 'jpeg'];
+            for (let i = 0; i < archivos.length; i++) {
+                const extension = archivos[i].name.split('.').pop().toLowerCase();
+                if (!extensionesPermitidas.includes(extension)) {
+                    agregarError($('input[name="imagen"]').first(), "Solo se permiten imágenes en formato PNG, JPG o JPEG");
+                    valido = false;
+                    break;
+                }
+            }
         }
 
         if (valido) {

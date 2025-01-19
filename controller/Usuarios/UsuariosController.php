@@ -35,6 +35,8 @@ class UsuariosController
         $usu_rol = $_POST['rol_id'];
         $doc_id = $_POST['doc_id'];
         $sex_id = $_POST['sex_id'];
+        $fecha_nac = $_POST['fecha_nacimiento'];
+
 
         $tipoV = $_POST['tipoVia'];
         $numeroPr = $_POST['numeroPrincipal'];
@@ -85,13 +87,13 @@ class UsuariosController
         $id = $obj->autoIncrement("usuarios", "usu_id");
         $sql = "";
         if (empty($usu_apellido2)) {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel', '$direccion', '$fecha_nac', $usu_rol, 1, $doc_id, $sex_id)";
         } else if (empty($usu_nombre2)) {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', '$fecha_nac', $usu_rol, 1, $doc_id, $sex_id)";
         } else if (empty($usu_nombre2) && empty($usu_apellido2)) {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel','$direccion', $usu_rol, 1, $doc_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', NULL, '$usu_apellido1', NULL, '$usu_correo', '$hash', '$usu_tel','$direccion', '$fecha_nac', $usu_rol, 1, $doc_id, $sex_id)";
         } else {
-            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', $usu_rol, 1, $doc_id, $sex_id)";
+            $sql = "INSERT INTO usuarios VALUES($id, '$usu_doc', '$usu_nombre1', '$usu_nombre2', '$usu_apellido1', '$usu_apellido2', '$usu_correo', '$hash', '$usu_tel', '$direccion', '$fecha_nac', $usu_rol, 1, $doc_id, $sex_id)";
         }
 
         if ($validacion) {
@@ -102,9 +104,12 @@ class UsuariosController
                 redirect(getUrl("Usuarios", "Usuarios", "getUsuarios"));
             } else {
                 //redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
+                echo $sql;
             }
         } else {
             //redirect(getUrl("Usuarios", "Usuarios", "getCreate"));
+            echo $sql;
+
         }
 
     }
@@ -574,6 +579,16 @@ class UsuariosController
             JOIN tipo_documento td ON u.doc_id = td.doc_id WHERE usu_id = $usu_id";
         $usuarios = $obj->consult($sql);
         foreach ($usuarios as $usuario) {
+            $hoy = date('Y-m-d');
+            list($ano_actual, $mes_actual, $dia_actual) = explode('-', $hoy);
+
+            list($ano_nac, $mes_nac, $dia_nac) = explode('-',  $usuario['fecha_nac']);
+
+            $edad = $ano_actual - $ano_nac;
+
+            if (($mes_actual < $mes_nac) || ($mes_actual == $mes_nac && $dia_actual < $dia_nac)) {
+                $edad--;
+            }
             if ($usuario) {
                 echo "<p><strong>Documento:</strong> " . $usuario['doc_abrev'] . " " . $usuario['usu_documento'] . "</p>" .
                     "<p><strong>Nombres:</strong> " . $usuario['usu_nombre1'] . " " . $usuario['usu_nombre2'] . "</p>" .
@@ -581,6 +596,7 @@ class UsuariosController
                     "<p><strong>Correo:</strong> " . $usuario['usu_correo'] . "</p>" .
                     "<p><strong>Teléfono:</strong> " . $usuario['usu_tel'] . "</p>" .
                     "<p><strong>Dirección:</strong> " . $usuario['usu_direccion'] . "</p>" .
+                    "<p><strong>Edad:</strong> " . $edad. "</p>" .
                     "<p><strong>Sexo biologico:</strong> " . $usuario['sex_desc'] . "</p>" .
                     "<p><strong>Rol:</strong> " . $usuario['rol_nombre'] . "</p>";
             } else {

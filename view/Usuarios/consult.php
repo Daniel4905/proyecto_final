@@ -1,5 +1,5 @@
 <?php
-if (isset($_SESSION['RegEx'])) {
+if (isset($_SESSION['regEx'])) {
     echo "<script>
             document.addEventListener('DOMContentLoaded', function () {
                 Swal.fire({
@@ -10,7 +10,7 @@ if (isset($_SESSION['RegEx'])) {
                 });
             });
           </script>";
-    unset($_SESSION['RegEx']);
+    unset($_SESSION['regEx']);
 }
 
 if (isset($_SESSION['ActEx'])) {
