@@ -4501,6 +4501,7 @@ CREATE TABLE public.usuarios (
     usu_clave character varying(255) NOT NULL,
     usu_tel character varying(50) NOT NULL,
     usu_direccion character varying(500) NOT NULL,
+    fecha_nac date,
     rol_id integer,
     est_id integer,
     doc_id integer,
@@ -4786,7 +4787,8 @@ ALTER TABLE ONLY public.usuarios ALTER COLUMN usu_id SET DEFAULT nextval('public
 --
 
 COPY public.auditoria_usuarios (id, usuario_id, fecha) FROM stdin;
-1	2	2025-01-09 16:03:33.595
+1	2	2025-01-19 09:59:01.466
+2	3	2025-01-19 10:15:55.927
 \.
 
 
@@ -4803,24 +4805,6 @@ COPY public.auditoriaaccidente (au_acc_id, au_acc_fechah, au_acc_desc, au_acc_es
 --
 
 COPY public.auditoriareddan (au_red_dan_id, au_red_dan_fechah, au_red_dan_desc, au_red_dan_estadoini, au_red_dan_estadofin, sol_red_dan_id, usu_id) FROM stdin;
-1	2025-01-09 15:37:41	A ver aqui si hice?	3	5	1	1
-2	2025-01-09 15:58:54	Como asi y usted porque esta asi	5	3	1	1
-3	2025-01-09 15:58:54	Como asi y usted porque esta asi	5	3	1	1
-4	2025-01-09 15:58:54	Como asi y usted porque esta asi	5	3	1	1
-5	2025-01-09 15:58:54	Como asi y usted porque esta asi	5	3	1	1
-6	2025-01-09 15:58:54	Como asi y usted porque esta asi	5	3	1	1
-7	2025-01-09 15:58:54	Como asi y usted porque esta asi	5	3	1	1
-8	2025-01-09 15:59:14	Ay gono	3	4	1	1
-9	2025-01-10 00:20:17	y esta?	4	3	1	1
-10	2025-01-10 00:20:17	y esta?	4	3	1	1
-11	2025-01-10 00:20:17	y esta?	4	3	1	1
-12	2025-01-10 00:37:37	oe	3	4	1	1
-13	2025-01-10 00:37:37	oe	3	4	1	1
-14	2025-01-10 00:37:37	oe	3	4	1	1
-15	2025-01-10 00:41:46	Oe	4	6	1	1
-16	2025-01-10 00:41:46	Oe	4	6	1	1
-17	2025-01-10 00:41:46	Oe	4	6	1	1
-18	2025-01-10 00:47:50	Ya	6	3	1	1
 \.
 
 
@@ -4829,17 +4813,6 @@ COPY public.auditoriareddan (au_red_dan_id, au_red_dan_fechah, au_red_dan_desc, 
 --
 
 COPY public.auditoriarednew (au_red_new_id, au_red_new_fechah, au_red_new_desc, au_red_new_estadoini, au_red_new_estadofin, sol_red_new_id, usu_id) FROM stdin;
-1	2025-01-09 15:43:20	Ahora si	3	5	1	1
-2	2025-01-09 15:43:30	Melo	5	6	1	1
-3	2025-01-10 00:24:56	Epa	6	3	1	1
-4	2025-01-10 00:25:04	Epa mano	3	6	1	1
-5	2025-01-10 00:33:11	Epa	6	3	1	1
-6	2025-01-10 00:41:38	Oe	3	6	2	1
-7	2025-01-10 00:41:38	Oe	3	6	2	1
-8	2025-01-10 00:48:03	Melo	6	3	2	1
-9	2025-01-10 00:48:03	Melo	6	3	2	1
-10	2025-01-10 00:48:32	Ya	3	4	1	1
-11	2025-01-10 00:48:38	Melo	3	4	2	1
 \.
 
 
@@ -4848,27 +4821,6 @@ COPY public.auditoriarednew (au_red_new_id, au_red_new_fechah, au_red_new_desc, 
 --
 
 COPY public.auditoriasendan (au_sen_dan_id, au_sen_dan_fechah, au_sen_dan_desc, au_sen_dan_estadoini, au_sen_dan_estadofin, sol_sen_dan_id, usu_id) FROM stdin;
-1	2025-01-09 09:51:25	Ya estuvo mi H	3	4	1	1
-2	2025-01-09 09:51:26	Ya estuvo mi H	3	4	1	1
-3	2025-01-09 09:52:00	yAAAA	4	5	1	1
-4	2025-01-09 13:11:06	Melo esta si	5	7	1	1
-5	2025-01-10 00:19:28	Toca cambiar eso	7	3	1	1
-6	2025-01-10 00:19:28	Toca cambiar eso	7	3	1	1
-7	2025-01-10 00:19:43	Melo mi bro	3	4	1	1
-8	2025-01-10 00:19:43	Melo mi bro	3	4	1	1
-9	2025-01-10 00:19:59	Ya	4	5	1	1
-10	2025-01-10 00:19:59	Ya	4	5	1	1
-11	2025-01-10 00:20:40	e	5	3	1	1
-12	2025-01-10 00:20:40	e	5	3	1	1
-13	2025-01-10 00:20:48	eee	3	5	1	1
-14	2025-01-10 00:29:48	Sisaz	5	7	1	1
-15	2025-01-10 00:29:48	Sisaz	5	7	1	1
-16	2025-01-10 00:33:23	Ok	7	3	1	1
-17	2025-01-10 00:33:23	Ok	7	3	1	1
-18	2025-01-10 00:37:26	oe	3	4	1	1
-19	2025-01-10 00:37:26	oe	3	4	1	1
-20	2025-01-10 00:47:28	Si	4	3	1	1
-21	2025-01-10 09:13:06	Sii	3	5	1	1
 \.
 
 
@@ -4877,42 +4829,6 @@ COPY public.auditoriasendan (au_sen_dan_id, au_sen_dan_fechah, au_sen_dan_desc, 
 --
 
 COPY public.auditoriasennew (au_sen_new_id, au_sen_new_fechah, au_sen_new_desc, au_sen_new_estadoini, au_sen_new_estadofin, sol_sen_new_id, usu_id) FROM stdin;
-1	2025-01-09 09:13:13	Porque si menor	5	4	1	1
-2	2025-01-09 09:28:31	Porque si menor	5	4	1	1
-3	2025-01-09 09:28:36	Porque si menor	5	4	1	1
-4	2025-01-09 09:28:52	Oe sisaz	4	5	1	1
-5	2025-01-09 09:29:10	Oe sisaz	4	5	1	1
-6	2025-01-09 09:29:56	Oe sisaz	4	5	1	1
-7	2025-01-09 09:30:15	Ya o que	5	4	1	1
-8	2025-01-09 09:32:04	Ya o que	5	4	1	1
-9	2025-01-09 09:32:06	Ya o que	5	4	1	1
-10	2025-01-09 09:33:39	Ya ahora melo	4	3	1	1
-11	2025-01-09 09:34:33	Ya ahora melo	4	3	1	1
-12	2025-01-09 09:35:32	Ya ahora melo	4	3	1	1
-13	2025-01-09 09:37:07	OE	3	4	1	1
-14	2025-01-09 09:37:53	OE	3	4	1	1
-15	2025-01-09 09:38:12	POR FAVOR FUNCIONAAA	4	3	1	1
-16	2025-01-09 09:39:03	Ya melo no?	3	4	1	1
-17	2025-01-09 09:42:09	Ya	4	5	1	1
-18	2025-01-09 09:43:07	Dale funcionaaa	5	4	1	1
-19	2025-01-09 09:43:20	Dale funcionaaa	5	4	1	1
-20	2025-01-09 09:43:30	Dale funcionaaa	5	3	1	1
-21	2025-01-09 09:44:47	Ya meló	3	4	1	1
-22	2025-01-09 09:52:12	mELOOO	4	5	1	1
-23	2025-01-09 09:52:12	mELOOO	4	5	1	1
-24	2025-01-09 10:00:21	Melo	5	4	1	1
-25	2025-01-09 10:00:21	Melo	5	4	1	1
-26	2025-01-09 10:07:22	R mano	4	3	1	1
-27	2025-01-09 10:51:20	R	3	4	1	1
-28	2025-01-10 00:20:28	a ver	4	3	1	1
-29	2025-01-10 00:20:33	si	3	6	1	1
-30	2025-01-10 00:30:36	Epa	6	4	1	1
-31	2025-01-10 00:30:36	Epa	6	4	1	1
-32	2025-01-10 00:36:41	A ver	4	3	1	1
-33	2025-01-10 00:42:57	Oe	3	4	1	1
-34	2025-01-10 00:47:13	Oe	4	3	1	1
-35	2025-01-10 00:49:07	Yaaa	3	5	1	1
-36	2025-01-10 09:12:53	R	5	3	1	1
 \.
 
 
@@ -4921,21 +4837,6 @@ COPY public.auditoriasennew (au_sen_new_id, au_sen_new_fechah, au_sen_new_desc, 
 --
 
 COPY public.auditoriavia (au_via_id, au_via_fechah, au_via_desc, au_via_estadoini, au_via_estadofin, sol_via_dan_id, usu_id) FROM stdin;
-1	2025-01-09 09:58:14	dALE, TU PUEDES	4	5	1	1
-2	2025-01-09 09:59:49	Ya no?	5	3	1	1
-3	2025-01-09 09:59:54	Ya no?	3	7	1	1
-4	2025-01-09 10:09:06	Melo mi apa	7	3	1	1
-5	2025-01-09 10:09:19	Melo mi apa	7	3	1	1
-6	2025-01-09 10:10:06	Melo ya	3	4	1	1
-7	2025-01-10 00:26:47	Epa mano	4	3	1	1
-8	2025-01-10 00:27:03	Probemos	3	5	2	1
-9	2025-01-10 00:27:30	Segun	5	3	2	1
-10	2025-01-10 00:29:34	Epa	3	4	2	1
-11	2025-01-10 00:40:42	Ya	3	4	1	1
-12	2025-01-10 00:40:49	Si	4	5	2	1
-13	2025-01-10 00:41:31	Oe	5	6	2	1
-14	2025-01-10 00:48:47	OKKKK	6	3	2	1
-15	2025-01-10 00:48:54	mELOOO	4	3	1	1
 \.
 
 
@@ -5085,7 +4986,7 @@ COPY public.estados (est_id, est_nombre) FROM stdin;
 --
 
 COPY public.imagenes_accidente (img_id, reg_acc_id, img_ruta) FROM stdin;
-1	1	img/Datosdespuésdelaprueba.jpg
+1	1	img/firma.png
 \.
 
 
@@ -5094,8 +4995,6 @@ COPY public.imagenes_accidente (img_id, reg_acc_id, img_ruta) FROM stdin;
 --
 
 COPY public.imagenes_vias (img_id, reg_via_id, img_ruta) FROM stdin;
-1	1	img/Datosdeentrada_vacios.jpg
-2	2	img/Datosdeentrada_vacios.jpg
 \.
 
 
@@ -5122,7 +5021,7 @@ COPY public.pqrs (id_pqrs, desc_pqrs, tipo_pqrs, usu_id, fecha_hora) FROM stdin;
 --
 
 COPY public.punto_accidente (id, id_accidente, geom) FROM stdin;
-1	1	0101000020E610000081B74082E21F53C0C71951DA1B7C0B40
+1	1	0101000020E61000004C7EB1E4171F53C0FB907EFB3A700B40
 \.
 
 
@@ -5131,7 +5030,6 @@ COPY public.punto_accidente (id, id_accidente, geom) FROM stdin;
 --
 
 COPY public.punto_reductordan (id_red_dan, id_reductordan, geom) FROM stdin;
-1	1	0101000020E61000007F4591C8511F53C06D18DF2A626B0B40
 \.
 
 
@@ -5140,8 +5038,6 @@ COPY public.punto_reductordan (id_red_dan, id_reductordan, geom) FROM stdin;
 --
 
 COPY public.punto_reductornew (id_red_new, id_reductornew, geom) FROM stdin;
-1	1	0101000020E6100000C7260CDDFF1E53C0892291A326670B40
-2	2	0101000020E61000005E6DC5FEB21F53C0DC02098A1F630B40
 \.
 
 
@@ -5150,7 +5046,6 @@ COPY public.punto_reductornew (id_red_new, id_reductornew, geom) FROM stdin;
 --
 
 COPY public.punto_senialdan (id, id_senialdan, geom) FROM stdin;
-1	1	0101000020E6100000BAFC87F4DB1F53C0970E7708F6720B40
 \.
 
 
@@ -5159,7 +5054,6 @@ COPY public.punto_senialdan (id, id_senialdan, geom) FROM stdin;
 --
 
 COPY public.punto_senialnew (id, id_senialnew, geom) FROM stdin;
-1	1	0101000020E61000008713AB192C1F53C0869112A8EB760B40
 \.
 
 
@@ -5168,8 +5062,6 @@ COPY public.punto_senialnew (id, id_senialnew, geom) FROM stdin;
 --
 
 COPY public.punto_via (id, id_via, geom) FROM stdin;
-1	1	0101000020E6100000736891ED7C1F53C0E6B4814E1B680B40
-2	2	0101000020E6100000D734EF38451F53C0E5C039234A7B0B40
 \.
 
 
@@ -5188,7 +5080,7 @@ COPY public.reg_acc_vehi (reg_acc_vehi_id, reg_acc_id, vehiculo_id) FROM stdin;
 --
 
 COPY public.registro_accidente (reg_acc_id, reg_acc_fecha_hora, tipo_accidente_id, reg_acc_lesionados, reg_acc_observaciones, usu_id) FROM stdin;
-1	2025-01-08 23:14:34	1	t	Hola si ya me funciono, soy demasiado buenooo	1
+1	2025-01-19 10:16:56	1	t	Oe mano melo acá todoooooooooooo	1
 \.
 
 
@@ -5227,7 +5119,6 @@ COPY public.sexo (sex_id, sex_desc) FROM stdin;
 --
 
 COPY public.solicitud_reductores_dan (sol_red_dan_id, tipo_red_id, danio_id, desc_red, sol_red_dan_fecha, img_red_dan, est_sol_id, usu_id) FROM stdin;
-1	3	7	Dale vamos reductorcito dale broderrrr	2025-01-08 23:18:39	Datosdeentrada.jpg	3	1
 \.
 
 
@@ -5236,8 +5127,6 @@ COPY public.solicitud_reductores_dan (sol_red_dan_id, tipo_red_id, danio_id, des
 --
 
 COPY public.solicitud_reductores_new (sol_red_new_id, tipo_red_id, desc_red_new, sol_red_new_fecha, img_red_new, est_sol_id, usu_id) FROM stdin;
-1	4	Dale tu reductor numero dos es tu momento mi apa	2025-01-08 23:19:55	Mapaconceptual.png	4	1
-2	4	Probemos ahora si menor ehh cuanto puesss	2025-01-09 16:04:23	Datosdeentrada_vacios.jpg	4	2
 \.
 
 
@@ -5246,7 +5135,6 @@ COPY public.solicitud_reductores_new (sol_red_new_id, tipo_red_id, desc_red_new,
 --
 
 COPY public.solicitud_seniales_dan (sol_sen_dan_id, tipo_sen_id, desc_sen_dan, danio_id, sol_sen_dan_fecha, img_sen_dan, est_sol_id, usu_id) FROM stdin;
-1	5	A ver tu que tienes demuestra dale dale	4	2025-01-08 23:17:43	img_preventivas.jpg	5	1
 \.
 
 
@@ -5255,7 +5143,6 @@ COPY public.solicitud_seniales_dan (sol_sen_dan_id, tipo_sen_id, desc_sen_dan, d
 --
 
 COPY public.solicitud_seniales_new (sol_sen_new_id, tipo_sen_id, desc_sen, sol_sen_new_fecha, est_sol_id, usu_id) FROM stdin;
-1	1	Vamos, ahora tu, tu momento de brillar, lucete	2025-01-08 23:16:34	3	1
 \.
 
 
@@ -5264,8 +5151,6 @@ COPY public.solicitud_seniales_new (sol_sen_new_id, tipo_sen_id, desc_sen, sol_s
 --
 
 COPY public.solicitud_via_dan (sol_via_dan_id, tipo_dano_via_id, descripcion_via, fecha_hora, est_sol_id, usu_id, via_id) FROM stdin;
-2	1	Melo ya todo sirve, solo unas validaciones y ya 	2025-01-09 15:54:00	3	1	3
-1	1	Dale ahora tu, la ultima pero no menos importante	2025-01-08 23:20:35	3	1	2
 \.
 
 
@@ -5473,7 +5358,6 @@ COPY public.tipos_reductores (tipo_red_id, nombre_tipo_red, descripcion_tipo_red
 --
 
 COPY public.tokens_contra (id_token, token, usu_id, expiracion) FROM stdin;
-1	JGOSO	2	2025-01-09 22:30:16.445
 \.
 
 
@@ -5481,9 +5365,10 @@ COPY public.tokens_contra (id_token, token, usu_id, expiracion) FROM stdin;
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.usuarios (usu_id, usu_documento, usu_nombre1, usu_nombre2, usu_apellido1, usu_apellido2, usu_correo, usu_clave, usu_tel, usu_direccion, rol_id, est_id, doc_id, sex_id) FROM stdin;
-1	1106514243	Jose	Daniel	Ruiz	Montaño	jose@gmail.com	3c165908b463ee85a6a32ab2f7c25a9f8a31431cd2cca0a128ea1db41fca8657	3013623149	Calle 120 C 22 42	1	1	1	1
-2	12345678	Prueba	Prueba	Prueba	\N	josedaniruizm2005@gmail.com	e57075eb0159e5563f34a034eca9a4ca26354449c2fce27c9f8ca290d73b3424	3113457699	Calle 123 J 22  42 Ref. Desepaz	2	1	1	1
+COPY public.usuarios (usu_id, usu_documento, usu_nombre1, usu_nombre2, usu_apellido1, usu_apellido2, usu_correo, usu_clave, usu_tel, usu_direccion, fecha_nac, rol_id, est_id, doc_id, sex_id) FROM stdin;
+1	1106514243	Jose	Daniel	Ruiz	Montaño	jose@gmail.com	3c165908b463ee85a6a32ab2f7c25a9f8a31431cd2cca0a128ea1db41fca8657	3013623149	Calle 120 C 22 42	2005-09-04	1	1	1	1
+2	1108751424	Denys		Ruiz	\N	vale@gmail.com	a3535861e60ee344832a498bffcc012728bc4e8e73e6a1dfd9e85df2743fe4aa	3113457699	Calle 120  22  42  	2006-01-19	2	1	1	2
+3	29122539	Adriana		Montaño	\N	adri@gmail.com	3c5e52f9fd36acff24a1ead7945cde07f52a1cb85474e01285c59acf72877c3e	3113457699	Calle 120 C 22  42  	1979-08-28	3	1	1	2
 \.
 
 
@@ -5527,7 +5412,7 @@ COPY topology.layer (topology_id, layer_id, schema_name, table_name, feature_col
 -- Name: auditoria_usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.auditoria_usuarios_id_seq', 1, true);
+SELECT pg_catalog.setval('public.auditoria_usuarios_id_seq', 2, true);
 
 
 --
@@ -5618,35 +5503,35 @@ SELECT pg_catalog.setval('public.punto_accidente_id_seq', 1, true);
 -- Name: punto_reductordan_id_red_dan_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.punto_reductordan_id_red_dan_seq', 1, true);
+SELECT pg_catalog.setval('public.punto_reductordan_id_red_dan_seq', 1, false);
 
 
 --
 -- Name: punto_reductornew_id_red_new_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.punto_reductornew_id_red_new_seq', 2, true);
+SELECT pg_catalog.setval('public.punto_reductornew_id_red_new_seq', 1, false);
 
 
 --
 -- Name: punto_senialdan_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.punto_senialdan_id_seq', 1, true);
+SELECT pg_catalog.setval('public.punto_senialdan_id_seq', 1, false);
 
 
 --
 -- Name: punto_senialnew_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.punto_senialnew_id_seq', 1, true);
+SELECT pg_catalog.setval('public.punto_senialnew_id_seq', 1, false);
 
 
 --
 -- Name: punto_via_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.punto_via_id_seq', 2, true);
+SELECT pg_catalog.setval('public.punto_via_id_seq', 1, false);
 
 
 --
